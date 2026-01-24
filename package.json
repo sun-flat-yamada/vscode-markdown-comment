@@ -1,0 +1,225 @@
+{
+  "name": "markdown-comment",
+  "displayName": "Markdown Comment",
+  "description": "Comment extension for Markdown.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "publisher": "sun-flat-yamada",
+  "author": {
+    "name": "Youhei Yamada",
+    "url": "https://github.com/sun-flat-yamada/"
+  },
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "markdown-comment.analyze",
+        "category": "Markdown Comment",
+        "title": "Analyze Markdown Document"
+      },
+      {
+        "command": "markdown-comment.openPreview",
+        "category": "Markdown Comment",
+        "title": "Open Preview"
+      },
+      {
+        "command": "markdown-comment.openPreviewToSide",
+        "category": "Markdown Comment",
+        "title": "Open Preview to the Side"
+      },
+      {
+        "command": "markdown-comment.addComment",
+        "title": "Add Comment",
+        "category": "Markdown Comment",
+        "icon": "$(send)"
+      },
+      {
+        "command": "markdown-comment.deleteComment",
+        "title": "Delete Comment",
+        "category": "Markdown Comment",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "markdown-comment.editComment",
+        "title": "Edit Comment",
+        "category": "Markdown Comment",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "markdown-comment.changeCommentStatus",
+        "title": "Change Status",
+        "category": "Markdown Comment",
+        "icon": "$(settings)"
+      },
+      {
+        "command": "markdown-comment.addCommentFromPreview",
+        "title": "Add Comment",
+        "category": "Markdown Comment"
+      },
+      {
+        "command": "markdown-comment.showCommentTable",
+        "title": "Show Comment Table",
+        "category": "Markdown Comment"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "markdown-comment.addComment",
+        "key": "ctrl+enter",
+        "when": "commentEditorFocused && commentController == markdown-comment-comments"
+      }
+    ],
+    "menus": {
+      "comments/commentThread/context": [
+        {
+          "command": "markdown-comment.addComment",
+          "group": "inline"
+        }
+      ],
+      "comments/comment/title": [
+        {
+          "command": "markdown-comment.editComment",
+          "group": "inline@1"
+        },
+        {
+          "command": "markdown-comment.deleteComment",
+          "group": "inline@2"
+        },
+        {
+          "command": "markdown-comment.changeCommentStatus",
+          "group": "inline@3",
+          "when": "commentController == markdown-comment-comments && comment == rootComment"
+        }
+      ],
+      "comments/comment/context": [
+        {
+          "command": "markdown-comment.editComment",
+          "group": "inline@1"
+        },
+        {
+          "command": "markdown-comment.deleteComment",
+          "group": "inline@2"
+        },
+        {
+          "command": "markdown-comment.changeCommentStatus",
+          "group": "inline@3",
+          "when": "commentController == markdown-comment-comments"
+        }
+      ],
+      "webview/context": [
+        {
+          "command": "markdown-comment.addCommentFromPreview",
+          "when": "webviewId == 'markdownPreview'"
+        }
+      ]
+    },
+    "viewContainers": {
+      "activitybar": [
+        {
+          "id": "markdown-comment-container",
+          "title": "Markdown Comment",
+          "icon": "$(comment-discussion)"
+        }
+      ]
+    },
+    "views": {
+      "markdown-comment-container": [
+        {
+          "type": "webview",
+          "id": "markdown-comment.comments",
+          "name": "Comment Table",
+          "icon": "$(table)"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Markdown Comment",
+      "properties": {
+        "markdownComment.commentsTable.columns": {
+          "type": "array",
+          "default": [
+            "lineNo",
+            "content",
+            "status",
+            "author",
+            "tags",
+            "createdAt",
+            "updatedAt",
+            "actions"
+          ],
+          "description": "Columns to display in the Comments panel and their order. Available: lineNo, content, status, author, tags, createdAt, updatedAt, actions",
+          "items": {
+            "type": "string",
+            "enum": [
+              "lineNo",
+              "content",
+              "status",
+              "author",
+              "tags",
+              "createdAt",
+              "updatedAt",
+              "actions"
+            ]
+          }
+        },
+        "markdownComment.commentsTable.columnWidths": {
+          "type": "object",
+          "default": {
+            "lineNo": 40,
+            "content": 300,
+            "status": 80,
+            "author": 80,
+            "tags": 100,
+            "createdAt": 100,
+            "updatedAt": 100,
+            "actions": 60
+          },
+          "description": "Widths of the columns in the Comment Table in pixels."
+        },
+        "markdownComment.defaultAuthor": {
+          "type": "string",
+          "default": "",
+          "description": "Default author name for comments. If empty, uses the system username or 'User'."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "mocha -r ts-node/register --ui tdd src/**/*.test.ts --exclude \"src/test/**\" > logs/unit_test.log 2>&1",
+    "test:integration": "npm run compile && node ./out/test/runTest.js > logs/integration_test.log 2>&1",
+    "package": "vsce package",
+    "deploy": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/markdown-it": "^14.1.2",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "20.2.5",
+    "@types/vscode": "^1.80.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "@vscode/test-electron": "^2.3.2",
+    "eslint": "^8.41.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "markdown-it": "^14.1.0"
+  }
+}
