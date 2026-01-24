@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json.schemastore.org/hooks.json",
+  "version": "1.0",
+  "description": "Antigravity hooks for Markdown Comment project",
+  "hooks": [
+    {
+      "name": "doc-update-reminder",
+      "description": "Remind to update documentation after code changes",
+      "trigger": "PostEdit",
+      "matcher": "file_path matches '\\.(ts|tsx|js|jsx)$' && !file_path matches '\\.test\\.'",
+      "action": {
+        "type": "message",
+        "content": "[Hook] Code changed in {{file_path}}. Remember to check and update related documentation (README.md, GEMINI.md, requirements/requirements.md, tech/tech.md) if needed."
+      }
+    },
+    {
+      "name": "post-doc-edit-sync",
+      "description": "Synchronize Japanese reference docs when English docs change",
+      "trigger": "PostEdit",
+      "matcher": "file_path matches '\\.agent/(requirements|tech)/.*\\.md$' && !file_path matches '\\.ja\\.md$'",
+      "action": {
+        "type": "command",
+        "command": "node .agent/scripts/sync-docs.js"
+      }
+    },
+    {
+      "name": "doc-sync-on-stop",
+      "description": "Ensure documentation is synchronized before completing a task",
+      "trigger": "Stop",
+      "action": {
+        "type": "checklist",
+        "items": [
+          "Documentation (README.md, GEMINI.md) has been reviewed for accuracy",
+          "Requirements and Tech specs (English) are up-to-date",
+          "Japanese reference docs have been regenerated (auto-synced)",
+          "Code changes are reflected in relevant documentation",
+          "No outdated information remains in documentation"
+        ]
+      }
+    },
+    {
+      "name": "pre-commit-doc-check",
+      "description": "Verify documentation consistency before commit",
+      "trigger": "PreCommit",
+      "action": {
+        "type": "validate",
+        "checks": [
+          {
+            "name": "readme-updated",
+            "description": "README.md reflects current features",
+            "severity": "warning"
+          },
+          {
+            "name": "gemini-updated",
+            "description": "GEMINI.md contains accurate project context",
+            "severity": "warning"
+          },
+          {
+            "name": "requirements-updated",
+            "description": "requirements.md is up-to-date (English)",
+            "severity": "warning"
+          }
+        ]
+      }
+    },
+    {
+      "name": "architecture-violation-check",
+      "description": "Check for Clean Architecture violations",
+      "trigger": "PostEdit",
+      "matcher": "file_path matches 'src/domain/.*\\.ts$'",
+      "action": {
+        "type": "command",
+        "command": "grep -n 'from.*infrastructure\\|from.*interface' \"{{file_path}}\" && echo '[Hook] Potential architecture violation: Domain should not import from Infrastructure or Interface!' >&2 || true"
+      }
+    }
+  ]
+}

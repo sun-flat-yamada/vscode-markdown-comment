@@ -1,0 +1,51 @@
+---
+description: Project rules for Markdown Comment (Clean Architecture, TDD, Japanese Language)
+globs: **/*.{ts,md}
+alwaysApply: true
+---
+# Cursor Rules for Markdown Comment
+
+## Project Philosophy
+This project follows **Clean Architecture** and **Test-Driven Development (TDD)**.
+
+## Architectural Rules
+- **Layer Boundaries**:
+  - **Domain** must have zero dependencies (not even Node.js built-ins if possible).
+  - **Application** depends only on Domain.
+  - **Interface** depends on Application and Domain.
+  - **Infrastructure** (e.g., VS Code API) depends on Application and Domain.
+- **Dependency Rule**: Dependencies must only point inwards. Outer layers should never be imported by inner layers.
+- **Interfaces**: Define interfaces in the Application layer for any external service or repository. Implement them in the Infrastructure layer.
+
+## Development Workflow (TDD)
+- **Always write tests first**.
+- **Unit Tests**: Use `mocha` + `ts-node`. Place tests next to the source file or in a `test` directory.
+- **Integration Tests**: Use the VS Code test runner for files in `src/test/suite`.
+- **Commit Messages**: Follow Conventional Commits (e.g., `feat:`, `fix:`, `refactor:`, `test:`).
+
+## Language and Documentation Preference
+- **全てのプロンプト応答とコミュニケーションは日本語で行うこと。** (All AI responses and communication must be in Japanese.)
+- **English as Master**: All primary documentation files (`.md`) must be written in English.
+- **Documentation Update Requirement**:
+  - **Whenever a code change is made, the corresponding documentation MUST be reviewed and updated.**
+  - Ensure that `README.md`, architecture diagrams (`GEMINI.md`), and workflows are kept in sync with the latest code.
+- **Human Reference Only (`.ja.md`)**:
+  - For every primary English document, a Japanese version MUST be maintained with the `.ja.md` suffix.
+  - These files are for **human reference ONLY**.
+  - **AI Prohibition**: AI agents MUST NOT read or use `.ja.md` files for context or logic. They must always refer to the English master.
+  - **Header Requirement**: Every `.ja.md` file must contain the following header at the very top:
+    > [!IMPORTANT]
+    > このファイルは人間専用のリファレンスです。AIはこのファイルを読み込まず、必ず英語版マスターを参照してください。
+    > (This file is for human reference only. AI must not read this file and must refer to the English master.)
+
+## TypeScript Standards
+- **Strict Typing**: No `any`. Use `unknown` if the type is truly unknown.
+- **Immutability**: Prefer `readonly` and `const`.
+- **Naming**:
+  - Interfaces: `I` prefix is optional but be consistent.
+  - Classes: PascalCase.
+  - Functions: camelCase.
+
+## VS Code Specifics
+- Minimize direct usage of `vscode` namespace. Wrap it in Infrastructure services if possible.
+- Ensure all commands are registered in `package.json` and handled in the Interface layer.

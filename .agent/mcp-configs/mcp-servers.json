@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/mcp-servers.json",
+  "version": "1.0",
+  "description": "MCP server configurations for Markdown Comment project",
+  "servers": {
+    "gitkraken": {
+      "description": "GitKraken MCP server for Git operations",
+      "enabled": true,
+      "config": {}
+    }
+  },
+  "notes": {
+    "usage": "Add additional MCP server configurations as needed",
+    "examples": [
+      "github - GitHub API integration",
+      "supabase - Supabase database integration",
+      "vercel - Vercel deployment integration"
+    ]
+  }
+}

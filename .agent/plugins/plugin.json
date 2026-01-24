@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json.schemastore.org/plugin.json",
+  "name": "markdown-comment-agent-config",
+  "version": "1.0.0",
+  "description": "Antigravity agent configuration for Markdown Comment VS Code extension",
+  "author": "Markdown Comment Team",
+  "components": {
+    "agents": ".agent/agents/",
+    "commands": ".agent/commands/",
+    "rules": ".agent/rules/",
+    "skills": ".agent/skills/",
+    "hooks": ".agent/hooks/",
+    "workflows": ".agent/workflows/",
+    "examples": ".agent/examples/",
+    "scripts": ".agent/scripts/",
+    "mcp-configs": ".agent/mcp-configs/"
+  },
+  "entryPoints": {
+    "rules": [
+      ".agent/rules/architecture.md",
+      ".agent/rules/development.md",
+      ".agent/rules/documentation.md",
+      ".agent/rules/language.md"
+    ],
+    "hooks": ".agent/hooks/hooks.json"
+  },
+  "compatibility": {
+    "antigravity": ">=1.0.0"
+  }
+}

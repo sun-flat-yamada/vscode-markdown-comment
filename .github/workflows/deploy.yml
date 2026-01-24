@@ -1,0 +1,33 @@
+name: Deploy Extension
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run compile
+      - run: npm run lint
+      - run: npm test
+        if: runner.os != 'Linux' # Optional: skip tests on Linux if UI dependent
+
+      - name: Publish to VS Code Marketplace
+        run: npx vsce publish -p ${{ secrets.VSCE_PAT }}
+        continue-on-error: true # Continue to release creation even if publish fails (e.g., version conflict)
+
+      - name: Create VSIX Package
+        run: npx vsce package
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "*.vsix"
+          generate_release_notes: true
