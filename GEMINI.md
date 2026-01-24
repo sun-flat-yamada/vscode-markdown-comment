@@ -42,6 +42,7 @@ graph TD
 | :--- | :--- |
 | Build | `npm run compile` |
 | Watch | `npm run watch` |
+| Lint | `npm run lint` |
 | Unit Tests | `npm run test:unit` |
 | Integration Tests | `npm run test:integration` |
 | All Tests | `npm test` |

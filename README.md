@@ -2,6 +2,8 @@
 
 [English](./README.md) | [日本語](./README.ja.md)
 
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/sun.flat.yamada)
+
 Provides PDF-like commenting and replying functionality for Markdown. Best of all, it makes no changes to the Markdown file itself.
 
 While Markdown files are increasingly used with AI, this extension also smartly solves review and comment management when working with non-IT engineers.
