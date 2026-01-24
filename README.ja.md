@@ -6,6 +6,8 @@
 
 [English](./README.md) | [日本語](./README.ja.md)
 
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/sun.flat.yamada)
+
 Markdownに対してPDFのようなコメントや返信機能を提供します。最も重要なのは、Markdownファイル自体には一切の変更を加えないという点です。
 
 MarkdownファイルがAIと共に利用される機会が増える中、本拡張機能はITエンジニア以外の方とのレビューやコメント管理もスマートに解決します。
