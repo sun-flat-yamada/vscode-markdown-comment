@@ -2,7 +2,7 @@
   "name": "markdown-comment",
   "displayName": "Markdown Comment",
   "description": "Comment extension for Markdown.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "icon": "./images/vscode-mdc-icon.png",
   "engines": {
     "vscode": "^1.80.0"
@@ -225,8 +225,8 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "webpack --mode production",
-    "compile-dev": "webpack --mode development",
+    "compile": "webpack --mode production && node scripts/verify-bundle.js",
+    "compile-dev": "webpack --mode development && node scripts/verify-bundle.js",
     "watch": "webpack --mode development --watch",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
