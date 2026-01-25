@@ -18,5 +18,5 @@ suite('MarkdownDocument Domain Test', () => {
         const content = 'Hello   world';
         const doc = new MarkdownDocument(content, 'test.md');
         assert.strictEqual(doc.getWordCount(), 2);
-    })
+    });
 });

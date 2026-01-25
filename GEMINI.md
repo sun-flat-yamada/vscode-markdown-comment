@@ -5,7 +5,7 @@
 **Markdown Comment** is a VS Code extension built with **Clean Architecture**. It aims to provide advanced analysis and refactoring features for Markdown documents. Data Persistence is handled via robust `.jsonl` files (JSON Lines).
 
 > [!IMPORTANT]
-> **All AI responses and communication must be in Japanese.** (全てのプロンプト応答とコミュニケーションは日本語で行うこと。)
+> **All AI responses and communication must be in Japanese.** (プロンプト応答、コミュニケーション、およびアーティファクト作成などの **全てのやり取りは日本語で行うこと** 。)
 
 ## Architecture
 
@@ -63,14 +63,18 @@ graph TD
     - **English is Master**: Refer only to English `.md` files.
     - **Update Documentation (MANDATORY)**: Always review and update corresponding documentation when making code changes. Ensure `README.md` and `GEMINI.md` are up to date. This is a strict requirement for every code change.
     - **Ignore Japanese Reference**: Do NOT read `.ja.md` files; they are for human reference only.
-4. **Check .cursorrules**: It contains specific coding standards for this repo.
+4. **Markdown Rendering Engine**:
+    - Uses a two-pass system: (1) Insert placeholders MCSTART/END into Markdown, (2) Render with `markdown-it`, (3) Post-process HTML to replace placeholders with `<mark>` tags.
+    - Custom `image` rule in `markdown-it` strips accidental placeholders from attributes to prevent broken tags.
+5. **Sync Logic**: The preview webview manages its own sidebar state. Interaction events (click/toggle) are synchronized between the webview and the extension via `vscode.postMessage`.
+6. **Check .cursorrules**: It contains specific coding standards for this repo.
 
 ## Agent Configuration (`.agent/`)
 
 The `.agent` directory contains AI assistant configurations:
 
 | Directory | Purpose |
-|-----------|---------|
+| ----------- | --------- |
 | `agents/` | Subagent definitions (planner, code-reviewer, doc-updater) |
 | `commands/` | Slash commands (/plan, /code-review, /doc-sync) |
 | `examples/` | Configuration examples |
