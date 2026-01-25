@@ -112,7 +112,7 @@ Contributions are welcome! If you find this extension useful, please consider su
 
 ## 📝 Release Notes
 
-### 0.0.4
+### 0.0.4 - 0.0.5
 - Fix command error by bundling node_modules
 ### 0.0.3
 - Add marketplace icon
