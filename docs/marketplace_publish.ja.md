@@ -1,8 +1,6 @@
-> [!NOTE]
-> This file is a reference. The master document is the English version.
-> このファイルは参照用です。正本は英語版です。
-> (Automatic translation/sync pending...)
-> (自動翻訳/同期待機中...)
+> [!IMPORTANT]
+> このファイルは人間専用のリファレンスです。AIはこのファイルを読み込まず、必ず英語版マスターを参照してください。
+> (This file is for human reference only. AI must not read this file and must refer to the English master.)
 
 # VS Code Marketplace 公開手順
 
@@ -112,3 +110,16 @@ git push origin v0.0.2
 ```
 
 GitHub Actions が起動し、`VSCE_PAT` を使用して Marketplace への公開処理が実行されます。
+
+### 誤ったタグを削除する場合
+
+もし誤ったタグを push してしまった場合や、リトライが必要な場合は以下のコマンドでタグを削除できます。
+
+1. ローカルタグの削除:
+   ```bash
+   git tag -d v0.0.x
+   ```
+2. リモードタグの削除:
+   ```bash
+   git push origin --delete v0.0.x
+   ```
