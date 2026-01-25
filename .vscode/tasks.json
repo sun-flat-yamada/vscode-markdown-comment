@@ -5,7 +5,7 @@
       "label": "npm: watch",
       "type": "npm",
       "script": "watch",
-      "problemMatcher": "$tsc-watch",
+      "problemMatcher": "$ts-webpack-watch",
       "isBackground": true,
       "presentation": {
         "reveal": "silent"
@@ -19,7 +19,17 @@
       "label": "npm: compile",
       "type": "npm",
       "script": "compile",
-      "problemMatcher": "$tsc",
+      "problemMatcher": "$ts-webpack",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "group": "build"
+    },
+    {
+      "label": "npm: compile-dev",
+      "type": "npm",
+      "script": "compile-dev",
+      "problemMatcher": "$ts-webpack",
       "presentation": {
         "reveal": "silent"
       },

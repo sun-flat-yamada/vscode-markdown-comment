@@ -40,13 +40,14 @@ graph TD
 
 | Task | Command |
 | :--- | :--- |
-| Build | `npm run compile` |
-| Watch | `npm run watch` |
+| Build (Prod) | `npm run compile` (Webpack Production) |
+| Build (Dev) | `npm run compile-dev` (Webpack Development) |
+| Watch | `npm run watch` (Webpack Development) |
 | Lint | `npm run lint` |
 | Unit Tests | `npm run test:unit` |
 | Integration Tests | `npm run test:integration` |
 | All Tests | `npm test` |
-| Package Extension | `npm run package` |
+| Package Extension | `npm run package` (VSCE) |
 
 ## Key Directories
 
