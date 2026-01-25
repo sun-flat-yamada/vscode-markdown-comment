@@ -35,6 +35,7 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
   constructor(
     private readonly context: vscode.ExtensionContext,
     private readonly commentService: CommentService,
+    private readonly onDidUpdate?: (filePath?: string) => Promise<void>,
   ) {}
 
   public resolveWebviewView(
@@ -90,6 +91,17 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
         case "delete":
           await this.handleDelete(data.threadId, data.commentId, data.filePath);
           break;
+        case "editTags":
+          await this.handleEditTags(
+            data.threadId,
+            data.commentId,
+            data.currentTags,
+            data.filePath,
+          );
+          break;
+        case "reorderColumns":
+          await this.handleReorderColumns(data.from, data.to);
+          break;
       }
     });
 
@@ -97,7 +109,9 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
   }
 
   private async getCurrentFileContent(): Promise<string | undefined> {
-    if (!this.currentFilePath) return undefined;
+    if (!this.currentFilePath) {
+      return undefined;
+    }
     const uri = vscode.Uri.file(this.currentFilePath);
     try {
       const doc = await vscode.workspace.openTextDocument(uri);
@@ -119,6 +133,9 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
         commentId,
         status as CommentStatus,
       );
+      if (this.onDidUpdate) {
+        await this.onDidUpdate(this.currentFilePath);
+      }
       // Refresh will be triggered by handleCommentChange in extension.ts
     }
   }
@@ -141,6 +158,9 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
         commentId,
         newContent,
       );
+      if (this.onDidUpdate) {
+        await this.onDidUpdate(filePath);
+      }
     }
   }
 
@@ -158,6 +178,138 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
 
     if (confirm === "Yes") {
       await this.commentService.deleteComment(filePath, threadId, commentId);
+      if (this.onDidUpdate) {
+        await this.onDidUpdate(filePath);
+      }
+    }
+  }
+
+  private async handleEditTags(
+    threadId: string,
+    commentId: string,
+    currentTags: string[],
+    filePath: string,
+  ) {
+    const availableTags = await this.commentService.getAvailableTags(filePath);
+    const tagSet = new Set<string>([...availableTags, ...currentTags]);
+    const existingTags = Array.from(tagSet).sort();
+
+    const quickPick = vscode.window.createQuickPick();
+    quickPick.canSelectMany = true;
+    quickPick.title = "Edit Tags";
+    quickPick.placeholder = "Select tags or type to create a new one";
+
+    // Track state: selection source of truth
+    let selectedTags = new Set<string>(currentTags);
+
+    const updateItems = (filter: string = "") => {
+      const items: vscode.QuickPickItem[] = [];
+
+      // Add "Create" item if filter is non-empty and not an exact match
+      if (filter && !tagSet.has(filter)) {
+        items.push({
+          label: `$(add) Create new tag: "${filter}"`,
+          alwaysShow: true,
+          description: "Create and assign this tag",
+        });
+      }
+
+      // Add existing tags
+      existingTags.forEach((tag) => {
+        if (!filter || tag.toLowerCase().includes(filter.toLowerCase())) {
+          items.push({
+            label: tag,
+          });
+        }
+      });
+
+      quickPick.items = items;
+      // Re-apply selection state to visible items
+      quickPick.selectedItems = items.filter(
+        (i) => selectedTags.has(i.label) || i.label.startsWith("$(add)"),
+      );
+    };
+
+    quickPick.onDidChangeValue((value) => {
+      updateItems(value);
+    });
+
+    quickPick.onDidChangeSelection((selection) => {
+      const currentSelectionLabels = selection.map((i) => i.label);
+
+      // Update our source of truth based on what's visible and its checked state
+      quickPick.items.forEach((item) => {
+        if (item.label.startsWith("$(add)")) {
+          return;
+        } // Creation handled on accept
+
+        if (currentSelectionLabels.includes(item.label)) {
+          selectedTags.add(item.label);
+        } else {
+          selectedTags.delete(item.label);
+        }
+      });
+    });
+
+    return new Promise<void>((resolve) => {
+      quickPick.onDidAccept(async () => {
+        const finalTags = new Set(selectedTags);
+
+        // Handle creation if selected
+        quickPick.selectedItems.forEach((item) => {
+          if (item.label.startsWith('$(add) Create new tag: "')) {
+            const match = item.label.match(/"(.+)"/);
+            if (match && match[1]) {
+              finalTags.add(match[1]);
+            }
+          }
+        });
+
+        quickPick.hide();
+
+        // Save tags to comment
+        await this.commentService.updateTags(
+          filePath,
+          threadId,
+          commentId,
+          Array.from(finalTags),
+        );
+
+        if (this.onDidUpdate) {
+          await this.onDidUpdate(filePath);
+        }
+
+        // Refresh to show updated tags
+        const content = await this.getCurrentFileContent();
+        if (content) {
+          await this.refresh(filePath, content);
+        }
+        resolve();
+      });
+
+      quickPick.onDidHide(() => {
+        quickPick.dispose();
+        resolve();
+      });
+
+      updateItems("");
+      quickPick.show();
+    });
+  }
+
+  private async handleReorderColumns(from: string, to: string) {
+    const config = vscode.workspace.getConfiguration("markdownComment");
+    const columns = config.get<string[]>("commentsTable.columns") || [];
+    const fromIdx = columns.indexOf(from);
+    const toIdx = columns.indexOf(to);
+    if (fromIdx !== -1 && toIdx !== -1) {
+      columns.splice(fromIdx, 1);
+      columns.splice(toIdx, 0, from);
+      await config.update(
+        "commentsTable.columns",
+        columns,
+        vscode.ConfigurationTarget.Global,
+      );
     }
   }
 
@@ -214,10 +366,15 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
         })
         .join("");
 
+      const fileName = filePath
+        ? filePath.replace(/\\/g, "/").split("/").pop() || filePath
+        : "";
       this._view.webview.postMessage({
         type: "updateData",
         rowsHtml,
         headerHtml,
+        fileName,
+        fullPath: filePath,
       });
     } else {
       this.updateHtml();
@@ -306,7 +463,7 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
     const headerHtml = columns
       .map((col) => {
         const width = columnWidths[col] || 100;
-        return `<th style="width: ${width}px;" data-col="${col}">
+        return `<th style="width: ${width}px;" data-col="${col}" draggable="true" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
           <div class="header-content">${this.getColumnLabel(col)}</div>
           <div class="resizer" onmousedown="startResizing(event, '${col}')"></div>
         </th>`;
@@ -321,7 +478,7 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
     <style>
         body { font-family: var(--vscode-font-family); color: var(--vscode-foreground); padding: 0; margin: 0; overflow-x: auto; position: relative; min-height: 100vh; }
         table { width: max-content; min-width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { text-align: left; position: sticky; top: 0; background: var(--vscode-panel-background); z-index: 10; border-bottom: 1px solid var(--vscode-divider); padding: 8px 4px; font-size: 0.8em; text-transform: uppercase; position: relative; }
+        th { text-align: left; position: sticky; top: 0; background: var(--vscode-panel-background); z-index: 10; border-bottom: 1px solid var(--vscode-divider); padding: 8px 4px; font-size: 0.8em; text-transform: uppercase; position: relative; cursor: grab; }
         td { padding: 4px; border-bottom: 1px solid var(--vscode-divider); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9em; vertical-align: middle; }
         tr.root-row { border-top: 1px solid var(--vscode-divider); }
         tr.root-row:first-child { border-top: none; }
@@ -329,46 +486,49 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
         tr:hover { background-color: var(--vscode-list-hoverBackground); }
         .resizer { position: absolute; right: 0; top: 0; width: 4px; height: 100%; cursor: col-resize; z-index: 11; }
         .resizer:hover { background: var(--vscode-focusBorder); }
-        .header-content { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .header-content { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; }
         .tag { background: var(--vscode-badge-background); color: var(--vscode-badge-foreground); padding: 1px 4px; border-radius: 3px; font-size: 0.8em; margin-right: 2px; }
         .status-select { background: transparent; color: inherit; border: 1px solid transparent; border-radius: 2px; cursor: pointer; font-size: inherit; }
         .status-select:hover { border-color: var(--vscode-focusBorder); }
         .action-btn { background: none; border: none; cursor: pointer; opacity: 0.7; padding: 2px; font-size: 1.1em; }
         .action-btn:hover { opacity: 1; background-color: var(--vscode-toolbar-hoverBackground); border-radius: 3px; }
 
+        .file-header {
+          padding: 8px 12px;
+          background: var(--vscode-sideBar-background);
+          border-bottom: 1px solid var(--vscode-divider);
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          position: sticky;
+          top: 0;
+          z-index: 20;
+          backdrop-filter: blur(5px);
+          opacity: 0.95;
+        }
+
+        /* Drag & Drop */
+        th.dragging { opacity: 0.5; }
+        th.drag-over { border-left: 2px solid var(--vscode-focusBorder); }
+
         /* Loading Overlay */
         #loading-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: var(--vscode-panel-background);
-            opacity: 0;
-            pointer-events: none;
+            opacity: 0; pointer-events: none;
             transition: opacity 0.2s;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 1000;
         }
-        body.is-loading #loading-overlay {
-            opacity: 0.6;
-            pointer-events: auto;
-        }
+        body.is-loading #loading-overlay { opacity: 0.6; pointer-events: auto; }
         .spinner {
-            width: 24px;
-            height: 24px;
+            width: 24px; height: 24px;
             border: 2px solid var(--vscode-progressBar-background);
-            border-top: 2px solid transparent;
-            border-radius: 50%;
+            border-top: 2px solid transparent; border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* Row Spacing */
         tr.root-row td { padding-top: 12px; }
@@ -384,6 +544,9 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
     <div id="loading-overlay">
         <div class="spinner"></div>
     </div>
+    <!-- File Header -->
+    <div id="file-header" class="file-header" style="display:none;"></div>
+
     <table id="comment-table">
         <thead>
             <tr>${headerHtml}</tr>
@@ -408,20 +571,26 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
                 case 'updateData':
                     document.getElementById('comment-body').innerHTML = message.rowsHtml;
                     document.querySelector('thead tr').innerHTML = message.headerHtml;
+
+                    const header = document.getElementById('file-header');
+                    if (message.fileName) {
+                        header.style.display = 'flex';
+                        header.innerText = message.fileName;
+                        header.title = message.fullPath;
+                    } else {
+                        header.style.display = 'none';
+                    }
+
                     document.body.classList.remove('is-loading');
                     break;
             }
         });
 
-        // Notify extension that we are ready
         vscode.postMessage({ type: 'ready' });
 
-        // Use event delegation for better performance and dynamic content
         document.getElementById('comment-table').addEventListener('click', (e) => {
             const target = e.target;
             const tr = target.closest('tr');
-
-            // Handle Row Click (Reveal) - ignore if clicking interactive elements
             if (tr && !target.closest('select') && !target.closest('button')) {
                 const threadId = tr.dataset.threadId;
                 const filePath = tr.dataset.filePath;
@@ -438,29 +607,23 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
                 commentId: commentId,
                 status: select.value
             });
-            // Update color class immediately for better UI feedback
             select.className = 'status-select status-' + select.value;
         }
 
         function editComment(threadId, commentId, currentContent, filePath) {
-            vscode.postMessage({
-                type: 'edit',
-                threadId: threadId,
-                commentId: commentId,
-                currentContent: currentContent,
-                filePath: filePath
-            });
+            vscode.postMessage({ type: 'edit', threadId, commentId, currentContent, filePath });
         }
 
         function deleteComment(threadId, commentId, filePath) {
-            vscode.postMessage({
-                type: 'delete',
-                threadId: threadId,
-                commentId: commentId,
-                filePath: filePath
-            });
+            vscode.postMessage({ type: 'delete', threadId, commentId, filePath });
         }
 
+        function editTags(threadId, commentId, tagsJson, filePath) {
+            const tags = JSON.parse(decodeURIComponent(tagsJson));
+            vscode.postMessage({ type: 'editTags', threadId, commentId, currentTags: tags, filePath });
+        }
+
+        /* Resizing Logic */
         let isResizing = false;
         let currentColumn = null;
         let startX = 0;
@@ -472,10 +635,10 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
             startX = e.pageX;
             const th = e.target.parentElement;
             startWidth = th.offsetWidth;
-
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', stopResizing);
             e.preventDefault();
+            e.stopPropagation(); // Prevent drag start
         }
 
         function handleMouseMove(e) {
@@ -483,26 +646,62 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
             const diff = e.pageX - startX;
             const newWidth = Math.max(20, startWidth + diff);
             const th = document.querySelector('th[data-col="' + currentColumn + '"]');
-            if (th) {
-                th.style.width = newWidth + 'px';
-            }
+            if (th) th.style.width = newWidth + 'px';
         }
 
         function stopResizing() {
             if (isResizing) {
                 const th = document.querySelector('th[data-col="' + currentColumn + '"]');
                 if (th) {
-                    vscode.postMessage({
-                        type: 'resize',
-                        column: currentColumn,
-                        width: th.offsetWidth
-                    });
+                    vscode.postMessage({ type: 'resize', column: currentColumn, width: th.offsetWidth });
                 }
             }
             isResizing = false;
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mouseup', stopResizing);
         }
+
+        /* D&D Logic */
+        let dragSrcCol = null;
+
+        function handleDragStart(e) {
+            dragSrcCol = e.target; // th
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', e.target.dataset.col);
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) { e.preventDefault(); }
+            e.dataTransfer.dropEffect = 'move';
+            e.target.closest('th').classList.add('drag-over');
+            return false;
+        }
+
+        function handleDragLeave(e) {
+            e.target.closest('th').classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) { e.stopPropagation(); }
+            const th = e.target.closest('th');
+            th.classList.remove('drag-over');
+
+            if (dragSrcCol !== th) {
+                const fromCol = e.dataTransfer.getData('text/plain');
+                const toCol = th.dataset.col;
+                vscode.postMessage({ type: 'reorderColumns', from: fromCol, to: toCol });
+            }
+            return false;
+        }
+
+        // Cleanup dragging class on end
+        document.addEventListener('dragend', (e) => {
+             document.querySelectorAll('th').forEach(th => {
+                 th.classList.remove('dragging');
+                 th.classList.remove('drag-over');
+             });
+        });
     </script>
 </body>
 </html>`;
@@ -578,7 +777,9 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
       case "actions":
         const escapedContent = c.content.replace(/"/g, "&quot;");
         const escapedFilePath = row.filePath.replace(/\\/g, "\\\\");
+        const tagsJson = encodeURIComponent(JSON.stringify(c.tags));
         return `
+            <button class="action-btn" title="Edit Tags" onclick="editTags('${row.thread.id}', '${c.id}', '${tagsJson}', '${escapedFilePath}')">🏷️</button>
             <button class="action-btn" title="Edit" onclick="editComment('${row.thread.id}', '${c.id}', '${escapedContent}', '${escapedFilePath}')">✏️</button>
             <button class="action-btn" title="Delete" onclick="deleteComment('${row.thread.id}', '${c.id}', '${escapedFilePath}')">🗑️</button>
           `;

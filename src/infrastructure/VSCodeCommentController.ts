@@ -11,14 +11,14 @@ export class VSCodeCommentController {
   private controller: vscode.CommentController;
   private threads: Map<string, vscode.CommentThread> = new Map();
   private lastRefreshedUri: string | undefined;
-  private activeThread: vscode.CommentThread | undefined;
-  private activeReplyText: string = "";
+  private onDidUpdate?: () => void;
 
   constructor(
     private readonly context: vscode.ExtensionContext,
     private readonly commentService: CommentService,
-    private readonly onDidUpdate?: () => void,
+    onDidUpdate?: () => void,
   ) {
+    this.onDidUpdate = onDidUpdate;
     this.controller = vscode.comments.createCommentController(
       COMMENT_CONTROLLER_ID,
       "Markdown Comment",
@@ -56,7 +56,7 @@ export class VSCodeCommentController {
 
     const domainThreadIds = new Set(domainThreads.map((t) => t.id));
 
-    // 削除されたスレッドの破棄 (現在のドキュメントに属するもののみを対象とする)
+    // 削除されたスレッドの破棄
     for (const [id, thread] of this.threads.entries()) {
       if (
         thread.uri.toString() === docUri.toString() &&
@@ -93,12 +93,10 @@ export class VSCodeCommentController {
     );
     const range = new vscode.Range(startPos, endPos);
 
-    // 位置（Range）の更新: 変更がある場合のみ代入する
     if (vscodeThread.range && !vscodeThread.range.isEqual(range)) {
       vscodeThread.range = range;
     }
 
-    // Update Thread label based on status
     const rootComment = domainThread.comments[0];
     if (rootComment && rootComment.status) {
       const icon = getStatusIcon(rootComment.status);
@@ -107,69 +105,147 @@ export class VSCodeCommentController {
       vscodeThread.label = undefined;
     }
 
-    // コメントリストの更新
-    const newVSCodeComments = domainThread.comments.map((c, index) =>
+    vscodeThread.comments = domainThread.comments.map((c, index) =>
       this.toVSCodeComment(c, vscodeThread, index === 0),
     );
 
-    // 既存のコメントと内容を比較
-    const isDifferent =
-      vscodeThread.comments.length !== newVSCodeComments.length ||
-      newVSCodeComments.some((nc, i) => {
-        const existing = vscodeThread.comments[i];
-        if (!existing) return true;
-        return (
-          existing.author.name !== nc.author.name ||
-          (existing.body as vscode.MarkdownString).value !==
-            (nc.body as vscode.MarkdownString).value ||
-          (existing as any).domainCommentId !== (nc as any).domainCommentId
-        );
-      });
-
-    if (isDifferent) {
-      vscodeThread.comments = newVSCodeComments;
-    }
+    (vscodeThread as any).command = {
+      title: "Reveal Comment",
+      command: "markdown-comment.revealCommentFromTable",
+      arguments: [domainThread.id, document.uri.fsPath],
+    };
   }
 
-  public async revealThread(threadId: string): Promise<void> {
-    const vscodeThread = this.threads.get(threadId);
+  /**
+   * [Fix Issue 2] Reveals a comment thread, reusing existing editor tabs if possible.
+   */
+  public async revealThread(
+    threadId: string,
+    filePathHint?: string,
+  ): Promise<void> {
+    let vscodeThread = this.threads.get(threadId);
+
+    // If thread not found but we have a file path, open it first to trigger refresh
+    if (!vscodeThread && filePathHint) {
+      const uri = vscode.Uri.file(filePathHint);
+      await this.showDocumentSafely(uri);
+      // After opening, it should be in our threads map (due to editor change/refresh)
+      vscodeThread = this.threads.get(threadId);
+    }
+
     if (vscodeThread) {
-      // Collapse other threads in the same document to ensure this one is prominent
-      for (const thread of this.threads.values()) {
+      // Collapse other threads
+      for (const t of this.threads.values()) {
         if (
-          thread.uri.toString() === vscodeThread.uri.toString() &&
-          thread !== vscodeThread
+          t.uri.toString() === vscodeThread.uri.toString() &&
+          t !== vscodeThread
         ) {
-          thread.collapsibleState =
-            vscode.CommentThreadCollapsibleState.Collapsed;
+          t.collapsibleState = vscode.CommentThreadCollapsibleState.Collapsed;
         }
       }
-
       vscodeThread.collapsibleState =
         vscode.CommentThreadCollapsibleState.Expanded;
 
-      // Find if there's already an editor showing this document
-      const existingEditor = vscode.window.visibleTextEditors.find(
-        (e) => e.document.uri.toString() === vscodeThread.uri.toString(),
+      const editor = await this.showDocumentSafely(
+        vscodeThread.uri,
+        vscodeThread.range,
       );
-
-      // Ensure the document is shown and focused in an editor (reusing existing tab if possible)
-      const editor = await vscode.window.showTextDocument(vscodeThread.uri, {
-        selection: vscodeThread.range,
-        preserveFocus: false,
-        preview: false,
-        viewColumn: existingEditor
-          ? existingEditor.viewColumn
-          : vscode.ViewColumn.Active,
-      });
-
-      if (vscodeThread.range) {
+      if (editor && vscodeThread.range) {
         editor.revealRange(
           vscodeThread.range,
           vscode.TextEditorRevealType.InCenter,
         );
       }
     }
+  }
+
+  /**
+   * Helper to show a document while reusing existing tabs.
+   * If VSCode opens a new preview tab in an unwanted column (like Beside), we close it.
+   */
+  private async showDocumentSafely(
+    uri: vscode.Uri,
+    selection?: vscode.Range,
+  ): Promise<vscode.TextEditor | undefined> {
+    const targetFsPath = uri.fsPath.toLowerCase();
+
+    // 1. Find ALL tabs that match this document across all groups
+    const allTabs: { tab: vscode.Tab; group: vscode.TabGroup }[] = [];
+    for (const group of vscode.window.tabGroups.all) {
+      for (const tab of group.tabs) {
+        if (
+          tab.input instanceof vscode.TabInputText &&
+          tab.input.uri.fsPath.toLowerCase() === targetFsPath
+        ) {
+          allTabs.push({ tab, group });
+        }
+      }
+    }
+
+    // 2. Identify the "best" tab (prefer non-preview or already active)
+    // If we have a tab that is NOT a preview, it's our best choice.
+    let bestTab =
+      allTabs.find((t) => !t.tab.isPreview) ||
+      allTabs.find((t) => t.tab.isActive) ||
+      allTabs[0];
+
+    // 3. If VSCode just opened a new preview tab in the WRONG group (e.g. where Preview is),
+    // we should prioritize the OTHER group where a tab might already exist.
+    if (allTabs.length > 1) {
+      const nonPreviewTabs = allTabs.filter((t) => !t.tab.isPreview);
+      if (nonPreviewTabs.length > 0) {
+        bestTab = nonPreviewTabs[0];
+      }
+    }
+
+    // 4. Close "trash" tabs (preview tabs that are not the best tab)
+    // This happens when VSCode's default behavior opens a new tab in the active (Beside) group.
+    for (const { tab } of allTabs) {
+      if (tab !== bestTab?.tab && tab.isPreview) {
+        try {
+          await vscode.window.tabGroups.close(tab);
+        } catch (e) {
+          // Ignore if already closed
+        }
+      }
+    }
+
+    if (bestTab && bestTab.tab.input instanceof vscode.TabInputText) {
+      // Use the specific column of the best tab to avoid opening in Beside
+      return await vscode.window.showTextDocument(bestTab.tab.input.uri, {
+        viewColumn: bestTab.group.viewColumn,
+        preserveFocus: false,
+        preview: false,
+        selection: selection,
+      });
+    }
+
+    // 5. Search in visible editors as fallback
+    const visibleEditor = vscode.window.visibleTextEditors.find(
+      (e) => e.document.uri.fsPath.toLowerCase() === targetFsPath,
+    );
+    if (visibleEditor) {
+      return await vscode.window.showTextDocument(visibleEditor.document, {
+        viewColumn: visibleEditor.viewColumn,
+        preserveFocus: false,
+        preview: false,
+        selection: selection,
+      });
+    }
+
+    // 6. Fallback: Open in ViewColumn.One (usually the left side) if beside is active
+    let targetColumn = vscode.ViewColumn.Active;
+    if (
+      vscode.window.activeTextEditor?.viewColumn === vscode.ViewColumn.Beside
+    ) {
+      targetColumn = vscode.ViewColumn.One;
+    }
+
+    return await vscode.window.showTextDocument(uri, {
+      viewColumn: targetColumn,
+      preview: false,
+      selection: selection,
+    });
   }
 
   private createVSCodeThread(
@@ -190,7 +266,6 @@ export class VSCodeCommentController {
     vscodeThread.collapsibleState =
       vscode.CommentThreadCollapsibleState.Expanded;
 
-    // Set initial label
     const rootComment = domainThread.comments[0];
     if (rootComment && rootComment.status) {
       const icon = getStatusIcon(rootComment.status);
@@ -201,9 +276,12 @@ export class VSCodeCommentController {
       this.toVSCodeComment(c, vscodeThread, index === 0),
     );
 
-    // Tag threads for identification in commands
     (vscodeThread as any).domainThreadId = domainThread.id;
-
+    (vscodeThread as any).command = {
+      title: "Reveal Comment",
+      command: "markdown-comment.revealCommentFromTable",
+      arguments: [domainThread.id, document.uri.fsPath],
+    };
     this.threads.set(domainThread.id, vscodeThread);
     return vscodeThread;
   }
@@ -213,7 +291,6 @@ export class VSCodeCommentController {
     thread: vscode.CommentThread,
     isRoot: boolean,
   ): vscode.Comment {
-    // Build tag badges in Markdown format
     let bodyContent = "";
     if (c.tags && c.tags.length > 0) {
       const tagBadges = c.tags.map((tag) => `\`🏷️${tag}\``).join(" ");
@@ -230,7 +307,6 @@ export class VSCodeCommentController {
       author: { name: c.author },
       contextValue: isRoot ? "rootComment" : "comment",
     };
-    // Store IDs for deletion or editing
     (comment as any).domainCommentId = c.id;
     (comment as any).thread = thread;
     return comment;
@@ -248,7 +324,6 @@ export class VSCodeCommentController {
             thread = reply.thread;
             content = reply.text;
           } else {
-            // Ctrl+Enter 経由で引数がない場合、エラーメッセージを表示
             vscode.window.showInformationMessage(
               "Click `Add Comment` Button to Save",
             );
@@ -261,7 +336,6 @@ export class VSCodeCommentController {
             config.get<string>("defaultAuthor") || vscode.env.machineId;
 
           if ((thread as any).domainThreadId) {
-            // It's a reply to an existing thread
             await this.commentService.addReply(
               filePath,
               (thread as any).domainThreadId,
@@ -269,11 +343,12 @@ export class VSCodeCommentController {
               author,
             );
           } else {
-            // It's a new thread
             const doc = await vscode.workspace.openTextDocument(thread.uri);
             const docContent = doc.getText();
 
-            if (!thread.range) return;
+            if (!thread.range) {
+              return;
+            }
             const offset = doc.offsetAt(thread.range.start);
             const length = doc.offsetAt(thread.range.end) - offset;
 
@@ -288,24 +363,10 @@ export class VSCodeCommentController {
             (thread as any).domainThreadId = newThread.id;
           }
 
-          // Refresh the thread UI
-          const updatedThreads = await this.commentService.getThreadsForFile(
-            filePath,
-            (await vscode.workspace.openTextDocument(thread.uri)).getText(),
-          );
-          const updatedDomainThread = updatedThreads.find(
-            (t) => t.id === (thread as any).domainThreadId,
-          );
-          if (updatedDomainThread) {
-            this.updateVSCodeThread(
-              await vscode.workspace.openTextDocument(thread.uri),
-              thread,
-              updatedDomainThread,
-            );
+          if (this.onDidUpdate) {
+            this.onDidUpdate();
           }
-          if (this.onDidUpdate) this.onDidUpdate();
 
-          // 強制的にエディタ表示を最新化し、プレビューも更新する
           const editor = vscode.window.visibleTextEditors.find(
             (e) => e.document.uri.toString() === thread.uri.toString(),
           );
@@ -322,7 +383,6 @@ export class VSCodeCommentController {
         async (comment: vscode.Comment, threadArg?: vscode.CommentThread) => {
           const thread = threadArg || (comment as any).thread;
           if (!thread) {
-            vscode.window.showErrorMessage("Comment thread context lost.");
             return;
           }
 
@@ -336,22 +396,16 @@ export class VSCodeCommentController {
             domainCommentId,
           );
 
-          // Refresh UI
-          const updatedThreads = await this.commentService.getThreadsForFile(
-            filePath,
-            (await vscode.workspace.openTextDocument(thread.uri)).getText(),
-          );
-          const updatedDomainThread = updatedThreads.find(
-            (t) => t.id === domainThreadId,
-          );
-          if (updatedDomainThread) {
-            thread.comments = updatedDomainThread.comments.map((c, index) =>
-              this.toVSCodeComment(c, thread, index === 0),
-            );
-          } else {
-            thread.dispose();
+          if (this.onDidUpdate) {
+            this.onDidUpdate();
           }
-          if (this.onDidUpdate) this.onDidUpdate();
+
+          const editor = vscode.window.visibleTextEditors.find(
+            (e) => e.document.uri.toString() === thread.uri.toString(),
+          );
+          if (editor) {
+            await this.refreshForEditor(editor, true);
+          }
         },
       ),
     );
@@ -362,7 +416,6 @@ export class VSCodeCommentController {
         async (comment: vscode.Comment, threadArg?: vscode.CommentThread) => {
           const thread = threadArg || (comment as any).thread;
           if (!thread) {
-            vscode.window.showErrorMessage("Comment thread context lost.");
             return;
           }
 
@@ -370,7 +423,6 @@ export class VSCodeCommentController {
           const domainCommentId = (comment as any).domainCommentId;
           const filePath = thread.uri.fsPath;
 
-          // Only root comments should have status changed (though UI should hide action for replies)
           const status = await vscode.window.showQuickPick(
             ["open", "resolved", "closed"],
             { placeHolder: "Select new status" },
@@ -383,15 +435,15 @@ export class VSCodeCommentController {
               domainCommentId,
               status as any,
             );
-            // Refresh
-            const doc = await vscode.workspace.openTextDocument(thread.uri);
-            await this.refreshForEditor(
-              vscode.window.visibleTextEditors.find(
-                (e) => e.document.uri.toString() === doc.uri.toString(),
-              )!,
-              true,
+            if (this.onDidUpdate) {
+              this.onDidUpdate();
+            }
+            const editor = vscode.window.visibleTextEditors.find(
+              (e) => e.document.uri.toString() === thread.uri.toString(),
             );
-            if (this.onDidUpdate) this.onDidUpdate();
+            if (editor) {
+              await this.refreshForEditor(editor, true);
+            }
           }
         },
       ),
@@ -403,7 +455,6 @@ export class VSCodeCommentController {
         async (comment: vscode.Comment, threadArg?: vscode.CommentThread) => {
           const thread = threadArg || (comment as any).thread;
           if (!thread) {
-            vscode.window.showErrorMessage("Comment thread context lost.");
             return;
           }
 
@@ -411,14 +462,6 @@ export class VSCodeCommentController {
           const domainCommentId = (comment as any).domainCommentId;
           const filePath = thread.uri.fsPath;
 
-          // Standard comment edit mode is complex to setup with current architecture
-          // Using InputBox as a robust alternative
-          const currentBody =
-            comment.body instanceof vscode.MarkdownString
-              ? comment.body.value
-              : (comment.body as string);
-
-          // Re-fetch clean content from repository to avoid editing generated markdown
           const threads = await this.commentService.getThreadsForFile(
             filePath,
             "",
@@ -430,7 +473,7 @@ export class VSCodeCommentController {
 
           const newContent = await vscode.window.showInputBox({
             prompt: "Edit Comment",
-            value: targetComment ? targetComment.content : currentBody,
+            value: targetComment ? targetComment.content : "",
           });
 
           if (newContent !== undefined) {
@@ -440,15 +483,15 @@ export class VSCodeCommentController {
               domainCommentId,
               newContent,
             );
-            // Refresh
-            const doc = await vscode.workspace.openTextDocument(thread.uri);
-            await this.refreshForEditor(
-              vscode.window.visibleTextEditors.find(
-                (e) => e.document.uri.toString() === doc.uri.toString(),
-              )!,
-              true,
+            if (this.onDidUpdate) {
+              this.onDidUpdate();
+            }
+            const editor = vscode.window.visibleTextEditors.find(
+              (e) => e.document.uri.toString() === thread.uri.toString(),
             );
-            if (this.onDidUpdate) this.onDidUpdate();
+            if (editor) {
+              await this.refreshForEditor(editor, true);
+            }
           }
         },
       ),

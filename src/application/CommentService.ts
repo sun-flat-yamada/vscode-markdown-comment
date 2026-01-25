@@ -48,7 +48,9 @@ export class CommentService {
     commentId: string,
   ): Promise<void> {
     const thread = await this.repository.findById(filePath, threadId);
-    if (!thread) return;
+    if (!thread) {
+      return;
+    }
 
     thread.deleteComment(commentId);
     if (thread.comments.length === 0) {
@@ -65,7 +67,9 @@ export class CommentService {
     status: CommentStatus,
   ): Promise<void> {
     const thread = await this.repository.findById(filePath, threadId);
-    if (!thread) return;
+    if (!thread) {
+      return;
+    }
     const comment = thread.comments.find((c) => c.id === commentId);
     if (comment) {
       comment.status = status;
@@ -81,12 +85,43 @@ export class CommentService {
     content: string,
   ): Promise<void> {
     const thread = await this.repository.findById(filePath, threadId);
-    if (!thread) return;
+    if (!thread) {
+      return;
+    }
     const comment = thread.comments.find((c) => c.id === commentId);
     if (comment) {
       comment.update(content);
       await this.repository.save(thread);
     }
+  }
+
+  public async updateTags(
+    filePath: string,
+    threadId: string,
+    commentId: string,
+    tags: string[],
+  ): Promise<void> {
+    const thread = await this.repository.findById(filePath, threadId);
+    if (!thread) {
+      return;
+    }
+    const comment = thread.comments.find((c) => c.id === commentId);
+    if (comment) {
+      comment.tags = tags;
+      comment.updatedAt = new Date();
+      await this.repository.save(thread);
+
+      // Sync with Tag Dictionary
+      const existingTags = await this.repository.getTags(filePath);
+      const newTags = tags.filter((t) => !existingTags.includes(t));
+      if (newTags.length > 0) {
+        await this.repository.saveTags(filePath, [...existingTags, ...newTags]);
+      }
+    }
+  }
+
+  public async getAvailableTags(filePath: string): Promise<string[]> {
+    return this.repository.getTags(filePath);
   }
 
   public async getThreadsForFile(
@@ -105,6 +140,23 @@ export class CommentService {
         thread.anchor = { ...thread.anchor, offset: newOffset };
       }
       // If newOffset is null, it's 'orphaned' - handled by controller UI
+    }
+
+    // Sync metadata: ensure all tags in comments exist in dictionary
+    const existingTags = await this.repository.getTags(filePath);
+    const usedTags = new Set<string>();
+    threads.forEach((t) =>
+      t.comments.forEach((c) => c.tags.forEach((tag) => usedTags.add(tag))),
+    );
+    const missingTags = Array.from(usedTags).filter(
+      (t) => !existingTags.includes(t),
+    );
+
+    if (missingTags.length > 0) {
+      await this.repository.saveTags(filePath, [
+        ...existingTags,
+        ...missingTags,
+      ]);
     }
 
     return threads;

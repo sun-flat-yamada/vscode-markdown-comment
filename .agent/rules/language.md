@@ -6,8 +6,8 @@ trigger: always_on
 
 ## Communication Language
 
-- **全てのプロンプト応答、説明、およびコミュニケーションは日本語で行ってください。**
-- (All AI responses, explanations, and communication must be in Japanese.)
+- **全てのプロンプト応答、説明、コミュニケーション、および生成物（アーティファクト、計画書、タスクリスト等）は日本語で行ってください。**
+- (All AI responses, explanations, communication, and artifacts including plans and task lists must be in Japanese.)
 
 ## Documentation Policy
 
@@ -24,4 +24,4 @@ trigger: always_on
 
 - **Documentation Updates**:
   - コードに変更を加えた場合、関連する全てのドキュメント（README.md, GEMINI.md, または機能固有のドキュメント）を最新の状態に更新してください。
-  - 英語版のマスターデータを更新した場合、日本語版を再生成してください。
+  - 英語版のマスターデータを更新した場合、**日本語版は差分更新ではなく、英語版を元に「再生成（完全翻訳）」してください。** (Japanese docs must be regenerated/re-translated from the English master, not incrementally updated.)
