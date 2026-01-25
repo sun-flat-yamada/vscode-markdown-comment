@@ -478,8 +478,8 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
     <style>
         body { font-family: var(--vscode-font-family); color: var(--vscode-foreground); padding: 0; margin: 0; overflow-x: auto; position: relative; min-height: 100vh; }
         table { width: max-content; min-width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { text-align: left; position: sticky; top: 0; background: var(--vscode-panel-background); z-index: 10; border-bottom: 1px solid var(--vscode-divider); padding: 8px 4px; font-size: 0.8em; text-transform: uppercase; position: relative; cursor: grab; }
-        td { padding: 4px; border-bottom: 1px solid var(--vscode-divider); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9em; vertical-align: middle; }
+        th { text-align: left; position: sticky; top: 0; background: var(--vscode-panel-background); z-index: 10; border-bottom: 1px solid var(--vscode-divider); padding: 4px 4px; font-size: 0.8em; text-transform: uppercase; position: relative; cursor: grab; }
+        td { padding: 2px 4px; border-bottom: 1px solid var(--vscode-divider); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9em; vertical-align: middle; }
         tr.root-row { border-top: 1px solid var(--vscode-divider); }
         tr.root-row:first-child { border-top: none; }
         tr.root-row td { font-weight: 500; }
@@ -531,7 +531,7 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* Row Spacing */
-        tr.root-row td { padding-top: 12px; }
+        tr.root-row td { padding-top: 4px; }
         tr:not(.root-row) td { padding-top: 2px; }
 
         /* Status Colors */
@@ -750,9 +750,9 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
       case "content":
         const indent =
           row.depth > 0
-            ? `<span style="opacity:0.6; margin-right:4px;">↳</span>`
+            ? `<span style="opacity:0.6; margin-right:2px;">↳</span>`
             : "";
-        const style = row.depth > 0 ? `style="padding-left: 20px;"` : "";
+        const style = row.depth > 0 ? `style="padding-left: 4px;"` : "";
         return `<div ${style}>${indent}${c.content.replace(/[\r\n]+/g, " ")}</div>`;
       case "status":
         if (c.status) {
