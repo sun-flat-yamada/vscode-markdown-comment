@@ -106,3 +106,16 @@ git push origin v0.0.2
 ```
 
 GitHub Actions が起動し、`VSCE_PAT` を使用して Marketplace への公開処理が実行されます。
+
+### 誤ったタグを削除する場合
+
+もし誤ったタグを push してしまった場合や、リトライが必要な場合は以下のコマンドでタグを削除できます。
+
+1. ローカルタグの削除:
+   ```bash
+   git tag -d v0.0.x
+   ```
+2. リモートタグの削除:
+   ```bash
+   git push origin --delete v0.0.x
+   ```
