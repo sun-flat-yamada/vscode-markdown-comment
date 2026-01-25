@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="./README.md">English</a> | <a href="./README.ja.md">日本語</a>
+  <a href="https://github.com/sun-flat-yamada/vscode-markdown-comment/blob/main/README.md">English</a> | <a href="https://github.com/sun-flat-yamada/vscode-markdown-comment/blob/main/README.ja.md">日本語</a>
 </p>
 
 <p align="center">
@@ -112,6 +112,12 @@ Contributions are welcome! If you find this extension useful, please consider su
 
 ## 📝 Release Notes
 
+### 0.0.4
+- Fix command error by bundling node_modules
+### 0.0.3
+- Add marketplace icon
+### 0.0.2
+- Fix deploy script and settings
 ### 0.0.1
 - Initial Release
 

@@ -1,9 +1,13 @@
 !package.json
 !README.md
+!README.ja.md
 !LICENSE
 
-!out/**
-out/test/**
+!dist/**
+
+_*
+logs/**
+out/**
 
 !images/icons/**
 !images/vscode-mdc-icon.png
@@ -33,6 +37,5 @@ package-lock.json
 
 GEMINI.md
 GEMINI.ja.md
-README.ja.md
 
 vsls.json
