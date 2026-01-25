@@ -116,6 +116,7 @@ Contributions are welcome! If you find this extension useful, please consider su
 - Initial Release
 
 ### Dev Setup
+- Node.js 20 or higher is required.
 1. `npm install`
 2. `npm run compile`
 3. `F5` to debug
