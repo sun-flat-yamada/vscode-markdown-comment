@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import * as path from "path";
 import { CommentService } from "../application/CommentService";
 import {
   CommentThread as DomainThread,
@@ -12,6 +13,11 @@ export class VSCodeCommentController {
   private threads: Map<string, vscode.CommentThread> = new Map();
   private lastRefreshedUri: string | undefined;
   private onDidUpdate?: () => void;
+
+  /**
+   * For focus management and direct interaction tracking.
+   */
+  private lastFocusedThreadId?: string;
 
   constructor(
     private readonly context: vscode.ExtensionContext,
@@ -33,6 +39,28 @@ export class VSCodeCommentController {
     };
 
     this.registerCommands();
+  }
+
+  /**
+   * Refreshes all visible editors that match the given URI.
+   */
+  private async refreshVisibleEditors(uri: vscode.Uri): Promise<void> {
+    const editors = vscode.window.visibleTextEditors.filter(
+      (e) => e.document.uri.toString() === uri.toString(),
+    );
+    for (const editor of editors) {
+      await this.refreshForEditor(editor, true);
+    }
+  }
+
+  /**
+   * Common update trigger after data modification.
+   */
+  private async notifyAndRefresh(uri: vscode.Uri): Promise<void> {
+    if (this.onDidUpdate) {
+      this.onDidUpdate();
+    }
+    await this.refreshVisibleEditors(uri);
   }
 
   public async refreshForEditor(
@@ -109,6 +137,12 @@ export class VSCodeCommentController {
       this.toVSCodeComment(c, vscodeThread, index === 0),
     );
 
+    vscodeThread.comments = domainThread.comments.map((c, index) =>
+      this.toVSCodeComment(c, vscodeThread, index === 0),
+    );
+
+    // Standard VSCode Comment API command for the thread
+    // Note: cast to any or a more inclusive type if the local version of @types/vscode is older
     (vscodeThread as any).command = {
       title: "Reveal Comment",
       command: "markdown-comment.revealCommentFromTable",
@@ -155,94 +189,45 @@ export class VSCodeCommentController {
           vscodeThread.range,
           vscode.TextEditorRevealType.InCenter,
         );
+        // Force focus to the editor
+        await vscode.window.showTextDocument(editor.document, {
+          viewColumn: editor.viewColumn,
+          preserveFocus: false, // Ensure focus moves to editor
+          selection: vscodeThread.range,
+        });
       }
     }
   }
 
   /**
-   * Helper to show a document while reusing existing tabs.
-   * If VSCode opens a new preview tab in an unwanted column (like Beside), we close it.
+   * [TEMPORARY WORKAROUND]
+   * Helper to show a document.
+   *
+   * PROBLEM: When selecting a thread from the VSCode standard "Comments" panel, VSCode's internal
+   * "Reveal" logic often preemptively opens the document in the currently active group (e.g., Preview area).
+   * Since there is no API to prevent this standard behavior (unlike TreeView), it is extremely
+   * difficult to prevent duplicate tabs from appearing in certain split-pane configurations.
+   *
+   * NOTE: This is a provisional measure. For a fundamental solution, the Comments pane itself
+   * should be re-implemented as a custom Webview (matching the Sidebar's Comment Table)
+   * to bypass VSCode's uncontrollable standard reveal behavior.
    */
   private async showDocumentSafely(
     uri: vscode.Uri,
     selection?: vscode.Range,
   ): Promise<vscode.TextEditor | undefined> {
-    const targetFsPath = uri.fsPath.toLowerCase();
-
-    // 1. Find ALL tabs that match this document across all groups
-    const allTabs: { tab: vscode.Tab; group: vscode.TabGroup }[] = [];
-    for (const group of vscode.window.tabGroups.all) {
-      for (const tab of group.tabs) {
-        if (
-          tab.input instanceof vscode.TabInputText &&
-          tab.input.uri.fsPath.toLowerCase() === targetFsPath
-        ) {
-          allTabs.push({ tab, group });
-        }
-      }
-    }
-
-    // 2. Identify the "best" tab (prefer non-preview or already active)
-    // If we have a tab that is NOT a preview, it's our best choice.
-    let bestTab =
-      allTabs.find((t) => !t.tab.isPreview) ||
-      allTabs.find((t) => t.tab.isActive) ||
-      allTabs[0];
-
-    // 3. If VSCode just opened a new preview tab in the WRONG group (e.g. where Preview is),
-    // we should prioritize the OTHER group where a tab might already exist.
-    if (allTabs.length > 1) {
-      const nonPreviewTabs = allTabs.filter((t) => !t.tab.isPreview);
-      if (nonPreviewTabs.length > 0) {
-        bestTab = nonPreviewTabs[0];
-      }
-    }
-
-    // 4. Close "trash" tabs (preview tabs that are not the best tab)
-    // This happens when VSCode's default behavior opens a new tab in the active (Beside) group.
-    for (const { tab } of allTabs) {
-      if (tab !== bestTab?.tab && tab.isPreview) {
-        try {
-          await vscode.window.tabGroups.close(tab);
-        } catch (e) {
-          // Ignore if already closed
-        }
-      }
-    }
-
-    if (bestTab && bestTab.tab.input instanceof vscode.TabInputText) {
-      // Use the specific column of the best tab to avoid opening in Beside
-      return await vscode.window.showTextDocument(bestTab.tab.input.uri, {
-        viewColumn: bestTab.group.viewColumn,
-        preserveFocus: false,
-        preview: false,
-        selection: selection,
-      });
-    }
-
-    // 5. Search in visible editors as fallback
-    const visibleEditor = vscode.window.visibleTextEditors.find(
-      (e) => e.document.uri.fsPath.toLowerCase() === targetFsPath,
-    );
-    if (visibleEditor) {
-      return await vscode.window.showTextDocument(visibleEditor.document, {
-        viewColumn: visibleEditor.viewColumn,
-        preserveFocus: false,
-        preview: false,
-        selection: selection,
-      });
-    }
-
-    // 6. Fallback: Open in ViewColumn.One (usually the left side) if beside is active
-    let targetColumn = vscode.ViewColumn.Active;
-    if (
-      vscode.window.activeTextEditor?.viewColumn === vscode.ViewColumn.Beside
-    ) {
+    // Determine the target column. Defaulting to ViewColumn.Active or ViewColumn.One.
+    let targetColumn = vscode.window.activeTextEditor?.viewColumn;
+    if (targetColumn === vscode.ViewColumn.Beside || !targetColumn) {
       targetColumn = vscode.ViewColumn.One;
     }
 
+    // Attempt to reveal the document.
+    // Note: Due to VSCode standard reveal behavior, this may still result in duplicate tabs
+    // if the user's focus is in a preview/webview area.
     return await vscode.window.showTextDocument(uri, {
       viewColumn: targetColumn,
+      preserveFocus: false,
       preview: false,
       selection: selection,
     });
@@ -317,28 +302,25 @@ export class VSCodeCommentController {
       vscode.commands.registerCommand(
         "markdown-comment.addComment",
         async (reply: vscode.CommentReply) => {
-          let thread: vscode.CommentThread;
-          let content: string;
-
-          if (reply && reply.thread) {
-            thread = reply.thread;
-            content = reply.text;
-          } else {
+          if (!reply || !reply.thread) {
             vscode.window.showInformationMessage(
               "Click `Add Comment` Button to Save",
             );
             return;
           }
 
+          const thread = reply.thread;
+          const content = reply.text;
           const filePath = thread.uri.fsPath;
           const config = vscode.workspace.getConfiguration("markdownComment");
-          let author =
+          const author =
             config.get<string>("defaultAuthor") || vscode.env.machineId;
 
-          if ((thread as any).domainThreadId) {
+          const domainThreadId = (thread as any).domainThreadId;
+          if (domainThreadId) {
             await this.commentService.addReply(
               filePath,
-              (thread as any).domainThreadId,
+              domainThreadId,
               content,
               author,
             );
@@ -363,16 +345,7 @@ export class VSCodeCommentController {
             (thread as any).domainThreadId = newThread.id;
           }
 
-          if (this.onDidUpdate) {
-            this.onDidUpdate();
-          }
-
-          const editor = vscode.window.visibleTextEditors.find(
-            (e) => e.document.uri.toString() === thread.uri.toString(),
-          );
-          if (editor) {
-            await this.refreshForEditor(editor, true);
-          }
+          await this.notifyAndRefresh(thread.uri);
         },
       ),
     );
@@ -396,16 +369,7 @@ export class VSCodeCommentController {
             domainCommentId,
           );
 
-          if (this.onDidUpdate) {
-            this.onDidUpdate();
-          }
-
-          const editor = vscode.window.visibleTextEditors.find(
-            (e) => e.document.uri.toString() === thread.uri.toString(),
-          );
-          if (editor) {
-            await this.refreshForEditor(editor, true);
-          }
+          await this.notifyAndRefresh(thread.uri);
         },
       ),
     );
@@ -435,15 +399,7 @@ export class VSCodeCommentController {
               domainCommentId,
               status as any,
             );
-            if (this.onDidUpdate) {
-              this.onDidUpdate();
-            }
-            const editor = vscode.window.visibleTextEditors.find(
-              (e) => e.document.uri.toString() === thread.uri.toString(),
-            );
-            if (editor) {
-              await this.refreshForEditor(editor, true);
-            }
+            await this.notifyAndRefresh(thread.uri);
           }
         },
       ),
@@ -483,15 +439,7 @@ export class VSCodeCommentController {
               domainCommentId,
               newContent,
             );
-            if (this.onDidUpdate) {
-              this.onDidUpdate();
-            }
-            const editor = vscode.window.visibleTextEditors.find(
-              (e) => e.document.uri.toString() === thread.uri.toString(),
-            );
-            if (editor) {
-              await this.refreshForEditor(editor, true);
-            }
+            await this.notifyAndRefresh(thread.uri);
           }
         },
       ),
