@@ -48,6 +48,7 @@ graph TD
 | Integration Tests | `npm run test:integration` |
 | All Tests | `npm test` |
 | Package Extension | `npm run package` (VSCE) |
+| Prepare Release | `npm run release:prepare` (or `scripts/prepare_release.sh`) |
 
 ## Key Directories
 
