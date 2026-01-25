@@ -17,7 +17,7 @@
       "name": "post-doc-edit-sync",
       "description": "Synchronize Japanese reference docs when English docs change",
       "trigger": "PostEdit",
-      "matcher": "file_path matches '\\.agent/(requirements|tech)/.*\\.md$' && !file_path matches '\\.ja\\.md$'",
+      "matcher": "file_path matches '(README\\.md|docs/.*\\.md|\\.agent/(requirements|tech)/.*\\.md)$' && !file_path matches '\\.ja\\.md$'",
       "action": {
         "type": "command",
         "command": "node .agent/scripts/sync-docs.js"

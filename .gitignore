@@ -1,13 +1,25 @@
-out
+# Backups
+_*
+
+# Cache files
+.DS_Store
+Thumbs.db
+
+# Node.js
 node_modules
 
-.vscode-test
+# Output
+out
+
+# VSIX
 *.vsix
 
+# Logs
 logs/
 *.log
 
-build_errors.txt
+# VSCode Test
+.vscode-test
 
-.DS_Store
-Thumbs.db
+# Build Errors
+build_errors.txt
