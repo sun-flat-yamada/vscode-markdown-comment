@@ -1,12 +1,12 @@
+!package.json
+!README.md
+!LICENSE
+
 !out/**
 out/test/**
 
 !images/icons/**
-
-!package.json
-
-!README.md
-!LICENSE
+!images/vscode-mdc-icon.png
 
 .vscode/**
 .github/**
