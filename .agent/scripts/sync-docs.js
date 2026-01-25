@@ -3,12 +3,32 @@ const path = require("path");
 
 const PAIRS = [
   {
+    en: path.join(__dirname, "../../README.md"),
+    ja: path.join(__dirname, "../../README.ja.md"),
+  },
+  {
+    en: path.join(__dirname, "../commands/plan.md"),
+    ja: path.join(__dirname, "../commands/plan.ja.md"),
+  },
+  {
+    en: path.join(__dirname, "../commands/code-review.md"),
+    ja: path.join(__dirname, "../commands/code-review.ja.md"),
+  },
+  {
+    en: path.join(__dirname, "../commands/doc-sync.md"),
+    ja: path.join(__dirname, "../commands/doc-sync.ja.md"),
+  },
+  {
     en: path.join(__dirname, "../requirements/requirements.md"),
     ja: path.join(__dirname, "../requirements/requirements.ja.md"),
   },
   {
     en: path.join(__dirname, "../tech/tech.md"),
     ja: path.join(__dirname, "../tech/tech.ja.md"),
+  },
+  {
+    en: path.join(__dirname, "../../docs/marketplace_publish.md"),
+    ja: path.join(__dirname, "../../docs/marketplace_publish.ja.md"),
   },
 ];
 
@@ -49,13 +69,19 @@ function syncDocs() {
 
     const newJaContent = HEADER_JA + enContent;
 
-    // Check if content implies it needs update (naive check)
-    if (jaContent !== newJaContent) {
+    // Check if content implies it needs update
+    // If JA file is missing, create it as a copy (placeholder)
+    if (!fs.existsSync(pair.ja)) {
+      const newJaContent = HEADER_JA + enContent;
       fs.writeFileSync(pair.ja, newJaContent, "utf8");
-      console.log(`[SyncDocs] Updated reference: ${path.basename(pair.ja)}`);
+      console.log(`[SyncDocs] Created placeholder: ${path.basename(pair.ja)}`);
       changed = true;
     } else {
-      console.log(`[SyncDocs] Up to date: ${path.basename(pair.ja)}`);
+      // If file exists, we assume the AI Agent is handling the translation.
+      // We do NOT overwrite it with English content.
+      console.log(
+        `[SyncDocs] Exists (Manual/Agent Managed): ${path.basename(pair.ja)}`,
+      );
     }
   }
 

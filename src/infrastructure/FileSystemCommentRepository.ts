@@ -2,13 +2,7 @@ import * as fs from "fs/promises";
 import * as path from "path";
 import { CommentThread, Comment, CommentStatus } from "../domain/Comment";
 import { ICommentRepository } from "../domain/ICommentRepository";
-import {
-  METADATA_EXTENSION,
-  LEGACY_JSONL_EXTENSION,
-  LEGACY_META_MD_EXTENSION,
-  LEGACY_MD_META_MD_EXTENSION,
-  MetadataRecordType,
-} from "../domain/Constants";
+import { METADATA_EXTENSION, MetadataRecordType } from "../domain/Constants";
 
 interface SerializedThread {
   type?: MetadataRecordType;
@@ -26,13 +20,21 @@ interface SerializedThread {
     author: string;
     createdAt: string;
     updatedAt: string;
-    status: string;
+    status?: string;
     tags: string[];
   }>;
 }
 
+interface TagDictRecord {
+  type: MetadataRecordType;
+  tags: string[];
+}
+
+type MetadataRecord = SerializedThread | TagDictRecord;
+
 export class FileSystemCommentRepository implements ICommentRepository {
   private cache: Map<string, CommentThread[]> = new Map();
+  private tagCache: Map<string, string[]> = new Map();
 
   private getPrimaryPath(filePath: string): string {
     // sample.md -> sample.meta.jsonl
@@ -40,23 +42,6 @@ export class FileSystemCommentRepository implements ICommentRepository {
     const ext = path.extname(filePath);
     const name = path.basename(filePath, ext);
     return path.join(dir, name + METADATA_EXTENSION);
-  }
-
-  private getLegacyPaths(filePath: string): string[] {
-    return [
-      `${filePath}${LEGACY_JSONL_EXTENSION}`, // sample.md.jsonl
-      `${filePath}${LEGACY_META_MD_EXTENSION}`, // sample.md.meta.md (really old) or someone renamed it manually
-      path.join(
-        path.dirname(filePath),
-        path.basename(filePath, path.extname(filePath)) +
-          LEGACY_META_MD_EXTENSION,
-      ), // sample.meta.md (from previous step)
-      path.join(
-        path.dirname(filePath),
-        path.basename(filePath, path.extname(filePath)) +
-          LEGACY_MD_META_MD_EXTENSION,
-      ), // sample.md.meta.md (shorthand variant)
-    ];
   }
 
   public async save(thread: CommentThread): Promise<void> {
@@ -86,7 +71,6 @@ export class FileSystemCommentRepository implements ICommentRepository {
     }
 
     const primaryPath = this.getPrimaryPath(filePath);
-    const legacyPaths = this.getLegacyPaths(filePath);
     let threads: CommentThread[] = [];
 
     // 1. Try reading primary path (expecting JSONL)
@@ -106,26 +90,7 @@ export class FileSystemCommentRepository implements ICommentRepository {
         threads = this.parseJsonl(content, filePath);
       }
     } catch (e) {
-      // Primary not found or error, try legacy
-      for (const legacyPath of legacyPaths) {
-        try {
-          const content = await fs.readFile(legacyPath, "utf-8");
-          if (legacyPath.endsWith(LEGACY_JSONL_EXTENSION)) {
-            threads = this.parseJsonl(content, filePath);
-          } else {
-            const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/);
-            if (jsonMatch) {
-              const data = JSON.parse(jsonMatch[1]) as {
-                threads: SerializedThread[];
-              };
-              threads = this.deserializeThreads(data.threads, filePath);
-            }
-          }
-          if (threads.length > 0) break;
-        } catch (e) {
-          // Continue to next legacy path
-        }
-      }
+      // Not found or error, return empty
     }
 
     this.cache.set(filePath, threads);
@@ -140,12 +105,33 @@ export class FileSystemCommentRepository implements ICommentRepository {
     return threads.find((t) => t.id === id) || null;
   }
 
+  public async getTags(filePath: string): Promise<string[]> {
+    if (this.tagCache.has(filePath)) {
+      return [...(this.tagCache.get(filePath) || [])];
+    }
+    // ensure loaded
+    await this.findByFilePath(filePath);
+    return [...(this.tagCache.get(filePath) || [])];
+  }
+
+  public async saveTags(filePath: string, tags: string[]): Promise<void> {
+    const existingTags = await this.getTags(filePath);
+    // explicit update
+    this.tagCache.set(filePath, tags);
+    // Write everything back (threads + tags)
+    const threads = await this.findByFilePath(filePath);
+    await this.writeThreads(filePath, threads, tags);
+  }
+
   private async writeThreads(
     filePath: string,
     threads: CommentThread[],
+    tags?: string[], // optional, if not provided use cache
   ): Promise<void> {
     const primaryPath = this.getPrimaryPath(filePath);
+    const existingTags = tags || (await this.getTags(filePath));
 
+    // Serialize threads
     const lines = threads.map((t) => {
       // Ensure 'type' is the FIRST key for future extensibility
       const serializedFn = {
@@ -165,6 +151,15 @@ export class FileSystemCommentRepository implements ICommentRepository {
       return JSON.stringify(serializedFn);
     });
 
+    // Serialize Tags
+    if (existingTags && existingTags.length > 0) {
+      const tagRecord: TagDictRecord = {
+        type: MetadataRecordType.CommentTagDict,
+        tags: existingTags,
+      };
+      lines.unshift(JSON.stringify(tagRecord));
+    }
+
     await fs.writeFile(primaryPath, lines.join("\n"), "utf-8");
   }
 
@@ -173,12 +168,18 @@ export class FileSystemCommentRepository implements ICommentRepository {
     const threads: SerializedThread[] = [];
 
     for (const line of lines) {
-      if (!line.trim()) continue;
+      if (!line.trim()) {
+        continue;
+      }
       try {
         const obj = JSON.parse(line);
         // Dispatch based on 'type' if present, otherwise default to CommentThread for compatibility
         if (!obj.type || obj.type === MetadataRecordType.CommentThread) {
           threads.push(obj as SerializedThread);
+        } else if (obj.type === MetadataRecordType.CommentTagDict) {
+          // Update tag cache directly
+          const tagRec = obj as TagDictRecord;
+          this.tagCache.set(filePath, tagRec.tags);
         }
       } catch (e) {
         // Skip malformed lines

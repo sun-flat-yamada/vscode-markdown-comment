@@ -41,6 +41,9 @@ export function activate(context: vscode.ExtensionContext) {
   const commentsWebviewProvider = new CommentsWebviewViewProvider(
     context,
     commentService,
+    async (filePath?: string) => {
+      await handleCommentChange(filePath);
+    },
   );
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
@@ -61,13 +64,28 @@ export function activate(context: vscode.ExtensionContext) {
   };
 
   // Shared refresh function
-  const handleCommentChange = async () => {
-    const currentPath = previewPresenter.getCurrentFilePath();
-    // Run preview refresh and tree view refresh in parallel for better responsiveness
-    await Promise.all([
-      previewController.handle("beside", currentPath),
-      refreshCommentsTreeView(),
-    ]);
+  const handleCommentChange = async (filePath?: string) => {
+    const currentPath = filePath || previewPresenter.getCurrentFilePath();
+
+    // Run preview refresh and tree view refresh
+    if (currentPath) {
+      await Promise.all([
+        previewController.handle("beside", currentPath),
+        refreshCommentsTreeView(),
+      ]);
+
+      // Also refresh visible editors to ensure gutter comments and decorations are up to date
+      const uri = vscode.Uri.file(currentPath);
+      const editors = vscode.window.visibleTextEditors.filter(
+        (e) => e.document.uri.toString() === uri.toString(),
+      );
+      for (const editor of editors) {
+        await commentController.refreshForEditor(editor, true);
+      }
+    } else {
+      // Fallback: refresh tree view at least
+      await refreshCommentsTreeView();
+    }
   };
 
   const commentController = new VSCodeCommentController(
@@ -106,9 +124,7 @@ export function activate(context: vscode.ExtensionContext) {
   let revealCommentFromTreeDisposable = vscode.commands.registerCommand(
     "markdown-comment.revealCommentFromTable",
     async (threadId: string, filePath: string) => {
-      const uri = vscode.Uri.file(filePath);
-      await vscode.window.showTextDocument(uri, { preview: false });
-      await commentController.revealThread(threadId);
+      await commentController.revealThread(threadId, filePath);
     },
   );
 
@@ -181,8 +197,6 @@ export function activate(context: vscode.ExtensionContext) {
           editor.document.uri.fsPath,
           editor.document.getText(),
         );
-      } else {
-        commentsWebviewProvider.clear();
       }
     },
   );

@@ -5,4 +5,6 @@ export interface ICommentRepository {
   delete(filePath: string, threadId: string): Promise<void>;
   findByFilePath(filePath: string): Promise<CommentThread[]>;
   findById(filePath: string, id: string): Promise<CommentThread | null>;
+  getTags(filePath: string): Promise<string[]>;
+  saveTags(filePath: string, tags: string[]): Promise<void>;
 }

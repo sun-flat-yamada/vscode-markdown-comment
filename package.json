@@ -17,6 +17,10 @@
     "name": "Youhei Yamada",
     "url": "https://github.com/sun-flat-yamada/"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sun-flat-yamada/vscode-markdown-comment.git"
+  },
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -78,6 +82,32 @@
       }
     ],
     "menus": {
+      "commandPalette": [
+        {
+          "command": "markdown-comment.analyze",
+          "when": "false"
+        },
+        {
+          "command": "markdown-comment.addComment",
+          "when": "false"
+        },
+        {
+          "command": "markdown-comment.deleteComment",
+          "when": "false"
+        },
+        {
+          "command": "markdown-comment.editComment",
+          "when": "false"
+        },
+        {
+          "command": "markdown-comment.addCommentFromPreview",
+          "when": "false"
+        },
+        {
+          "command": "markdown-comment.changeCommentStatus",
+          "when": "false"
+        }
+      ],
       "comments/commentThread/context": [
         {
           "command": "markdown-comment.addComment",
@@ -126,7 +156,7 @@
         {
           "id": "markdown-comment-container",
           "title": "Markdown Comment",
-          "icon": "$(comment-discussion)"
+          "icon": "./images/icons/vscode-mdc-icon-actbar.svg"
         }
       ]
     },
@@ -160,8 +190,8 @@
             "type": "string",
             "enum": [
               "lineNo",
-              "content",
               "status",
+              "content",
               "author",
               "tags",
               "createdAt",
@@ -173,14 +203,14 @@
         "markdownComment.commentsTable.columnWidths": {
           "type": "object",
           "default": {
-            "lineNo": 40,
+            "lineNo": 20,
+            "status": 40,
             "content": 300,
-            "status": 80,
-            "author": 80,
-            "tags": 100,
-            "createdAt": 100,
-            "updatedAt": 100,
-            "actions": 60
+            "author": 40,
+            "tags": 40,
+            "createdAt": 30,
+            "updatedAt": 30,
+            "actions": 40
           },
           "description": "Widths of the columns in the Comment Table in pixels."
         },
@@ -199,10 +229,10 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "mocha -r ts-node/register --ui tdd src/**/*.test.ts --exclude \"src/test/**\" > logs/unit_test.log 2>&1",
-    "test:integration": "npm run compile && node ./out/test/runTest.js > logs/integration_test.log 2>&1",
-    "package": "vsce package",
-    "deploy": "vsce publish"
+    "test:unit": "mocha -r ts-node/register --ui tdd src/**/*.test.ts --exclude \"src/test/**\"",
+    "test:integration": "npm run compile && node ./out/test/runTest.js",
+    "package": "npx vsce package",
+    "deploy": "npx vsce publish"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
@@ -213,6 +243,7 @@
     "@typescript-eslint/eslint-plugin": "^5.59.8",
     "@typescript-eslint/parser": "^5.59.8",
     "@vscode/test-electron": "^2.3.2",
+    "@vscode/vsce": "^3.7.1",
     "eslint": "^8.41.0",
     "glob": "^8.1.0",
     "mocha": "^10.2.0",

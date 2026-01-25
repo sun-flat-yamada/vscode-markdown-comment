@@ -70,7 +70,7 @@ export class CommentThread {
 
   public deleteComment(commentId: string): void {
     const index = this.comments.findIndex((c) => c.id === commentId);
-    if (index === -1) return;
+    if (index === -1) {return;}
 
     // Note: For synthesized IDs like 1.1, 1.2, deleting middle nodes
     // might require re-connecting logic depending on how UI displays it.
