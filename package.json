@@ -2,7 +2,7 @@
   "name": "markdown-comment",
   "displayName": "Markdown Comment",
   "description": "Comment extension for Markdown.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "icon": "./images/vscode-mdc-icon.png",
   "engines": {
     "vscode": "^1.80.0"
@@ -22,7 +22,7 @@
     "type": "git",
     "url": "https://github.com/sun-flat-yamada/vscode-markdown-comment.git"
   },
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
@@ -225,14 +225,16 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "compile": "webpack --mode production",
+    "compile-dev": "webpack --mode development",
+    "watch": "webpack --mode development --watch",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "mocha -r ts-node/register --ui tdd src/**/*.test.ts --exclude \"src/test/**\"",
-    "test:integration": "npm run compile && node ./out/test/runTest.js",
-    "package": "npx vsce package",
+    "test-compile": "tsc -p ./",
+    "test:unit": "npm run test-compile && mocha -r ts-node/register --ui tdd src/**/*.test.ts --exclude \"src/test/**\"",
+    "test:integration": "npm run test-compile && npm run compile && node ./out/test/runTest.js",
+    "package": "vsce package",
     "deploy": "npx vsce publish"
   },
   "devDependencies": {
@@ -248,8 +250,11 @@
     "eslint": "^8.57.1",
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
+    "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
-    "typescript": "~5.3.0"
+    "typescript": "~5.3.0",
+    "webpack": "^5.104.1",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "markdown-it": "^14.1.0"
