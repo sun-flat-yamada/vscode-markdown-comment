@@ -8,8 +8,18 @@ export interface IPreviewPresenter {
     html: string,
     title: string,
     filePath: string,
-    column?: "active" | "beside",
+    column: "active" | "beside" | undefined,
   ): Promise<void>;
+
+  /**
+   * ローカルのファイルパスを Webview で利用可能な URI 形式に変換します。
+   */
+  asWebviewUri(localPath: string): string;
+
+  /**
+   * Webview の CSP ソースを取得します。
+   */
+  getCspSource(): string;
 
   /**
    * プレビュー画面で現在選択されているテキストを取得します。

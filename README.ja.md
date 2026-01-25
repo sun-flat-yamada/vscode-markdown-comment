@@ -2,121 +2,124 @@
 > このファイルは人間専用のリファレンスです。AIはこのファイルを読み込まず、必ず英語版マスターを参照してください。
 > (This file is for human reference only. AI must not read this file and must refer to the English master.)
 
-# Markdown Comment - VSCode内でのMarkdownワークフローを強力にサポート
+<p align="center">
+  <img src="images/vscode-mdc-icon.png" alt="Markdown Comment Logo" width="128" />
+</p>
 
-[English](./README.md) | [日本語](./README.ja.md)
+# Markdown Comment
 
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/sun.flat.yamada)
+<p align="center">
+  <b>VS Code 内の Markdown ワークフローを強力にサポート</b>
+</p>
 
-Markdownに対してPDFのようなコメントや返信機能を提供します。最も重要なのは、Markdownファイル自体には一切の変更を加えないという点です。
+<p align="center">
+  <a href="./README.md">English</a> | <a href="./README.ja.md">日本語</a>
+</p>
 
-MarkdownファイルがAIと共に利用される機会が増える中、本拡張機能はITエンジニア以外の方とのレビューやコメント管理もスマートに解決します。
+<p align="center">
+  <!-- Version -->
+  <img src="https://img.shields.io/visual-studio-marketplace/v/sun-flat-yamada.markdown-comment?style=flat-square&color=007ACC" alt="Version" />
+  <!-- Installs -->
+  <img src="https://img.shields.io/visual-studio-marketplace/i/sun-flat-yamada.markdown-comment?style=flat-square&color=success" alt="Installs" />
+  <!-- Rating -->
+  <img src="https://img.shields.io/visual-studio-marketplace/r/sun-flat-yamada.markdown-comment?style=flat-square" alt="Rating" />
+  <!-- Build Status -->
+  <img src="https://github.com/sun-flat-yamada/vscode-markdown-comment/actions/workflows/ci.yml/badge.svg" alt="Build Status" />
+</p>
 
-将来的にはViewerやEditor用のブラウザ拡張機能も計画されています。
+<p align="center">
+  <a href="https://buymeacoffee.com/sun.flat.yamada">
+    <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
+  </a>
+</p>
 
-## 主な機能
+---
 
-- Markdownプレビューウィンドウ - コメント表示機能付き
-- Markdownエディタウィンドウ - コメント表示・編集機能付き
-- Markdownコメントのツリー表示
-- Markdownコメントのテーブル表示
+**Markdown Comment** は、Markdown ファイルに対して PDF のようなコメントや返信機能を提供します。最大の特徴は、**Markdown ファイル自体には一切変更を加えない**点であり、コンテンツの純粋さを保ったまま管理できます。
 
-## コメント機能のハイライト
+Markdown ファイルがドキュメント作成や AI とのやり取りに広く使われるようになる中、この拡張機能はレビューやコメントをスマートに管理し、開発者と非技術的なステークホルダーの間の架け橋となります。
 
-- コメントに任意のタグを追加可能
-- 親コメントに対して任意の回数、繰り返し返信可能
-- 親コメントには「ステータス」を設定し、処理状況を可視化可能
+> [!NOTE]
+> コメントデータは別のメタデータファイル（your-md-file.meta.jsonl）に保存されます。
+> 詳細なファイル仕様については、以下を参照してください：
+> [File Specification](./docs/meta-schema/README.md)
 
-## 使い方
+> [!NOTE]
+> 将来的には、アクセシビリティをさらに拡大するため、ビューアーやエディター用のブラウザ拡張機能も計画しています。
 
-1. VS CodeでMarkdownファイル（`.md`）を開きます。
-2. コマンドパレットを開きます（`Ctrl+Shift+P` または `Cmd+Shift+P`）。
-3. `Markdown Comment: Open preview to the Side` を選択して `Enter` を押します（入力中に候補が表示されるので選択しやすくなっています）。
-4. Markdownプレビューウィンドウが表示されます。
-5. プレビューウィンドウでコメントしたい箇所を選択し、右クリックして [Add Comment] を選択します。
-6. コメント入力フィールドが表示されます。コメントを入力して `Enter` を押すと登録されます。
-7. プレビューウィンドウ内にコメントが視覚的に表示され、どこに紐付いているかがわかります。
-8. プレビューウィンドウ右上の「💬 Comments」ボタンをクリックすると、コメントのサイドバーが表示されます。
-9. Markdownファイルを開いている編集画面にもコメントが表示されます。ここでも返信、編集、削除が可能です。
+## ✨ 主な機能
 
-## 技術情報
+- **Markdown プレビュー統合**: ネイティブのプレビュー内でリッチなハイライト表示と共にコメントを確認できます。
+- **改善されたハイライト**: ネストされたコメント範囲に対応し、ホバー時にコメント内容を表示します。
+- **サイドバー同期**: プレビューのハイライトとコメントサイドバーの間をシームレスに移動できます。
+- **堅牢なレンダリング**: コメントのハイライトが画像タグやその他の複雑な Markdown 構造を壊すことはありません。
+- **専用エディター**: オーバーレイコメント付きで Markdown を編集できます。
+- **効率的な管理**: ツリー表示やテーブル表示により、コメントを効率的に管理できます。
 
-- コメント情報はサイドカーファイル（例：`yourfile.md.jsonl`）に保存されます。
-- この方式を採用することで、メインのMarkdownファイルに対して完全に非侵襲であり、内容を一切変更しません。
-
-## 詳細
-
-### 提供コマンド一覧
-
-| コマンド | タイトル |
+| 機能 | スクリーンショット |
 | :--- | :--- |
-| `markdown-comment.openPreview` | プレビューを開く |
-| `markdown-comment.openPreviewToSide` | 横にプレビューを開く |
-| `markdown-comment.showCommentTable` | コメントテーブルを表示 |
-| `markdown-comment.analyze` | Markdownドキュメントを解析 |
-| `markdown-comment.addComment` | コメントを追加 |
-| `markdown-comment.editComment` | コメントを編集 |
-| `markdown-comment.deleteComment` | コメントを削除 |
-| `markdown-comment.changeCommentStatus` | ステータスを変更 |
+| コメント追加 | ![AddComment](images/docs/docs-md-preview-add-comment.png) |
+| プレビュー | ![Preview](images/docs/docs-md-preview-comments-view.png) |
+| インラインエディター | ![Editor](images/docs/docs-md-editor-inline-comment-view.png) |
+| ツリー表示 | ![Tree](images/docs/docs-md-comments-pane.png) |
+| テーブル表示 | ![Table](images/docs/docs-md-comment-table-pane.png) |
+| タグ編集 | ![EditTags](images/docs/docs-md-comment-table-pane-edit-tags.png) |
 
-### 設定項目一覧
+## 🚀 使い方
 
-本拡張機能は以下の設定を提供します：
+1. VS Code で Markdown ファイル (`.md`) を**開き**ます。
+2. コマンドパレット (`Ctrl+Shift+P` / `Cmd+Shift+P`) を**起動**します。
+3. `Markdown Comment: Open preview to the Side` を**選択**します。
+4. **コメント**: プレビュー内でテキストを選択し、右クリックして `[Add Comment]` を選択します。
+5. **管理**: プレビュー内の "💬 Comments" ボタンをクリックしてサイドバーを開きます。サイドバーのコメントをクリックすると該当箇所へスクロールし、ハイライトをクリックするとサイドバーの項目が強調されます。
 
-| 設定名 | 型 | デフォルト値 | 説明 |
+## 💡 コメント機能のハイライト
+
+- **タグ付け**: カスタムタグでコメントを分類できます (QuickPick で管理)。
+- **列の並べ替え**: テーブルヘッダーをドラッグ＆ドロップして表示項目を整理できます。
+- **スレッド化**: 制限なく返信を投稿し、フォーカスされた討論スレッドを作成できます。
+- **ステータス追跡**: コメントに Open, Resolved などのマークを付け、進捗を追跡できます。
+- **リッチなツールチップ**: プレビュー内のハイライトされたテキストにホバーすると、元のコメントと投稿者が即座に表示されます。
+- **同期されたビュー**: プレビューのハイライトとサイドバーが完全に同期されており、長いドキュメントでも会話を追いやすくなっています。
+
+
+## ⌨️ コマンド
+
+| コマンド | タイトル | 説明 |
+| :--- | :--- | :--- |
+| `markdown-comment.openPreview` | Open Preview | コメント付きの専用プレビューを開きます。 |
+| `markdown-comment.openPreviewToSide` | Open Preview to the Side | プレビューを横に開きます。 |
+| `markdown-comment.showCommentTable` | Show Comment Table | コメントテーブルビューを開きます。 |
+
+## 🔧 技術的詳細
+
+- **非侵襲的**: コメントはサイドカーファイル (`filename.meta.jsonl`) に保存されます。
+- **クリーンなデータ**: オリジナルの Markdown ファイルは一切変更されません。
+
+## ⚙️ 設定
+
+VS Code の設定から拡張機能をカスタマイズできます：
+
+| 設定 | 型 | デフォルト | 説明 |
 | :--- | :--- | :--- | :--- |
-| `markdownComment.commentsTable.columns` | `array` | `["lineNo", ...]` | コメントテーブルに表示する列とその順序。 |
-| `markdownComment.commentsTable.columnWidths` | `object` | `{...}` | コメントテーブルの各列の幅（ピクセル）。 |
-| `markdownComment.defaultAuthor` | `string` | `""` | コメントのデフォルト作成者名。 |
+| `markdownComment.commentsTable.columns` | `array` | `["lineNo", ...]` | コメントテーブルに表示する列 (lineNo, content, status 等)。 |
+| `markdownComment.commentsTable.columnWidths` | `object` | `{...}` | テーブル列のピクセル幅。 |
+| `markdownComment.defaultAuthor` | `string` | `""` | デフォルトの投稿者名 (空の場合はシステムユーザー名が使用されます)。 |
 
-### 必要環境
+## 🤝 貢献とサポート
 
-- VS Code 1.80.0 以上。
+貢献は大歓迎です！この拡張機能が役立つと思われた場合は、開発のサポートをご検討ください。
 
-### リリースノート
+<a href="https://buymeacoffee.com/sun.flat.yamada">
+  <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
+</a>
+
+## 📝 リリースノート
 
 ### 0.0.1
+- 初期リリース
 
-- Markdown Comment の初回リリース
-- コメントテーブルの時刻表示を24時間形式（`yyyy-mm-dd hh:mm:ss`）に統一
-
-## スポンサー
-
-活動を継続するための支援を募集しています：
-
-- [Buy Me a Coffee](https://buymeacoffee.com/sun.flat.yamada)
-
-## 開発と貢献
-
-### セットアップ
-
-1. リポジトリをクローンします。
-2. `npm install` を実行して依存関係をインストールします。
-
-### ビルドとテスト
-
-- `npm run compile`: 拡張機能をビルドします。
-- `npm run watch`: 変更を監視して自動ビルドします。
-- `npm test`: テストスイートを実行します。
-
-### デバッグ
-
-- プロジェクトを VS Code で開きます。
-- `F5` を押して Extension Development Host を起動します。
-
-### デプロイ
-
-#### ローカルインストール
-
-ローカルインストール用の `.vsix` ファイルを作成できます：
-
-```bash
-npm run package
-```
-
-その後、VS Code の "Install from VSIX..." を使用してインストールします。
-
-#### Marketplace リリース
-
-GitHub Actions により、タグ付きコミット（例：`v0.0.1`）をプッシュすると自動的にリリースされます。
-認証のためにリポジトリの secrets に `VSCE_PAT` が設定されていることを確認してください。
+### 開発セットアップ
+1. `npm install`
+2. `npm run compile`
+3. `F5` でデバッグ実行

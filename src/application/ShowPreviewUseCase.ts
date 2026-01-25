@@ -1,6 +1,7 @@
 import { IDocumentRepository } from "../domain/IDocumentRepository";
 import { IPreviewPresenter } from "./IPreviewPresenter";
 import * as MarkdownIt from "markdown-it";
+import * as path from "path";
 import { CommentService } from "./CommentService";
 import { STATUS_ICONS } from "../domain/Comment";
 
@@ -19,10 +20,21 @@ export class ShowPreviewUseCase {
     });
   }
 
+  private getNonce() {
+    let text = "";
+    const possible =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (let i = 0; i < 32; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  }
+
   public async execute(
-    column: "active" | "beside" = "beside",
+    _column: "active" | "beside" = "beside",
     filePath?: string,
   ): Promise<void> {
+    const column: "active" | "beside" = _column;
     let document = null;
     if (filePath) {
       document = await this.documentRepository.getDocumentByPath(filePath);
@@ -43,35 +55,25 @@ export class ShowPreviewUseCase {
       offset: number;
       type: "start" | "end";
       threadId: string;
-      index: number;
+      threadIndex: number;
     }[] = [];
 
     for (let i = 0; i < threads.length; i++) {
       const thread = threads[i];
-
       points.push({
         offset: thread.anchor.offset,
         type: "start",
         threadId: thread.id,
-        index: i,
+        threadIndex: i,
       });
       points.push({
         offset: thread.anchor.offset + thread.anchor.length,
         type: "end",
         threadId: thread.id,
-        index: i,
+        threadIndex: i,
       });
     }
 
-    // Add a dummy end point to ensure the last segment is processed
-    if (!points.some((p) => p.offset === document.content.length)) {
-      points.push({
-        offset: document.content.length,
-        type: "end",
-        threadId: "dummy",
-        index: -1,
-      });
-    }
     points.sort((a, b) => {
       if (a.offset !== b.offset) {
         return a.offset - b.offset;
@@ -79,7 +81,7 @@ export class ShowPreviewUseCase {
       if (a.type !== b.type) {
         return a.type === "end" ? -1 : 1;
       }
-      return a.index - b.index;
+      return a.threadIndex - b.threadIndex;
     });
 
     let htmlContentWithPlaceholders = "";
@@ -106,15 +108,57 @@ export class ShowPreviewUseCase {
       }
 
       if (point.type === "start") {
-        if (point.index !== -1) activeThreadIndices.add(point.index);
+        activeThreadIndices.add(point.threadIndex);
       } else {
-        if (point.index !== -1) activeThreadIndices.delete(point.index);
+        activeThreadIndices.delete(point.threadIndex);
       }
       lastOffset = point.offset;
     }
 
-    const htmlContent = this.md.render(htmlContentWithPlaceholders);
-    let finalHtml = htmlContent;
+    // [Fix Issue 1] Add remaining document content after the last comment point
+    if (lastOffset < document.content.length) {
+      htmlContentWithPlaceholders += document.content.substring(lastOffset);
+    }
+
+    // Markdown-it の画像レンダリングをカスタマイズして Webview URI に変換する
+    const defaultImageRule =
+      this.md.renderer.rules.image ||
+      ((tokens, idx, options, _env, self) => {
+        return self.renderToken(tokens, idx, options);
+      });
+
+    this.md.renderer.rules.image = (tokens, idx, options, env, self) => {
+      const token = tokens[idx];
+      const srcIndex = token.attrIndex("src");
+      if (srcIndex >= 0 && token.attrs) {
+        const src = token.attrs[srcIndex][1];
+        if (
+          !src.startsWith("http") &&
+          !src.startsWith("https") &&
+          !src.startsWith("data:")
+        ) {
+          const absolutePath = path.isAbsolute(src)
+            ? src
+            : path.resolve(path.dirname(document!.filePath), src);
+          token.attrs[srcIndex][1] =
+            this.previewPresenter.asWebviewUri(absolutePath);
+        }
+      }
+      if (token.children) {
+        token.children.forEach((child) => {
+          if (child.type === "text") {
+            child.content = child.content.replace(
+              /MC(FIRST|START|END)\d+MC/g,
+              "",
+            );
+          }
+        });
+      }
+      return defaultImageRule(tokens, idx, options, env, self);
+    };
+
+    const renderedHtml = this.md.render(htmlContentWithPlaceholders);
+    let finalHtml = renderedHtml;
 
     // Replace placeholders with actual HTML tags
     for (let i = 0; i < threads.length; i++) {
@@ -138,9 +182,8 @@ export class ShowPreviewUseCase {
       finalHtml = finalHtml.split(pS).join(tagStart);
       finalHtml = finalHtml.split(pE).join(tagEnd);
     }
-    const title = `Preview ${document.filePath.split(/[\\/]/).pop()}`;
 
-    // Sort threads for sidebar display
+    const title = `Preview ${document.filePath.split(/[\\/]/).pop()}`;
     const sidebarThreads = [...threads].sort(
       (a, b) =>
         (a.anchor?.offset || 0) - (b.anchor?.offset || 0) ||
@@ -157,152 +200,56 @@ export class ShowPreviewUseCase {
           author: c.author,
           createdAt: c.createdAt,
           status: c.status,
+          tags: c.tags,
         })),
       })),
     );
 
     const statusIconsJson = JSON.stringify(STATUS_ICONS);
-
     const isSidebarVisible = this.previewPresenter.isSidebarVisible(
       document.filePath,
     );
+    const cspSource = this.previewPresenter.getCspSource();
+    const nonce = this.getNonce();
 
-    // プレビュー用にボイラープレートHTMLで包む
     const fullHtml = `
             <!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
+                <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${cspSource} https: data: vscode-resource: vscode-webview-resource:; script-src 'nonce-${nonce}'; style-src ${cspSource} 'unsafe-inline';">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <style>
                     body {
                         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-                        margin: 0;
-                        padding: 0;
-                        height: 100vh;
-                        display: flex;
-                        overflow: hidden;
-                        color: var(--vscode-editor-foreground);
-                        background-color: var(--vscode-editor-background);
+                        margin: 0; padding: 0; height: 100vh; display: flex; overflow: hidden;
+                        color: var(--vscode-editor-foreground); background-color: var(--vscode-editor-background);
                     }
-                    #main-content {
-                        flex: 1;
-                        padding: 20px;
-                        overflow-y: auto;
-                        line-height: 1.6;
-                    }
-                    #sidebar {
-                        width: 300px;
-                        background-color: var(--vscode-sideBar-background);
-                        border-left: 1px solid var(--vscode-sideBarSectionHeader-border);
-                        overflow-y: auto;
-                        display: none;
-                        flex-direction: column;
-                    }
-                    #sidebar.visible {
-                        display: flex;
-                    }
-                    .sidebar-header {
-                        padding: 10px;
-                        font-weight: bold;
-                        border-bottom: 1px solid var(--vscode-sideBarSectionHeader-border);
-                        background-color: var(--vscode-sideBarSectionHeader-background);
-                        color: var(--vscode-sideBarSectionHeader-foreground);
-                    }
-                    .comment-thread-item {
-                        padding: 10px;
-                        border-bottom: 1px solid var(--vscode-list-invalidItemForeground);
-                        cursor: pointer;
-                    }
-                    .comment-thread-item:hover {
-                        background-color: var(--vscode-list-hoverBackground);
-                    }
-                    .comment-meta {
-                        font-size: 0.8em;
-                        color: var(--vscode-descriptionForeground);
-                        margin-bottom: 4px;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                    }
-                    .comment-body {
-                        font-size: 0.9em;
-                        white-space: pre-wrap;
-                    }
-                    .status-badge, .status-select {
-                        padding: 1px 4px;
-                        border-radius: 3px;
-                        font-size: 0.75em;
-                        text-transform: uppercase;
-                    }
-                    .status-select {
-                        background: transparent;
-                        color: inherit;
-                        border: 1px solid transparent;
-                        cursor: pointer;
-                    }
-                    .status-select:hover {
-                        border-color: var(--vscode-focusBorder);
-                    }
+                    #main-content { flex: 1; padding: 20px; overflow-y: auto; line-height: 1.6; }
+                    #sidebar { width: 300px; background-color: var(--vscode-sideBar-background); border-left: 1px solid var(--vscode-sideBarSectionHeader-border); overflow-y: auto; display: none; flex-direction: column; }
+                    #sidebar.visible { display: flex; }
+                    .sidebar-header { padding: 10px; font-weight: bold; border-bottom: 1px solid var(--vscode-sideBarSectionHeader-border); background-color: var(--vscode-sideBarSectionHeader-background); color: var(--vscode-sideBarSectionHeader-foreground); }
+                    .comment-thread-item { padding: 10px; border-bottom: 1px solid var(--vscode-list-invalidItemForeground); cursor: pointer; }
+                    .comment-thread-item:hover { background-color: var(--vscode-list-hoverBackground); }
+                    .comment-meta { font-size: 0.8em; color: var(--vscode-descriptionForeground); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+                    .comment-body { font-size: 0.9em; white-space: pre-wrap; }
+                    .status-badge, .status-select { padding: 1px 4px; border-radius: 3px; font-size: 0.75em; text-transform: uppercase; }
+                    .status-select { background: transparent; color: inherit; border: 1px solid transparent; cursor: pointer; }
+                    .status-select:hover { border-color: var(--vscode-focusBorder); }
                     .status-open { background-color: var(--vscode-charts-blue); color: white; }
                     .status-resolved { background-color: var(--vscode-charts-green); color: white; }
                     .status-closed { background-color: var(--vscode-charts-gray); color: white; }
-
-                    img {
-                        max-width: 100%;
-                    }
-                    .comment-highlight {
-                        background-color: var(--vscode-editor-selectionHighlightBackground, rgba(255, 255, 0, 0.2));
-                        border-bottom: 1px solid var(--vscode-editor-selectionHighlightBorder, orange);
-                        cursor: pointer;
-                        border-radius: 2px;
-                        position: relative;
-                        transition: background-color 0.2s;
-                    }
-                    /* Ensure nested highlights are visible */
-                    .comment-highlight .comment-highlight {
-                        border-bottom-width: 2px;
-                    }
-                    .comment-highlight.is-first::before {
-                        content: '💬';
-                        font-size: 0.8em;
-                        vertical-align: super;
-                        margin-right: 0.5px;
-                        opacity: 0.9;
-                        display: inline-block;
-                        /* Prevent selection issues */
-                        user-select: none;
-                    }
-                    /* If multiple are first in same segment, space them */
-                    .comment-highlight.is-first > .comment-highlight.is-first::before {
-                        margin-left: 4px;
-                    }
-                    .comment-highlight:hover {
-                        background-color: var(--vscode-editor-hoverHighlightBackground, rgba(255, 255, 0, 0.4));
-                        z-index: 10;
-                    }
-
-                    #toggle-btn {
-                        position: fixed;
-                        top: 10px;
-                        right: 20px;
-                        z-index: 1000;
-                        background: var(--vscode-button-background);
-                        color: var(--vscode-button-foreground);
-                        border: none;
-                        padding: 6px 10px;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        opacity: 0.8;
-                    }
-                    #toggle-btn:hover {
-                        background: var(--vscode-button-hoverBackground);
-                        opacity: 1;
-                    }
-                    /* Adjust toggle button position when sidebar is visible */
-                    body.sidebar-open #toggle-btn {
-                        right: 320px; /* 300px sidebar + 20px */
-                    }
+                    .tag-container { margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px; }
+                    .tag { background-color: var(--vscode-badge-background); color: var(--vscode-badge-foreground); padding: 1px 6px; border-radius: 10px; font-size: 0.75em; }
+                    img { max-width: 100%; }
+                    .comment-highlight { background-color: var(--vscode-editor-selectionHighlightBackground, rgba(255, 255, 0, 0.2)); border-bottom: 1px solid var(--vscode-editor-selectionHighlightBorder, orange); cursor: pointer; border-radius: 2px; position: relative; transition: background-color 0.2s; }
+                    .comment-highlight .comment-highlight { border-bottom-width: 2px; }
+                    .comment-highlight.is-first::before { content: '💬'; font-size: 0.8em; vertical-align: super; margin-right: 0.5px; opacity: 0.9; display: inline-block; user-select: none; }
+                    .comment-highlight.is-first > .comment-highlight.is-first::before { margin-left: 4px; }
+                    .comment-highlight:hover { background-color: var(--vscode-editor-hoverHighlightBackground, rgba(255, 255, 0, 0.4)); z-index: 10; }
+                    #toggle-btn { position: fixed; top: 10px; right: 20px; z-index: 1000; background: var(--vscode-button-background); color: var(--vscode-button-foreground); border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; opacity: 0.8; }
+                    #toggle-btn:hover { background: var(--vscode-button-hoverBackground); opacity: 1; }
+                    body.sidebar-open #toggle-btn { right: 320px; }
                 </style>
                 <title>${title}</title>
             </head>
@@ -316,12 +263,11 @@ export class ShowPreviewUseCase {
                     <div id="comments-list"></div>
                 </div>
 
-                <script>
+                <script nonce="${nonce}">
                     const vscode = acquireVsCodeApi();
                     const threads = ${threadsJson};
                     const statusIcons = ${statusIconsJson};
 
-                    // Toggle Logic
                     const toggleBtn = document.getElementById('toggle-btn');
                     const sidebar = document.getElementById('sidebar');
                     const body = document.body;
@@ -330,20 +276,11 @@ export class ShowPreviewUseCase {
                         const isVisible = sidebar.classList.toggle('visible');
                         body.classList.toggle('sidebar-open');
                         toggleBtn.textContent = isVisible ? 'Hide Comments' : '💬 Comments';
-
-                        // Inform VS Code side to persist state
-                        vscode.postMessage({
-                            type: 'toggleSidebar',
-                            visible: isVisible
-                        });
+                        vscode.postMessage({ type: 'toggleSidebar', visible: isVisible });
                     });
 
-                    // Render Comments in Sidebar
                     const listContainer = document.getElementById('comments-list');
-
-                    const getStatusIcon = (status) => {
-                        return statusIcons[status] || '';
-                    };
+                    const getStatusIcon = (status) => statusIcons[status] || '';
 
                     threads.forEach(thread => {
                         const div = document.createElement('div');
@@ -353,7 +290,6 @@ export class ShowPreviewUseCase {
                         const firstComment = thread.comments[0];
                         if (!firstComment) return;
 
-                        // Only root comments have status
                         const statusOptions = ['open', 'resolved', 'closed'];
                         const optionsHtml = statusOptions.map(s =>
                             \`<option value="\${s}" \${firstComment.status === s ? 'selected' : ''}>\${getStatusIcon(s)} \${s.toUpperCase()}</option>\`
@@ -366,53 +302,42 @@ export class ShowPreviewUseCase {
                             </select>
                         \`;
 
+                        const tagsHtml = firstComment.tags && firstComment.tags.length > 0
+                            ? \`<div class="tag-container">\${firstComment.tags.map(t => \`<span class="tag">\${t}</span>\`).join('')}</div>\`
+                            : '';
+
                         div.innerHTML = \`
                             <div class="comment-meta">
                                 <span>\${firstComment.author}</span>
                                 \${statusSelectHtml}
                             </div>
                             <div class="comment-body">\${firstComment.content}</div>
+                            \${tagsHtml}
                         \`;
 
                         div.addEventListener('click', (e) => {
-                            // Don't scroll if clicking select
                             if (e.target.tagName === 'SELECT') return;
-
-                            // Scroll to highlight
                             const mark = document.querySelector(\`.comment-highlight[data-thread-id="\${thread.id}"]\`);
                             if (mark) {
                                 mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                mark.style.outline = '2px solid red'; // Temporary highlight
+                                mark.style.outline = '2px solid red';
                                 setTimeout(() => mark.style.outline = '', 2000);
                             }
-                            // Also reveal in VS Code side
-                            vscode.postMessage({
-                                type: 'revealComment',
-                                threadId: thread.id
-                            });
+                            vscode.postMessage({ type: 'revealComment', threadId: thread.id });
                         });
 
                         listContainer.appendChild(div);
                     });
 
                     window.updateStatus = (select, threadId, commentId) => {
-                        vscode.postMessage({
-                            type: 'updateStatus',
-                            threadId: threadId,
-                            commentId: commentId,
-                            status: select.value
-                        });
-                        // Update color immediately
+                        vscode.postMessage({ type: 'updateStatus', threadId: threadId, commentId: commentId, status: select.value });
                         select.className = 'status-select status-' + select.value;
                     };
 
                     document.addEventListener('selectionchange', () => {
                         const selection = window.getSelection();
                         const selectedText = selection ? selection.toString() : '';
-                        vscode.postMessage({
-                            type: 'selection',
-                            text: selectedText
-                        });
+                        vscode.postMessage({ type: 'selection', text: selectedText });
                     });
 
                     document.addEventListener('click', (e) => {
@@ -420,7 +345,6 @@ export class ShowPreviewUseCase {
                         if (target && target.classList.contains('comment-highlight')) {
                             const threadId = target.getAttribute('data-thread-id');
                             if (threadId) {
-                                // Highlight in sidebar if visible
                                 if (sidebar.classList.contains('visible')) {
                                     const item = document.querySelector(\`.comment-thread-item[data-thread-id="\${threadId}"]\`);
                                     if (item) {
@@ -429,11 +353,7 @@ export class ShowPreviewUseCase {
                                         setTimeout(() => item.style.backgroundColor = '', 2000);
                                     }
                                 }
-
-                                vscode.postMessage({
-                                    type: 'revealComment',
-                                    threadId: threadId
-                                });
+                                vscode.postMessage({ type: 'revealComment', threadId: threadId });
                             }
                         }
                     });
