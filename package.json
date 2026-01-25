@@ -153,7 +153,7 @@
       ]
     },
     "viewContainers": {
-      "activitybar": [
+      "panel": [
         {
           "id": "markdown-comment-container",
           "title": "Markdown Comment",
@@ -235,7 +235,8 @@
     "test:unit": "npm run test-compile && mocha -r ts-node/register --ui tdd src/**/*.test.ts --exclude \"src/test/**\"",
     "test:integration": "npm run test-compile && npm run compile && node ./out/test/runTest.js",
     "package": "vsce package",
-    "deploy": "npx vsce publish"
+    "deploy": "npx vsce publish",
+    "release:prepare": "./scripts/prepare_release.sh"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
