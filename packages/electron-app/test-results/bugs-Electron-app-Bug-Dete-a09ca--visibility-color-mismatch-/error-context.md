@@ -1,0 +1,43 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]: V:\repos\sun.flat.yamada\vscode-markdown-comment\packages\electron-app\tests\test_bugs.md
+    - generic [ref=e4]:
+      - button "Print" [ref=e5] [cursor=pointer]
+      - button "Refresh" [ref=e6] [cursor=pointer]
+      - button "AI Prompt" [ref=e7] [cursor=pointer]
+      - button "Open File" [ref=e8] [cursor=pointer]
+  - main [ref=e9]:
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - button "Files" [ref=e12] [cursor=pointer]
+        - button "Comments" [ref=e13] [cursor=pointer]
+      - generic [ref=e15]:
+        - generic "V:\\repos\\sun.flat.yamada\\vscode-markdown-comment\\packages\\electron-app\\tests\\test_bugs.md" [ref=e16] [cursor=pointer]: test_bugs.md
+        - generic "V:\\repos\\sun.flat.yamada\\vscode-markdown-comment\\packages\\electron-app\\tests\\test.md" [ref=e17] [cursor=pointer]: test.md
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - button "Add Comment" [ref=e21] [cursor=pointer]
+          - button "Toggle Comments" [ref=e22] [cursor=pointer]
+        - iframe [ref=e24]:
+          - generic [ref=f1e2]:
+            - heading "Bug Test Doc" [level=1] [ref=f1e3]
+            - paragraph [ref=f1e4]: This doc is for bug reproduction.
+            - paragraph [ref=f1e5]: UniqueAnchorText for testing.
+      - generic [ref=e25]:
+        - generic [ref=e27]:
+          - generic [ref=e28]: Comments Table
+          - button "×" [ref=e29] [cursor=pointer]
+        - table [ref=e31]:
+          - rowgroup [ref=e32]:
+            - row "Status Author Tags Content Actions" [ref=e33]:
+              - columnheader "Status" [ref=e34]
+              - columnheader "Author" [ref=e35]
+              - columnheader "Tags" [ref=e36]
+              - columnheader "Content" [ref=e37]
+              - columnheader "Actions" [ref=e38]
+          - rowgroup
+```
