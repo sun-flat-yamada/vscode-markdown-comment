@@ -22,6 +22,11 @@ graph TD
     subgraph Application
         UseCase["Document Analysis Use Case"]
         IRepo["Repository Interface"]
+        ViewBuilder["View Builder"]
+        MarkdownEngine["Markdown Engine"]
+    end
+    subgraph Presentation
+        Views["HTML/SCSS Templates"]
     end
     subgraph Domain
         Entity["Markdown Document Entity"]
@@ -33,6 +38,9 @@ graph TD
     UseCase --> Entity
     UseCase --> Rules
     UseCase --> IRepo
+    UseCase --> ViewBuilder
+    UseCase --> MarkdownEngine
+    ViewBuilder --> Views
     IRepo -.-> FileSys
 ```
 
@@ -47,6 +55,7 @@ graph TD
 | Unit Tests | `npm run test:unit` |
 | Integration Tests | `npm run test:integration` |
 | All Tests | `npm test` |
+| Electron E2E Tests | `npm run test:e2e -w packages/electron-app` |
 | Package Extension | `npm run package` (VSCE) |
 | Prepare Release | `npm run release:prepare` (or `scripts/prepare_release.sh`) |
 
@@ -54,6 +63,7 @@ graph TD
 
 - `src/domain`: Pure business logic and entities.
 - `src/application`: Use cases and interface definitions.
+- `src/views`: HTML templates and styles for webviews.
 - `src/interface`: Adapters between the outside world and application logic.
 - `src/infrastructure`: Concrete implementations of interfaces (VS Code API, File System, Caching).
 
@@ -66,10 +76,19 @@ graph TD
     - **Update Documentation (MANDATORY)**: Always review and update corresponding documentation when making code changes. Ensure `README.md` and `GEMINI.md` are up to date. This is a strict requirement for every code change.
     - **Ignore Japanese Reference**: Do NOT read `.ja.md` files; they are for human reference only.
 4. **Markdown Rendering Engine**:
+    - Encapsulated in `MarkdownEngine` class to separate rendering logic from use cases.
     - Uses a two-pass system: (1) Insert placeholders MCSTART/END into Markdown, (2) Render with `markdown-it`, (3) Post-process HTML to replace placeholders with `<mark>` tags.
     - Custom `image` rule in `markdown-it` strips accidental placeholders from attributes to prevent broken tags.
+    - **Anchor Protection**: 
+        - Zero-length comments are rendered as point markers (`MCFIRST...MC` + `MCEND...MC`).
+        - HTML tags and Markdown syntax (link, image) are protected from being split by comment anchors.
+        - **Header Protection**: Comment anchors on headers are strictly shifted to the end of the header prefix (e.g., after `# `) to prevent breaking `markdown-it` block parsing.
 5. **Sync Logic**: The preview webview manages its own sidebar state. Interaction events (click/toggle) are synchronized between the webview and the extension via `vscode.postMessage`.
-6. **Check .cursorrules**: It contains specific coding standards for this repo.
+    - `renderer.ts` in Electron app mimics VS Code API (`acquireVsCodeApi`) to support `postMessage` based state synchronization. It is compiled as an ES Module to run in the browser environment.
+    - **Layout Persistence**: Sidebar width and panel height are persisted via `WindowManager` and `window-state.json`.
+6. **Anchoring & Selection**:
+    - **Context Matching**: Selection data in the preview includes surrounding text (contextBefore/After) to ensure precise anchor placement in the Markdown source, even when duplicate text exists.
+7. **Check .cursorrules**: It contains specific coding standards for this repo.
 
 ## Agent Configuration (`.agent/`)
 
