@@ -14,6 +14,16 @@
       }
     },
     {
+      "name": "auto-test",
+      "description": "Run tests automatically after code changes",
+      "trigger": "PostEdit",
+      "matcher": "file_path matches '\\.(ts|js)$' && !file_path matches '\\.test\\.' && !file_path matches 'dist/'",
+      "action": {
+        "type": "command",
+        "command": "npm test"
+      }
+    },
+    {
       "name": "post-doc-edit-sync",
       "description": "Synchronize Japanese reference docs when English docs change",
       "trigger": "PostEdit",
