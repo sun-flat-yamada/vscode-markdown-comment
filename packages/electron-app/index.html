@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: file: https:;"
+    />
+    <title>Markdown Comment Desktop</title>
+    <link rel="stylesheet" href="renderer/app.css" />
+  </head>
+  <body>
+    <header>
+      <div class="title" id="file-name">Markdown Comment</div>
+      <div class="actions">
+        <button id="print-btn" class="secondary">Print</button>
+        <button id="refresh-btn" class="secondary">Refresh</button>
+        <button id="ai-btn" class="secondary">AI Prompt</button>
+        <button id="open-btn">Open File</button>
+      </div>
+    </header>
+    <main>
+      <div id="sidebar">
+        <div class="sidebar-tabs">
+          <button id="tab-recent" class="tab-btn active">Files</button>
+          <button id="tab-comments" class="tab-btn">Comments</button>
+        </div>
+        <div id="recent-files-section" class="sidebar-section">
+          <div id="recent-files">
+            <!-- Recent files will be injected here -->
+          </div>
+        </div>
+        <div
+          id="comments-section"
+          class="sidebar-section"
+          style="display: none"
+        >
+          <div id="comments-list">
+            <!-- Comments will be injected here -->
+          </div>
+        </div>
+      </div>
+      <div id="content">
+        <div id="preview-container">
+          <div id="preview-toolbar" class="toolbar" style="display: none">
+            <button id="add-comment-btn" class="primary">Add Comment</button>
+            <button id="toggle-comments-btn" class="secondary">
+              Toggle Comments
+            </button>
+          </div>
+          <div
+            id="preview-content-wrapper"
+            style="
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              position: relative;
+            "
+          >
+            <iframe id="preview-frame" style="flex: 1; border: none"></iframe>
+          </div>
+        </div>
+        <div id="bottom-panel">
+          <div id="resizer-h" class="resizer-handle resizer-h"></div>
+          <div class="panel-header">
+            <span>Comments Table</span>
+            <button id="toggle-panel-btn" class="icon-btn">×</button>
+          </div>
+          <div id="table-container">
+            <table id="comment-table">
+              <thead>
+                <tr>
+                  <th style="width: 100px">Status</th>
+                  <th style="width: 120px">Author</th>
+                  <th style="width: 150px">Tags</th>
+                  <th>Content</th>
+                  <th style="width: 100px">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+                <!-- Rows will be injected here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="add-comment-overlay" class="overlay">
+      <div class="modal">
+        <h2 id="modal-title">Add Comment</h2>
+        <div class="selected-text-preview" id="selected-text-hint"></div>
+        <textarea
+          id="comment-input"
+          placeholder="Type your comment..."
+        ></textarea>
+        <div class="actions">
+          <button id="save-comment-btn" class="primary">Save</button>
+          <button id="cancel-comment-btn" class="secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="ai-overlay" class="overlay">
+      <div class="modal">
+        <h2>AI Prompt</h2>
+        <p>Use this prompt with an LLM to apply your comments.</p>
+        <textarea id="prompt-output" readonly></textarea>
+        <div class="actions" style="justify-content: flex-end">
+          <button id="copy-btn">Copy to Clipboard</button>
+          <button id="close-modal-btn" class="secondary">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="context-menu"
+      class="context-menu"
+      style="display: none; position: fixed; z-index: 2000"
+    >
+      <div class="context-menu-item" id="ctx-add-comment">Add Comment</div>
+    </div>
+
+    <div id="resizer-v" class="resizer-handle resizer-v"></div>
+    <script>
+      console.log("Index Inline Script Running");
+    </script>
+    <script src="renderer/renderer.js"></script>
+  </body>
+</html>
