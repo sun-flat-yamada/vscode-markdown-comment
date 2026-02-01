@@ -2,22 +2,20 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "npm: watch",
+      "label": "npm: watch (extension)",
       "type": "npm",
+      "path": "packages/vscode-extension",
       "script": "watch",
       "problemMatcher": "$ts-webpack-watch",
       "isBackground": true,
       "presentation": {
         "reveal": "silent"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
       }
     },
     {
-      "label": "npm: compile",
+      "label": "npm: compile (extension)",
       "type": "npm",
+      "path": "packages/vscode-extension",
       "script": "compile",
       "problemMatcher": "$ts-webpack",
       "presentation": {
@@ -26,13 +24,22 @@
       "group": "build"
     },
     {
-      "label": "npm: compile-dev",
+      "label": "npm: compile-dev (extension)",
       "type": "npm",
+      "path": "packages/vscode-extension",
       "script": "compile-dev",
       "problemMatcher": "$ts-webpack",
       "presentation": {
         "reveal": "silent"
       },
+      "group": "build"
+    },
+    {
+      "label": "npm: build (electron)",
+      "type": "npm",
+      "path": "packages/electron-app",
+      "script": "build",
+      "problemMatcher": "$tsc",
       "group": "build"
     },
     {

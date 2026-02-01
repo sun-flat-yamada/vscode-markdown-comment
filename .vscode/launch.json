@@ -5,9 +5,11 @@
       "name": "Run Extension",
       "type": "extensionHost",
       "request": "launch",
-      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
-      "preLaunchTask": "npm: compile-dev"
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-extension"
+      ],
+      "outFiles": ["${workspaceFolder}/packages/vscode-extension/dist/**/*.js"],
+      "preLaunchTask": "npm: compile-dev (extension)"
     },
     {
       "name": "Run Extension (Release)",
@@ -33,11 +35,25 @@
       "type": "extensionHost",
       "request": "launch",
       "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}",
-        "${workspaceFolder}/test-workspace"
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-extension",
+        "${workspaceFolder}/packages/vscode-extension/test-workspace"
       ],
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
-      "preLaunchTask": "npm: compile"
+      "outFiles": ["${workspaceFolder}/packages/vscode-extension/dist/**/*.js"],
+      "preLaunchTask": "npm: compile (extension)"
+    },
+    {
+      "name": "Electron: Main",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/packages/electron-app",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "args": ["."],
+      "protocol": "inspector",
+      "outFiles": ["${workspaceFolder}/packages/electron-app/dist/**/*.js"],
+      "preLaunchTask": "npm: build (electron)"
     }
   ]
 }

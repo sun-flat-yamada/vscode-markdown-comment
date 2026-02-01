@@ -1,0 +1,11 @@
+<th
+  data-col="{{COL}}"
+  draggable="true"
+  ondragstart="handleDragStart(event)"
+  ondragover="handleDragOver(event)"
+  ondragleave="handleDragLeave(event)"
+  ondrop="handleDrop(event)"
+>
+  <div class="header-content">{{LABEL}}</div>
+  <div class="resizer" onmousedown="startResizing(event, '{{COL}}')"></div>
+</th>
