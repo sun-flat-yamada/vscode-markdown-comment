@@ -138,6 +138,9 @@
     vertical-align: super;
     cursor: pointer;
     opacity: 0.8;
+    user-select: none; /* [Fix] Prevent icon from being included in selection */
+    pointer-events: none; /* [Fix] Don't let icon interfere with text selection */
+    display: inline-block;
   }
 
   &.flash {
