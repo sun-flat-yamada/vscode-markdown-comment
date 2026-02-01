@@ -1,33 +1,17 @@
-<p align="center">
-  <img src="images/vscode-mdc-icon.png" alt="Markdown Comment Logo" width="128" />
-</p>
+![Markdown Comment Logo](images/vscode-mdc-icon.png)
 
 # Markdown Comment
 
-<p align="center">
-  <b>Supercharges your Markdown workflow inside VS Code</b>
-</p>
+**Supercharges your Markdown workflow inside VS Code**
 
-<p align="center">
-  <a href="https://github.com/sun-flat-yamada/vscode-markdown-comment/blob/main/README.md">English</a> | <a href="https://github.com/sun-flat-yamada/vscode-markdown-comment/blob/main/README.ja.md">日本語</a>
-</p>
+[English](https://github.com/sun-flat-yamada/vscode-markdown-comment/blob/main/README.md) | [日本語](https://github.com/sun-flat-yamada/vscode-markdown-comment/blob/main/README.ja.md)
 
-<p align="center">
-  <!-- Version -->
-  <img src="https://img.shields.io/visual-studio-marketplace/v/sun-flat-yamada.markdown-comment?style=flat-square&color=007ACC" alt="Version" />
-  <!-- Installs -->
-  <img src="https://img.shields.io/visual-studio-marketplace/i/sun-flat-yamada.markdown-comment?style=flat-square&color=success" alt="Installs" />
-  <!-- Rating -->
-  <img src="https://img.shields.io/visual-studio-marketplace/r/sun-flat-yamada.markdown-comment?style=flat-square" alt="Rating" />
-  <!-- Build Status -->
-  <img src="https://github.com/sun-flat-yamada/vscode-markdown-comment/actions/workflows/ci.yml/badge.svg" alt="Build Status" />
-</p>
+![Version](https://img.shields.io/visual-studio-marketplace/v/sun-flat-yamada.markdown-comment?style=flat-square&color=007ACC)
+![Installs](https://img.shields.io/visual-studio-marketplace/i/sun-flat-yamada.markdown-comment?style=flat-square&color=success)
+![Rating](https://img.shields.io/visual-studio-marketplace/r/sun-flat-yamada.markdown-comment?style=flat-square)
+![Build Status](https://github.com/sun-flat-yamada/vscode-markdown-comment/actions/workflows/ci.yml/badge.svg)
 
-<p align="center">
-  <a href="https://buymeacoffee.com/sun.flat.yamada">
-    <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
-  </a>
-</p>
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/sun.flat.yamada)
 
 ---
 
@@ -106,23 +90,28 @@ Customize the extension via VS Code Settings:
 
 Contributions are welcome! If you find this extension useful, please consider supporting its development.
 
-<a href="https://buymeacoffee.com/sun.flat.yamada">
-  <img src="https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
-</a>
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/sun.flat.yamada)
 
 ## 📝 Release Notes
 
-### 0.0.4 - 0.0.6
-- Fix command error by bundling node_modules
-### 0.0.3
-- Add marketplace icon
-### 0.0.2
-- Fix deploy script and settings
-### 0.0.1
-- Initial Release
+### 0.1.0
+
+- Change meta file format to ver2.0 (include auto migration support)
+- Add client viewer app
+- Refactor
+- Fixed renderer issues with zero-length comments and header protection
+
+### 0.0.7
+
+- 1st release version
+
+### 0.0.1 - 0.0.6
+
+- DO NOT USE
 
 ### Dev Setup
 - Node.js 20 or higher is required.
 1. `npm install`
 2. `npm run compile`
-3. `F5` to debug
+3. `npm run test:e2e -w packages/electron-app` (to run Electron E2E tests)
+4. `F5` to debug
