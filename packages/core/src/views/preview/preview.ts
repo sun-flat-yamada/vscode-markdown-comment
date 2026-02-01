@@ -173,23 +173,63 @@ interface InitialData {
       .replace(/'/g, "&#039;");
   }
 
-  // --- Content Interaction ---
-  document.addEventListener("selectionchange", () => {
-    const selection = window.getSelection();
-    if (selection) {
-      const text = selection.toString().trim();
-      vscodeApi.postMessage({ type: "selection", text: text });
-    }
+  // Handle right-click for native context menu
+  window.addEventListener("contextmenu", (_e) => {
+    vscodeApi.postMessage({ type: "contextMenu" });
   });
 
+  // --- Content Interaction ---
   mainContent?.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
+
+    // 1. Handle External Links
+    const link = target.closest("a");
+    if (link && link.href) {
+      console.log("preview.ts: Link click detected:", link.href);
+      if (link.href.startsWith("http") || link.href.startsWith("https")) {
+        e.preventDefault();
+        vscodeApi.postMessage({ type: "openExternal", url: link.href });
+        return;
+      }
+    }
+
+    // 2. Handle Comment Highlights
     const highlight = target.closest(".comment-highlight");
     if (highlight) {
       const id = highlight.getAttribute("data-thread-id");
       if (id) {
         vscodeApi.postMessage({ type: "revealComment", threadId: id });
         highlightInContent(id);
+      }
+    }
+  });
+
+  // Track selection for "Add Comment" feature
+  document.addEventListener("selectionchange", () => {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const text = selection.toString().trim();
+      if (text) {
+        // Get some context around the selection to help match in source
+        const range = selection.getRangeAt(0);
+        const container = range.commonAncestorContainer;
+        const parentText = container.textContent || "";
+        const startOffset = range.startOffset;
+        const contextBefore = parentText.substring(
+          Math.max(0, startOffset - 20),
+          startOffset,
+        );
+        const contextAfter = parentText.substring(
+          range.endOffset,
+          range.endOffset + 20,
+        );
+
+        vscodeApi.postMessage({
+          type: "selection",
+          text: text,
+          contextBefore: contextBefore,
+          contextAfter: contextAfter,
+        });
       }
     }
   });

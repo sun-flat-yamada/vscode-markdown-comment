@@ -67,13 +67,21 @@ export class AnchoringService {
         ),
       );
 
-      if (actualContextBefore === anchor.contextBefore) {score += 2;}
-      else if (actualContextBefore.endsWith(anchor.contextBefore.slice(-10)))
-        {score += 1;}
+      if (actualContextBefore === anchor.contextBefore) {
+        score += 2;
+      } else if (
+        actualContextBefore.endsWith(anchor.contextBefore.slice(-10))
+      ) {
+        score += 1;
+      }
 
-      if (actualContextAfter === anchor.contextAfter) {score += 2;}
-      else if (actualContextAfter.startsWith(anchor.contextAfter.slice(0, 10)))
-        {score += 1;}
+      if (actualContextAfter === anchor.contextAfter) {
+        score += 2;
+      } else if (
+        actualContextAfter.startsWith(anchor.contextAfter.slice(0, 10))
+      ) {
+        score += 1;
+      }
 
       // Score based on proximity to original offset
       const distance = Math.abs(currentOffset - anchor.offset);
