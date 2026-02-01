@@ -11,6 +11,10 @@ node_modules
 # Output
 out
 dist
+result*.txt
+result*.json
+test_output*
+*output.txt
 
 # VSIX
 *.vsix

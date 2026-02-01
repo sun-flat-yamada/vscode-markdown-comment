@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "lib": ["dom", "dom.iterable", "es2020"],
+    "noEmit": false,
+    "outDir": "dist/views",
+    "types": ["node"]
+  },
+  "include": ["src/views/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

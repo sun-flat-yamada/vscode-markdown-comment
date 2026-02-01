@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="{{CSP}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{TITLE}}</title>
+    <style>
+      /* Base styles */
+      :root {
+          --sidebar-width: 300px;
+      }
+
+      body {
+          font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+          margin: 0;
+          padding: 0;
+          height: 100vh;
+          display: flex;
+          overflow: hidden;
+          color: var(--vscode-editor-foreground);
+          background-color: var(--vscode-editor-background);
+      }
+
+      /* Initial loaded styles from SCSS compilation will be injected here */
+      {{STYLES}}
+    </style>
+  </head>
+  <body class="{{BODY_CLASS}}">
+    <div id="toolbar">
+      <button id="toggle-sidebar-btn" title="Toggle Comments Sidebar">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+        >
+          <path
+            d="M14 2H2C1.44772 2 1 2.44772 1 3V13C1 13.5523 1.44772 14 2 14H14C14.5523 14 15 13.5523 15 13V3C15 2.44772 14.5523 2 14 2ZM14 13H11V3H14V13Z"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <div id="main-content" class="markdown-body">{{CONTENT}}</div>
+
+    <div id="sidebar" class="{{SIDEBAR_CLASS}}">
+      <div class="sidebar-header">
+        <h3>Comments</h3>
+      </div>
+      <div id="comments-list"></div>
+    </div>
+
+    <template id="comment-item-template">
+      <div class="comment-item">
+        <div class="comment-header">
+          <span class="author"></span>
+          <span class="date"></span>
+        </div>
+        <div class="comment-content"></div>
+        <div class="comment-tags" style="display: none"></div>
+      </div>
+    </template>
+
+    <template id="comment-tag-template">
+      <span class="tag"></span>
+    </template>
+
+    <script nonce="{{NONCE}}">
+      window.initialData = {{INITIAL_DATA}};
+      {{SCRIPT}}
+    </script>
+  </body>
+</html>

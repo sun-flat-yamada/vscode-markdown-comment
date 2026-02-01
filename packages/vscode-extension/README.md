@@ -22,7 +22,7 @@ While Markdown files are increasingly used for documentation and AI interactions
 > [!NOTE]
 > Comment data is persisted in a separate metadata file (your-md-file.meta.jsonl).
 > For detailed file specifications, please refer to the following:
-> [File Specification](./docs/meta-schema/README.md)
+> [File Specification](https://github.com/sun-flat-yamada/vscode-markdown-comment/blob/main/packages/vscode-extension/docs/meta-schema/README.md)
 
 > [!NOTE]
 > Future plans include browser extensions for viewers and editors to further expand accessibility.
@@ -94,24 +94,10 @@ Contributions are welcome! If you find this extension useful, please consider su
 
 ## 📝 Release Notes
 
-### 0.1.0
-
-- Change meta file format to ver2.0 (include auto migration support)
-- Add client viewer app
-- Refactor
-- Fixed renderer issues with zero-length comments and header protection
-
-### 0.0.7
-
-- 1st release version
-
-### 0.0.1 - 0.0.6
-
-- DO NOT USE
+See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
 ### Dev Setup
 - Node.js 20 or higher is required.
 1. `npm install`
 2. `npm run compile`
-3. `npm run test:e2e -w packages/electron-app` (to run Electron E2E tests)
-4. `F5` to debug
+3. `F5` to debug
