@@ -29,12 +29,14 @@ While Markdown files are increasingly used for documentation and AI interactions
 
 ## ✨ Key Features
 
+- **Google Antigravity UI**: A complete modern visual overhaul for a premium user experience.
 - **Markdown Preview Integration**: View comments directly within the native preview with rich highlighting.
 - **Improved Highlighting**: Supports nested comment ranges and shows comment content on hover.
 - **Sidebar Sync**: Seamlessly navigate between the preview highlights and the comment sidebar.
 - **Robust Rendering**: Comment highlights no longer break image tags or other complex Markdown structures.
 - **Dedicated Editor**: Edit Markdown with overlay comments.
 - **Organization**: Tree and Table views for efficient comment management.
+- **Open Recent**: Quickly access recently opened files from the main menu.
 
 | Feature | Screenshot |
 | :--- | :--- |
@@ -94,12 +96,16 @@ Contributions are welcome! If you find this extension useful, please consider su
 
 ## 📝 Release Notes
 
-### 0.1.0
+### 0.1.1 (Current)
 
-- Change meta file format to ver2.0 (include auto migration support)
-- Add client viewer app
-- Refactor
-- Fixed renderer issues with zero-length comments and header protection
+- **UI Refresh**: Complete visual overhaul inspired by Google Antigravity style (Light mode base, pill shapes, Inter font).
+- **Native Menu Integration**: Context menus in preview are now native for better OS integration.
+- **Open Recent**: Added support for recently opened files in the main menu.
+- **Layout Persistence**: Sidebar width and bottom panel height are now saved and restored.
+- **Enhanced Anchoring**: Improved comment anchor precision using surrounding context matching.
+- **Test Infrastructure**: Moved `.vscode-test` to `out` directory to keep workspace root clean.
+
+### 0.1.0
 
 ### 0.0.7
 
