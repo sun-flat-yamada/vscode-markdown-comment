@@ -1,0 +1,116 @@
+{
+  "version": "2.0",
+  "tags": [
+    "tag1",
+    "tag2",
+    "tag3",
+    "tag5",
+    "tag6",
+    "あああ"
+  ],
+  "threads": [
+    {
+      "id": "1769303277978",
+      "anchor": {
+        "text": "Supercharges",
+        "contextBefore": "lign=\"center\">\n  <b>",
+        "contextAfter": " your Markdown workf",
+        "offset": 152,
+        "length": 12
+      },
+      "comments": [
+        {
+          "id": "1769303277978.1",
+          "content": "This is a 1st comment!",
+          "author": "author",
+          "createdAt": "2026-01-25T01:07:57.978Z",
+          "updatedAt": "2026-01-25T02:47:38.266Z",
+          "status": "open",
+          "tags": [
+            "tag1",
+            "tag2",
+            "tag3",
+            "tag5",
+            "tag6"
+          ]
+        },
+        {
+          "id": "1769303277978.2",
+          "content": "1st reply!",
+          "author": "author",
+          "createdAt": "2026-01-25T01:08:09.419Z",
+          "updatedAt": "2026-01-27T13:10:18.828Z",
+          "tags": [
+            "tag1",
+            "tag3",
+            "tag2",
+            "あああ"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1769308924905",
+      "anchor": {
+        "text": "Markdown ",
+        "contextBefore": "-mdc-icon.png\" alt=\"",
+        "contextAfter": "Comment Logo\" width=",
+        "offset": 64,
+        "length": 9
+      },
+      "comments": [
+        {
+          "id": "1769308924905.1",
+          "content": "2nd comment",
+          "author": "author",
+          "createdAt": "2026-01-25T02:42:04.905Z",
+          "updatedAt": "2026-01-25T02:42:04.905Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1769924800667",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "<p align=\"center\">\n ",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1769924800667.1",
+          "content": "test",
+          "author": "User",
+          "createdAt": "2026-02-01T05:46:40.667Z",
+          "updatedAt": "2026-02-01T05:46:40.667Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1769930194827",
+      "anchor": {
+        "text": "Comment",
+        "contextBefore": ".png\" alt=\"Markdown ",
+        "contextAfter": " Logo\" width=\"128\" /",
+        "offset": 73,
+        "length": 7
+      },
+      "comments": [
+        {
+          "id": "1769930194827.1",
+          "content": "com",
+          "author": "User",
+          "createdAt": "2026-02-01T07:16:34.827Z",
+          "updatedAt": "2026-02-01T07:16:34.827Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    }
+  ]
+}
