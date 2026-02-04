@@ -18,7 +18,15 @@ contextBridge.exposeInMainWorld("api", {
   deleteComment: (data: any) => ipcRenderer.invoke("delete-comment", data),
   updateStatus: (data: any) => ipcRenderer.invoke("update-status", data),
   getThreads: (filePath: string) => ipcRenderer.invoke("get-threads", filePath),
+  getAvailableTags: (filePath: string) =>
+    ipcRenderer.invoke("get-available-tags", filePath),
   clickComment: (threadId: string) =>
     ipcRenderer.send("comment-clicked", threadId),
   log: (msg: string) => ipcRenderer.invoke("log", msg),
+  showContextMenu: () => ipcRenderer.send("show-context-menu"),
+  saveLayout: (settings: { sidebarWidth?: number; panelHeight?: number }) =>
+    ipcRenderer.invoke("save-layout", settings),
+  getWindowState: () => ipcRenderer.invoke("get-window-state"),
+  onTriggerAddComment: (callback: any) =>
+    ipcRenderer.on("trigger-add-comment", () => callback()),
 });

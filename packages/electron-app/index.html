@@ -4,19 +4,28 @@
     <meta charset="UTF-8" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: file: https:;"
+      content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: file: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' data: file: https:; style-src 'self' 'unsafe-inline' data: file: https:; img-src 'self' data: file: https:;"
     />
     <title>Markdown Comment Desktop</title>
-    <link rel="stylesheet" href="renderer/app.css" />
+    <link rel="stylesheet" href="dist/renderer/app.css" />
   </head>
   <body>
     <header>
       <div class="title" id="file-name">Markdown Comment</div>
       <div class="actions">
+        <select
+          id="theme-select"
+          class="status-select"
+          style="margin-right: 8px"
+        >
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="system">System</option>
+        </select>
         <button id="print-btn" class="secondary">Print</button>
         <button id="refresh-btn" class="secondary">Refresh</button>
-        <button id="ai-btn" class="secondary">AI Prompt</button>
-        <button id="open-btn">Open File</button>
+        <button id="ai-btn" class="secondary">AI</button>
+        <button id="open-btn">Open</button>
       </div>
     </header>
     <main>
@@ -113,18 +122,26 @@
       </div>
     </div>
 
-    <div
-      id="context-menu"
-      class="context-menu"
-      style="display: none; position: fixed; z-index: 2000"
-    >
-      <div class="context-menu-item" id="ctx-add-comment">Add Comment</div>
+    <div id="edit-tags-overlay" class="overlay">
+      <div class="modal tag-picker-modal">
+        <h2>Edit Tags</h2>
+        <input
+          id="tags-filter-input"
+          type="text"
+          placeholder="Select tags or type to create a new one"
+          autocomplete="off"
+        />
+        <div id="tags-list" class="tags-list">
+          <!-- Tag items will be injected here -->
+        </div>
+        <div class="actions">
+          <button id="save-tags-btn" class="primary">Save</button>
+          <button id="cancel-tags-btn" class="secondary">Cancel</button>
+        </div>
+      </div>
     </div>
 
     <div id="resizer-v" class="resizer-handle resizer-v"></div>
-    <script>
-      console.log("Index Inline Script Running");
-    </script>
-    <script src="renderer/renderer.js"></script>
+    <script type="module" src="dist/renderer/renderer.js"></script>
   </body>
 </html>

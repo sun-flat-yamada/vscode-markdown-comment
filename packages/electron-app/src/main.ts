@@ -16,14 +16,16 @@ import { ElectronDocumentRepository } from "./infrastructure/ElectronDocumentRep
 import { ElectronPreviewPresenter } from "./infrastructure/ElectronPreviewPresenter";
 
 async function main() {
-  const windowManager = new WindowManager();
+  console.log("Main process: Starting...");
   const docRepo = new ElectronDocumentRepository();
+  const windowManager = new WindowManager();
 
   await app.whenReady();
 
+  // 1. Create Window (but don't load file yet)
   const mainWindow = await windowManager.createWindow();
 
-  // Core services setup
+  // 2. Setup Services
   const previewPresenter = new ElectronPreviewPresenter(mainWindow);
   const commentRepository = new FileSystemCommentRepository();
   const anchoringService = new AnchoringService();
@@ -45,20 +47,30 @@ async function main() {
 
   const generateAIPromptUseCase = new GenerateAIPromptUseCase();
 
-  // IPC and Menu setup
+  // 3. Setup IPC (Before loading file)
   const ipcHandler = new IpcHandler(
     mainWindow,
     docRepo,
     showPreviewUseCase,
     generateAIPromptUseCase,
     commentService,
+    windowManager,
   );
   ipcHandler.setup();
+
+  // 4. Load the file AFTER everything is ready
+  await windowManager.loadMainFile();
 
   const menuManager = new MenuManager(() => {
     mainWindow.webContents.send("trigger-open-file");
   });
   menuManager.setup();
+
+  ipcHandler.onRecentFilesUpdated((files) => {
+    menuManager.refreshRecentFiles(files, (file) => {
+      ipcHandler.openFile(file);
+    });
+  });
 
   app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
