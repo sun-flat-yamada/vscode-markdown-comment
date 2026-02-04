@@ -355,6 +355,48 @@ table {
     font-weight: bold;
     font-size: 11px;
     text-transform: uppercase;
+    position: relative; /* For resizer positioning */
+
+    &.sortable {
+      cursor: pointer;
+      user-select: none;
+      &:hover {
+        background-color: var(--hover-bg);
+      }
+    }
+
+    &.dragging {
+      opacity: 0.5;
+      background-color: var(--hover-bg);
+    }
+
+    &.drag-over {
+      border-left: 2px solid var(--accent-color);
+    }
+  }
+
+  .sort-arrow {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 4px;
+    font-size: 10px;
+  }
+
+  .col-resizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 100;
+    /* Transparent by default, hover for visibility */
+    background-color: transparent;
+
+    &:hover,
+    &:active {
+      background-color: var(--accent-color);
+    }
   }
 
   td {
