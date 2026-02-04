@@ -207,22 +207,32 @@ interface InitialData {
   // Track selection for "Add Comment" feature
   document.addEventListener("selectionchange", () => {
     const selection = window.getSelection();
+    console.log("preview.ts: selectionchange", selection?.toString());
     if (selection && selection.rangeCount > 0) {
       const text = selection.toString().trim();
       if (text) {
-        // Get some context around the selection to help match in source
+        // Get context using global document ranges to handle element boundaries
         const range = selection.getRangeAt(0);
-        const container = range.commonAncestorContainer;
-        const parentText = container.textContent || "";
-        const startOffset = range.startOffset;
-        const contextBefore = parentText.substring(
-          Math.max(0, startOffset - 20),
-          startOffset,
-        );
-        const contextAfter = parentText.substring(
-          range.endOffset,
-          range.endOffset + 20,
-        );
+
+        // Context Before
+        const preRange = range.cloneRange();
+        preRange.selectNodeContents(document.body);
+        preRange.setEnd(range.startContainer, range.startOffset);
+        const preText = preRange.toString();
+        const contextBefore = preText.substring(preText.length - 20);
+
+        // Context After
+        const postRange = range.cloneRange();
+        postRange.selectNodeContents(document.body);
+        postRange.setStart(range.endContainer, range.endOffset);
+        const postText = postRange.toString();
+        const contextAfter = postText.substring(0, 20);
+
+        console.log("preview.ts: Captured Context (Global)", {
+          contextBefore,
+          contextAfter,
+          text,
+        });
 
         vscodeApi.postMessage({
           type: "selection",
