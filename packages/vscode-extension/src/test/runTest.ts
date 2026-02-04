@@ -12,6 +12,12 @@ async function main() {
     // Passed to --extensionTestsPath
     const extensionTestsPath = path.resolve(__dirname, "./suite/index");
 
+    // Move .vscode-test to out directory
+    process.env.VSCODE_TEST_BASE_DIR = path.resolve(
+      __dirname,
+      "../../.vscode-test",
+    );
+
     // Download VS Code, unzip it and run the integration test
     await runTests({ extensionDevelopmentPath, extensionTestsPath });
   } catch (err) {
