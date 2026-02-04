@@ -63,6 +63,9 @@ const bottomPanel = document.getElementById("bottom-panel") as HTMLDivElement;
 const tableBody = document.getElementById(
   "table-body",
 ) as HTMLTableSectionElement;
+const tableHead = document.querySelector(
+  "#comment-table thead",
+) as HTMLTableSectionElement;
 const addCommentBtn = document.getElementById(
   "add-comment-btn",
 ) as HTMLButtonElement;
@@ -113,6 +116,38 @@ let editTagsCommentId: string | null = null;
 let editTagsSelectedTags: Set<string> = new Set();
 let editTagsAvailableTags: string[] = [];
 let currentTheme: string = localStorage.getItem("theme") || "system";
+
+// Table State
+interface Column {
+  id: string;
+  label: string;
+  width: number;
+  minWidth: number;
+  sortable: boolean;
+}
+
+let columns: Column[] = [
+  { id: "status", label: "Status", width: 80, minWidth: 60, sortable: true },
+  { id: "author", label: "Author", width: 100, minWidth: 80, sortable: true },
+  { id: "tags", label: "Tags", width: 120, minWidth: 100, sortable: false },
+  {
+    id: "content",
+    label: "Content",
+    width: 300,
+    minWidth: 150,
+    sortable: true,
+  },
+  {
+    id: "actions",
+    label: "Actions",
+    width: 100,
+    minWidth: 80,
+    sortable: false,
+  },
+];
+
+let sortState = { columnId: "", direction: "asc" as "asc" | "desc" };
+let dragSrcColumnId: string | null = null;
 
 console.log("Renderer: Loaded (TS Mode)");
 
@@ -308,6 +343,8 @@ window.api.getWindowState().then((state: any) => {
     );
     bottomPanel.style.height = `${h}px`;
   }
+  // Initialize table header
+  renderTableHeader();
 });
 
 // Tab switching
@@ -594,49 +631,106 @@ function renderCommentsList(threads: any[]) {
 }
 
 function renderCommentTable(threads: any[]) {
-  if (!tableBody) return;
+  if (!tableBody || !tableHead) return;
+
+  // Render Header
+  renderTableHeader();
+
+  // Sort threads based on the *first* comment's property
+  let displayThreads = [...threads];
+  if (sortState.columnId) {
+    displayThreads.sort((a, b) => {
+      const comA = a.comments[0];
+      const comB = b.comments[0];
+      let valA, valB;
+
+      switch (sortState.columnId) {
+        case "status":
+          valA = comA.status || "";
+          valB = comB.status || "";
+          break;
+        case "author":
+          valA = comA.author || "";
+          valB = comB.author || "";
+          break;
+        case "content":
+          valA = comA.content || "";
+          valB = comB.content || "";
+          break;
+        default:
+          return 0;
+      }
+
+      const cmp = valA.localeCompare(valB);
+      return sortState.direction === "asc" ? cmp : -cmp;
+    });
+  }
+
   tableBody.innerHTML = "";
-  threads.forEach((thread) => {
+  displayThreads.forEach((thread) => {
     thread.comments.forEach((comment: any, index: number) => {
       const row = document.createElement("tr");
       row.className = index === 0 ? "thread-row" : "reply-row";
       row.setAttribute("data-thread-id", thread.id);
       row.setAttribute("data-comment-id", comment.id);
 
-      const statusHtml = comment.status
-        ? `
-        <select class="status-select status-${comment.status}" onchange="rendererUpdateStatus('${thread.id}', '${comment.id}', this.value)">
-          <option value="todo" ${comment.status === "todo" ? "selected" : ""}>TODO</option>
-          <option value="in_progress" ${comment.status === "in_progress" ? "selected" : ""}>Task</option>
-          <option value="done" ${comment.status === "done" ? "selected" : ""}>Done</option>
-        </select>
-      `
-        : "-";
+      // Construct row cells based on columns order
+      columns.forEach((col) => {
+        const td = document.createElement("td");
+        td.style.width = `${col.width}px`;
 
-      row.innerHTML = `
-        <td style="width: 80px">${statusHtml}</td>
-        <td style="width: 100px">${comment.author || "User"}</td>
-        <td class="tag-cell" style="width: 120px">${(comment.tags || []).join(", ") || "-"}</td>
-        <td class="content-cell">${comment.content}</td>
-        <td class="actions-cell" style="width: 100px">
-          <button class="icon-btn reply-btn" title="Reply">💬</button>
-          <button class="icon-btn tag-btn" title="Edit Tags">🏷️</button>
-          <button class="icon-btn delete-btn" title="Delete">🗑️</button>
-        </td>
-      `;
+        if (col.id === "status") {
+          const statusHtml = comment.status
+            ? `<select class="status-select status-${comment.status}" onchange="rendererUpdateStatus('${thread.id}', '${comment.id}', this.value)">
+                 <option value="todo" ${comment.status === "todo" ? "selected" : ""}>TODO</option>
+                 <option value="in_progress" ${comment.status === "in_progress" ? "selected" : ""}>Task</option>
+                 <option value="done" ${comment.status === "done" ? "selected" : ""}>Done</option>
+               </select>`
+            : "-";
+          td.innerHTML = statusHtml;
+        } else if (col.id === "author") {
+          td.innerText = comment.author || "User";
+        } else if (col.id === "tags") {
+          td.className = "tag-cell";
+          td.innerText = (comment.tags || []).join(", ") || "-";
+        } else if (col.id === "content") {
+          td.className = "content-cell";
+          td.innerText = comment.content;
+        } else if (col.id === "actions") {
+          td.className = "actions-cell";
+          td.innerHTML = `
+            <button class="icon-btn reply-btn" title="Reply">💬</button>
+            <button class="icon-btn tag-btn" title="Edit Tags">🏷️</button>
+            <button class="icon-btn delete-btn" title="Delete">🗑️</button>
+          `;
+          // Re-attach listeners
+          const replyBtn = td.querySelector(".reply-btn") as HTMLElement;
+          const tagBtn = td.querySelector(".tag-btn") as HTMLElement;
+          const deleteBtn = td.querySelector(".delete-btn") as HTMLElement;
 
-      (row.querySelector(".reply-btn") as HTMLElement).onclick = (e) => {
-        e.stopPropagation();
-        window.rendererReply(thread.id);
-      };
-      (row.querySelector(".tag-btn") as HTMLElement).onclick = (e) => {
-        e.stopPropagation();
-        window.rendererEditTags(thread.id, comment.id, comment.tags || []);
-      };
-      (row.querySelector(".delete-btn") as HTMLElement).onclick = (e) => {
-        e.stopPropagation();
-        window.rendererDeleteComment(thread.id, comment.id);
-      };
+          if (replyBtn)
+            replyBtn.onclick = (e) => {
+              e.stopPropagation();
+              window.rendererReply(thread.id);
+            };
+          if (tagBtn)
+            tagBtn.onclick = (e) => {
+              e.stopPropagation();
+              window.rendererEditTags(
+                thread.id,
+                comment.id,
+                comment.tags || [],
+              );
+            };
+          if (deleteBtn)
+            deleteBtn.onclick = (e) => {
+              e.stopPropagation();
+              window.rendererDeleteComment(thread.id, comment.id);
+            };
+        }
+
+        row.appendChild(td);
+      });
 
       row.onclick = (e: any) => {
         if (!e.target.closest("select") && !e.target.closest("button")) {
@@ -647,6 +741,167 @@ function renderCommentTable(threads: any[]) {
       tableBody.appendChild(row);
     });
   });
+}
+
+function renderTableHeader() {
+  if (!tableHead) return;
+  tableHead.innerHTML = "";
+  const tr = document.createElement("tr");
+
+  columns.forEach((col, index) => {
+    const th = document.createElement("th");
+    th.style.width = `${col.width}px`;
+    th.dataset.columnId = col.id;
+    th.draggable = true; // Enable drag
+
+    // Header Content
+    const contentSpan = document.createElement("span");
+    contentSpan.innerText = col.label;
+    th.appendChild(contentSpan);
+
+    // Sort Indicator
+    if (col.sortable) {
+      th.classList.add("sortable");
+      if (sortState.columnId === col.id) {
+        const arrow = document.createElement("span");
+        arrow.className = "sort-arrow";
+        arrow.innerText = sortState.direction === "asc" ? " ▲" : " ▼";
+        th.appendChild(arrow);
+      }
+      th.onclick = (e) => {
+        // Ignore if clicked on resizer
+        if ((e.target as HTMLElement).classList.contains("col-resizer")) return;
+        handleSort(col.id);
+      };
+    }
+
+    // Resize Handle
+    const resizer = document.createElement("div");
+    resizer.className = "col-resizer";
+    // Mousedown for resize
+    resizer.onmousedown = (e) => initResize(e, col);
+    th.appendChild(resizer);
+
+    // Drag Events
+    th.ondragstart = (e) => {
+      dragSrcColumnId = col.id;
+      if (e.dataTransfer) {
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", col.id);
+      }
+      th.classList.add("dragging");
+    };
+
+    th.ondragover = (e) => {
+      e.preventDefault(); // Necessary for allow drop
+      if (e.dataTransfer) {
+        e.dataTransfer.dropEffect = "move";
+      }
+      th.classList.add("drag-over");
+    };
+
+    th.ondragleave = (e) => {
+      th.classList.remove("drag-over");
+    };
+
+    th.ondrop = (e) => {
+      e.preventDefault();
+      th.classList.remove("drag-over");
+      if (dragSrcColumnId && dragSrcColumnId !== col.id) {
+        handleDrop(dragSrcColumnId, col.id);
+      }
+      // Cleanup dragging class from all th
+      const allTh = tableHead.querySelectorAll("th");
+      allTh.forEach((t) => t.classList.remove("dragging"));
+    };
+
+    th.ondragend = (e) => {
+      const allTh = tableHead.querySelectorAll("th");
+      allTh.forEach((t) => {
+        t.classList.remove("dragging");
+        t.classList.remove("drag-over");
+      });
+    };
+
+    tr.appendChild(th);
+  });
+
+  tableHead.appendChild(tr);
+}
+
+function handleSort(columnId: string) {
+  if (sortState.columnId === columnId) {
+    // Toggle direction
+    sortState.direction = sortState.direction === "asc" ? "desc" : "asc";
+  } else {
+    sortState.columnId = columnId;
+    sortState.direction = "asc";
+  }
+  // Re-render
+  if (currentThreads) {
+    renderCommentTable(currentThreads);
+  }
+}
+
+function handleDrop(srcId: string, targetId: string) {
+  const srcIdx = columns.findIndex((c) => c.id === srcId);
+  const targetIdx = columns.findIndex((c) => c.id === targetId);
+
+  if (srcIdx >= 0 && targetIdx >= 0) {
+    const [movedCol] = columns.splice(srcIdx, 1);
+    columns.splice(targetIdx, 0, movedCol);
+    // Re-render
+    if (currentThreads) {
+      renderCommentTable(currentThreads);
+    }
+  }
+}
+
+function initResize(e: MouseEvent, col: Column) {
+  e.preventDefault(); // Prevent text selection
+  const startX = e.clientX;
+  const startWidth = col.width;
+
+  const onMouseMove = (moveEvent: MouseEvent) => {
+    const diff = moveEvent.clientX - startX;
+    let newWidth = startWidth + diff;
+    if (newWidth < col.minWidth) newWidth = col.minWidth;
+    col.width = newWidth;
+
+    // Update width directly for performance, or re-render
+    updateColumnWidth(col.id, newWidth);
+  };
+
+  const onMouseUp = () => {
+    window.removeEventListener("mousemove", onMouseMove);
+    window.removeEventListener("mouseup", onMouseUp);
+  };
+
+  window.addEventListener("mousemove", onMouseMove);
+  window.addEventListener("mouseup", onMouseUp);
+}
+
+function updateColumnWidth(colId: string, width: number) {
+  // Find the index of the column
+  const index = columns.findIndex((c) => c.id === colId);
+  if (index === -1) return;
+
+  // Update Header
+  if (tableHead) {
+    const th = tableHead.querySelector(
+      `th[data-column-id="${colId}"]`,
+    ) as HTMLElement;
+    if (th) th.style.width = `${width}px`;
+  }
+
+  // Update Body Cells
+  if (tableBody) {
+    const rows = tableBody.querySelectorAll("tr");
+    rows.forEach((row) => {
+      const cell = row.children[index] as HTMLElement;
+      if (cell) cell.style.width = `${width}px`;
+    });
+  }
 }
 
 window.rendererReply = (threadId: string) => {
