@@ -1,4 +1,4 @@
-import { BrowserWindow, app } from "electron";
+import { BrowserWindow, app, shell } from "electron";
 import * as path from "path";
 import * as fs from "fs/promises";
 
@@ -7,6 +7,8 @@ export interface WindowState {
   height: number;
   x?: number;
   y?: number;
+  sidebarWidth?: number;
+  panelHeight?: number;
 }
 
 export class WindowManager {
@@ -32,17 +34,33 @@ export class WindowManager {
       },
     });
 
+    // Handle external links
+    this.window.webContents.setWindowOpenHandler(({ url }) => {
+      if (url.startsWith("http:") || url.startsWith("https:")) {
+        shell.openExternal(url);
+        return { action: "deny" };
+      }
+      return { action: "allow" };
+    });
+
     this.window.on("close", () => {
       this.saveState();
     });
 
-    await this.window.loadFile(path.join(__dirname, "../../index.html"));
-
     return this.window;
+  }
+
+  async loadMainFile(): Promise<void> {
+    if (!this.window) return;
+    await this.window.loadFile(path.join(__dirname, "../../index.html"));
   }
 
   getWindow(): BrowserWindow | null {
     return this.window;
+  }
+
+  async getWindowState(): Promise<WindowState> {
+    return await this.loadState();
   }
 
   private async loadState(): Promise<WindowState> {
@@ -54,19 +72,29 @@ export class WindowManager {
     }
   }
 
-  private async saveState(): Promise<void> {
+  private async saveState(extraState?: Partial<WindowState>): Promise<void> {
     if (!this.window) return;
     const bounds = this.window.getBounds();
+    const currentState = await this.loadState();
     const state: WindowState = {
+      ...currentState,
       width: bounds.width,
       height: bounds.height,
       x: bounds.x,
       y: bounds.y,
+      ...extraState,
     };
     try {
       await fs.writeFile(this.statePath, JSON.stringify(state));
     } catch (e) {
       console.error("Failed to save window state", e);
     }
+  }
+
+  async updateLayoutSettings(settings: {
+    sidebarWidth?: number;
+    panelHeight?: number;
+  }): Promise<void> {
+    await this.saveState(settings);
   }
 }

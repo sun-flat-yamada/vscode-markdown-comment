@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "outDir": "dist/renderer",
+    "rootDir": "src/renderer",
+    "lib": ["es2020", "dom"],
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "include": ["src/renderer/**/*"],
+  "exclude": ["node_modules", "dist", "dist-app", "tests"]
+}

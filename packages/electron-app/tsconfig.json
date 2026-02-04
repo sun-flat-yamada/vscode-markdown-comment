@@ -9,5 +9,12 @@
     "strict": true,
     "esModuleInterop": true
   },
-  "exclude": ["node_modules", "dist", "tests", "playwright.config.ts"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "dist-app",
+    "tests",
+    "playwright.config.ts",
+    "src/renderer/**/*"
+  ]
 }

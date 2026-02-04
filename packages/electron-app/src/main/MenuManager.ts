@@ -1,6 +1,8 @@
 import { Menu, MenuItemConstructorOptions, app, shell } from "electron";
 
 export class MenuManager {
+  private recentFiles: string[] = [];
+
   constructor(private onOpenFile: () => void) {}
 
   setup(): void {
@@ -12,6 +14,10 @@ export class MenuManager {
             label: "Open File...",
             accelerator: "CmdOrCtrl+O",
             click: () => this.onOpenFile(),
+          },
+          {
+            label: "Open Recent",
+            submenu: [],
           },
           { type: "separator" },
           { role: "quit" },
@@ -54,6 +60,67 @@ export class MenuManager {
               );
             },
           },
+        ],
+      },
+    ];
+
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
+  }
+
+  refreshRecentFiles(
+    files: string[],
+    onOpenSpecific: (file: string) => void,
+  ): void {
+    this.recentFiles = files;
+
+    // Rebuild the whole menu to reflect recent files reliably
+    const template: any[] = [
+      {
+        label: "File",
+        submenu: [
+          {
+            label: "Open File...",
+            accelerator: "CmdOrCtrl+O",
+            click: () => this.onOpenFile(),
+          },
+          {
+            label: "Open Recent",
+            submenu:
+              files.length === 0
+                ? [{ label: "No Recent Files", enabled: false }]
+                : files.map((file) => ({
+                    label: file,
+                    click: () => onOpenSpecific(file),
+                  })),
+          },
+          { type: "separator" },
+          { role: "quit" },
+        ],
+      },
+      {
+        label: "Edit",
+        submenu: [
+          { role: "undo" },
+          { role: "redo" },
+          { type: "separator" },
+          { role: "cut" },
+          { role: "copy" },
+          { role: "paste" },
+        ],
+      },
+      {
+        label: "View",
+        submenu: [
+          { role: "reload" },
+          { role: "forceReload" },
+          { role: "toggleDevTools" },
+          { type: "separator" },
+          { role: "resetZoom" },
+          { role: "zoomIn" },
+          { role: "zoomOut" },
+          { type: "separator" },
+          { role: "togglefullscreen" },
         ],
       },
     ];
