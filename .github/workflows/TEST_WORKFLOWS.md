@@ -75,14 +75,24 @@ cd v:\repos\sun.flat.yamada\vscode-markdown-comment
 # 1. 依存関係のインストール
 npm ci
 
-# 2. コンパイル
+# 2. コンパイル (Workspaces: Core & Extension)
 npm run compile
 
-# 3. Lint
+# 3. Lint (Workspaces: Extension)
 npm run lint
 
-# 4. テスト
+# 4. テスト (Workspaces: Core Unit & Extension Integration)
 npm test
+
+# 5. Electron E2E テスト (Workspaces: Electron App)
+# 依存関係のインストール (初回のみ)
+npx playwright install --with-deps
+
+# ビルド
+npm run build -w packages/electron-app
+
+# テスト実行
+npm run test:e2e -w packages/electron-app
 ```
 
 ### Deploy ワークフローの手動テスト
