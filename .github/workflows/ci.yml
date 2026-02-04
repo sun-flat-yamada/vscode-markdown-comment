@@ -7,18 +7,74 @@ on:
   pull_request:
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: "npm"
       - run: npm ci
-      - run: npm run compile
-      - run: npm run lint
-      - run: npm test
-        if: runner.os != 'Linux' # VS Code extension tests can be flaky on Linux in CI sometimes
+      - run: npm run lint -w packages/vscode-extension
+
+  test-core:
+    name: Test Core
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build -w packages/core
+      - run: npm test -w packages/core
+
+  test-extension:
+    name: Test Extension (${{ matrix.os }})
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci
+      - run: npm run compile -w packages/vscode-extension
+      - name: Run Integration Tests
+        run: npm run test:integration -w packages/vscode-extension
+
+  test-electron:
+    name: Test Electron App (${{ matrix.os }})
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+        working-directory: packages/electron-app
+
+      - run: npm run build -w packages/electron-app
+
+      - name: Run E2E Tests (Windows)
+        if: runner.os == 'Windows'
+        run: npm run test:e2e -w packages/electron-app
+
+      - name: Run E2E Tests (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" npm run test:e2e -w packages/electron-app

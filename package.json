@@ -5,9 +5,11 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "npm test --workspaces",
+    "compile": "npm run build -w packages/core && npm run compile -w packages/vscode-extension",
+    "lint": "npm run lint -w packages/vscode-extension",
+    "test": "npm test --workspaces --if-present",
     "dev:electron": "concurrently \"npm run watch -w packages/core\" \"npm run watch -w packages/electron-app\" \"wait-on packages/electron-app/dist/main.js && npm start -w packages/electron-app\"",
-    "build:all": "npm run build --workspaces",
+    "build:all": "npm run build --workspaces --if-present",
     "compile:extension": "npm run compile -w packages/vscode-extension"
   },
   "devDependencies": {
