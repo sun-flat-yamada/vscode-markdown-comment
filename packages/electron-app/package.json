@@ -4,8 +4,14 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "electron .",
-    "watch": "tsc -w",
-    "build": "tsc",
+    "build-main": "tsc",
+    "build-renderer": "tsc -p tsconfig.renderer.json",
+    "build-sass": "sass src/renderer/app.scss dist/renderer/app.css",
+    "build": "npm run build-main && npm run build-renderer && npm run build-sass",
+    "watch-main": "tsc -w",
+    "watch-renderer": "tsc -p tsconfig.renderer.json -w",
+    "watch-sass": "sass --watch src/renderer/app.scss dist/renderer/app.css",
+    "watch": "concurrently \"npm run watch-main\" \"npm run watch-renderer\" \"npm run watch-sass\"",
     "test:e2e": "playwright test",
     "package": "electron-builder"
   },
@@ -15,9 +21,11 @@
   "devDependencies": {
     "@playwright/test": "^1.58.1",
     "@types/node": "^20.2.5",
+    "concurrently": "^9.2.1",
     "electron": "^28.0.0",
     "electron-builder": "^24.9.1",
     "playwright-electron": "^0.5.0",
+    "sass": "^1.97.3",
     "typescript": "^5.3.0"
   },
   "build": {

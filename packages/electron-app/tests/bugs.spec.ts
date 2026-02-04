@@ -171,15 +171,39 @@ test.describe("Electron-app Bug Detection", () => {
     await expect(printBtn).toBeVisible();
   });
 
-  // Bug 1: Tag Edit Button
-  test("8. Tag edit button should exist", async () => {
+  // Bug 1: Tag Edit Button - now tests full functionality with QuickPick UI
+  test("8. Tag edit button should work with custom modal", async () => {
     // Add a comment to ensure we have a row
     await window.click("#add-comment-btn");
     await window.fill("#comment-input", "Tag test comment");
     await window.click("#save-comment-btn");
 
+    // Wait for table row
     const tagBtn = window.locator(".tag-btn").first();
     await expect(tagBtn).toBeVisible();
+
+    // Click tag button - should open custom QuickPick-style modal
+    await tagBtn.click();
+    await expect(window.locator("#edit-tags-overlay")).toBeVisible();
+
+    // Type a new tag in the filter input - should show "Create new tag" option
+    await window.fill("#tags-filter-input", "new-test-tag");
+    await expect(window.locator(".create-tag")).toBeVisible();
+
+    // Press Enter to create (simulate keyboard usage)
+    await window.press("#tags-filter-input", "Enter");
+
+    // The tag should now appear in the list with checkbox checked
+    await expect(window.locator(".tag-item input:checked")).toBeVisible();
+
+    // Save
+    await window.click("#save-tags-btn");
+    await expect(window.locator("#edit-tags-overlay")).not.toBeVisible();
+
+    // Verify tags are displayed in table
+    await expect(window.locator(".tag-cell").first()).toContainText(
+      "new-test-tag",
+    );
   });
 
   // Bug 2: Internal Sidebar Hidden

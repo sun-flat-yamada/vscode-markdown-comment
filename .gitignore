@@ -9,12 +9,31 @@ Thumbs.db
 node_modules
 
 # Output
+_out/
 out
 dist
 result*.txt
 result*.json
 test_output*
 *output.txt
+
+# Temporary output
+
+# Playwright
+**/test-results/
+**/test-results-actions/
+**/playwright-report/
+**/.last-run.json
+
+# Test temp files
+**/tests/_temp/
+**/tests/failure-*/
+**/tests/*.meta.json
+
+# Archive
+*.zip
+*.gzip
+*.tar.gz
 
 # VSIX
 *.vsix
