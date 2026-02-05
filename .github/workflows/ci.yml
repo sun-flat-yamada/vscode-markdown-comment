@@ -46,6 +46,7 @@ jobs:
           node-version: 20
           cache: "npm"
       - run: npm ci
+      - run: npm run build -w packages/core
       - run: npm run compile -w packages/vscode-extension
       - name: Run Integration Tests
         run: npm run test:integration -w packages/vscode-extension
@@ -69,6 +70,7 @@ jobs:
         run: npx playwright install --with-deps
         working-directory: packages/electron-app
 
+      - run: npm run build -w packages/core
       - run: npm run build -w packages/electron-app
 
       - name: Run E2E Tests (Windows)
