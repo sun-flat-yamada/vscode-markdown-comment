@@ -4,3 +4,4 @@ export * from "./Constants";
 export * from "./ICommentRepository";
 export * from "./IDocumentRepository";
 export * from "./MarkdownDocument";
+export * from "./AnnotationService";

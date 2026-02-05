@@ -6,6 +6,8 @@
   ondragleave="handleDragLeave(event)"
   ondrop="handleDrop(event)"
 >
-  <div class="header-content">{{LABEL}}</div>
+  <div class="header-content" onclick="handleSort('{{COL}}')">
+    {{LABEL}} <span class="sort-arrow">{{SORT_INDICATOR}}</span>
+  </div>
   <div class="resizer" onmousedown="startResizing(event, '{{COL}}')"></div>
 </th>
