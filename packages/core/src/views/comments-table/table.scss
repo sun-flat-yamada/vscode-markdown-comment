@@ -11,8 +11,13 @@ body {
 table {
   width: max-content;
   min-width: 100%;
-  border-collapse: collapse;
   table-layout: fixed;
+}
+.sort-arrow {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 4px;
+  font-size: 0.8em;
 }
 th {
   text-align: left;
@@ -69,7 +74,8 @@ tr.selected-row {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  pointer-events: none;
+  white-space: nowrap;
+  cursor: pointer;
 }
 .tag {
   background: var(--vscode-badge-background);

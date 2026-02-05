@@ -10,6 +10,7 @@ import {
   MARKDOWN_EXTENSION,
 } from "../index";
 import { MarkdownDocument } from "../domain/MarkdownDocument";
+import { AnnotationService } from "../domain/AnnotationService";
 
 class MockDocumentRepository implements IDocumentRepository {
   public document: MarkdownDocument | null = null;
@@ -92,6 +93,7 @@ suite("ShowPreviewUseCase", () => {
           variables: any,
         ) => variables.VALUE || "",
       } as any,
+      new AnnotationService(),
     );
   });
 

@@ -42,7 +42,9 @@ window.addEventListener("message", (event) => {
       );
       if (targetRow) {
         targetRow.classList.add("selected-row");
-        targetRow.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        setTimeout(() => {
+          targetRow.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 50);
       }
       break;
   }
@@ -221,3 +223,8 @@ document.addEventListener("dragend", () => {
     th.classList.remove("drag-over");
   });
 });
+
+(window as any).handleSort = function (col: string) {
+  if (isResizing) return; // Prevent sort when resizing
+  vscode.postMessage({ type: "sort", column: col });
+};
