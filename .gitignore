@@ -16,6 +16,9 @@ result*.txt
 result*.json
 test_output*
 *output.txt
+*output_*.txt
+failure-*
+*failure*.txt
 
 # Temporary output
 

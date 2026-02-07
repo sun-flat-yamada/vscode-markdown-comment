@@ -1,3 +1,12 @@
+/**
+ * @file preload.ts
+ * @description ElectronのPreloadスクリプト。
+ * レンダラープロセスに対して、安全なAPI（`window.api`）を公開する。
+ *
+ * 【責務】
+ * - `contextBridge` を使用して、メインプロセスの機能へのアクセスを提供。
+ * - セキュリティ境界の維持（Node.js APIを直接レンダラーに露出させない）。
+ */
 import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("api", {
@@ -29,4 +38,5 @@ contextBridge.exposeInMainWorld("api", {
   getWindowState: () => ipcRenderer.invoke("get-window-state"),
   onTriggerAddComment: (callback: any) =>
     ipcRenderer.on("trigger-add-comment", () => callback()),
+  openExternal: (url: string) => ipcRenderer.invoke("open-external", url),
 });

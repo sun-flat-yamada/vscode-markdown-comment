@@ -89,6 +89,10 @@ graph TD
 6. **Anchoring & Selection**:
     - **Context Matching**: Selection data in the preview includes surrounding text (contextBefore/After) to ensure precise anchor placement in the Markdown source, even when duplicate text exists.
 7. **Check .cursorrules**: It contains specific coding standards for this repo.
+8. **E2E Testing Strategy**:
+    - Use `packages/electron-app/tests/utils/test_helper.ts` for consistent Electron app launching and console capture.
+    - Tests must pass in both Windows (local) and Linux (DevContainer/CI) environments.
+    - Screenshots on failure are saved to `packages/electron-app/tests/` with sanitized filenames.
 
 ## Agent Configuration (`.agent/`)
 

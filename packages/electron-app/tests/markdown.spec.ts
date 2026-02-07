@@ -1,7 +1,12 @@
-import { _electron as electron } from "playwright";
 import { test, expect } from "@playwright/test";
 import * as path from "path";
 import * as fs from "fs/promises";
+import {
+  launchApp,
+  checkCriticalErrors,
+  closeApp,
+  resetConsoleErrors,
+} from "./utils/test_helper";
 
 test.describe("Markdown Operations", () => {
   let electronApp: any;
@@ -13,36 +18,61 @@ test.describe("Markdown Operations", () => {
       testFilePath,
       "# Test Document\n\nThis is a test markdown file.",
     );
+
+    // Launch app ONCE
+    const launched = await launchApp();
+    electronApp = launched.app;
+    window = launched.window;
   });
 
   test.afterAll(async () => {
+    // Close app ONCE
+    await closeApp(electronApp);
+
     try {
       await fs.unlink(testFilePath);
     } catch (e) {}
   });
 
   test.beforeEach(async () => {
-    electronApp = await electron.launch({
-      args: [path.join(__dirname, "../dist/main.js")],
-    });
-    window = await electronApp.firstWindow();
+    resetConsoleErrors(window);
+    await window.reload();
+
+    try {
+      await window.waitForEvent("console", {
+        predicate: (msg: any) => msg.text().includes("RENDERER_READY"),
+        timeout: 5000,
+      });
+    } catch (e) {
+      console.warn("Reload: RENDERER_READY not received, proceeding...");
+    }
+
+    // Load file after reload
+    await window.evaluate(async (path: string) => {
+      await (window as any).api.openFileSpecific(path);
+    }, testFilePath);
   });
 
   test.afterEach(async () => {
-    await electronApp.close();
+    await checkCriticalErrors(window);
   });
 
   test("render markdown and add comment", async () => {
-    // Open the test file via IPC mock or direct UI interaction if possible
-    // Since we don't want to trigger native dialog, we'll use a hidden way or mock
-    // For now, let's use openFileSpecific via console since it's exposed in preload
-    await window.evaluate((path: string) => {
-      (window as any).api.openFileSpecific(path);
+    await window.evaluate(async (path: string) => {
+      await (window as any).api.openFileSpecific(path);
     }, testFilePath);
 
     // Check preview content
     const previewFrame = window.frameLocator("#preview-frame");
-    await expect(previewFrame.locator("h1")).toHaveText("Test Document");
+    // Wait for the h1 within the frame - increased timeout for CI
+    const h1 = previewFrame.locator("h1");
+    await h1.waitFor({ state: "visible", timeout: 30000 });
+    await expect(h1).toHaveText("Test Document");
+
+    // Ensure the toolbar is also ready
+    await window
+      .locator("#preview-toolbar")
+      .waitFor({ state: "visible", timeout: 10000 });
 
     // Add comment
     await window.click("#add-comment-btn");
@@ -64,9 +94,20 @@ test.describe("Markdown Operations", () => {
   });
 
   test("generate AI prompt", async () => {
-    await window.evaluate((path: string) => {
-      (window as any).api.openFileSpecific(path);
+    await window.evaluate(async (path: string) => {
+      await (window as any).api.openFileSpecific(path);
     }, testFilePath);
+
+    // Wait for render before clicking buttons
+    const previewFrame = window.frameLocator("#preview-frame");
+    await previewFrame
+      .locator("body")
+      .waitFor({ state: "visible", timeout: 30000 });
+
+    // Wait for UI toolbar
+    await window
+      .locator("#preview-toolbar")
+      .waitFor({ state: "visible", timeout: 10000 });
 
     // Add a comment first
     await window.click("#add-comment-btn");

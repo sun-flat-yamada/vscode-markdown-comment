@@ -10,6 +10,7 @@ import {
   ViewBuilder,
   FileSystemViewResourceProvider,
   GenerateAIPromptUseCase,
+  AnnotationService,
 } from "@markdown-comment/core";
 import { AnalyzeDocumentController } from "./interface/AnalyzeDocumentController";
 import { PreviewController } from "./interface/PreviewController";
@@ -48,11 +49,14 @@ export function activate(context: vscode.ExtensionContext) {
   const viewResourceProvider = new FileSystemViewResourceProvider(viewsPath);
   const viewBuilder = new ViewBuilder(viewResourceProvider);
 
+  const annotationService = new AnnotationService();
+
   const showPreviewUseCase = new ShowPreviewUseCase(
     documentRepository,
     previewPresenter,
     commentService,
     viewBuilder,
+    annotationService,
   );
   const generateAIPromptUseCase = new GenerateAIPromptUseCase();
   const previewController = new PreviewController(showPreviewUseCase);
@@ -123,8 +127,11 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   previewPresenter.onDidClickComment(async (threadId, commentId) => {
-    await commentController.revealThread(threadId);
+    // Reveal in Editor (may trigger Native Panel)
+    await commentController.revealThread(threadId, undefined, false);
+
     // When clicking a thread in preview, select its specific comment in the table
+
     if (commentId) {
       commentsWebviewProvider.selectComment(threadId, commentId);
     } else {
@@ -158,7 +165,17 @@ export function activate(context: vscode.ExtensionContext) {
   let revealCommentFromTreeDisposable = vscode.commands.registerCommand(
     "markdown-comment.revealCommentFromTable",
     async (threadId: string, filePath: string) => {
-      await commentController.revealThread(threadId, filePath);
+      // Reveal in Editor but DON'T switch focus to native Comments panel
+      await commentController.revealThread(threadId, filePath, false);
+      // Explicitly bring focus back to our Table view
+      await vscode.commands.executeCommand("markdown-comment.comments.focus");
+    },
+  );
+
+  let showCommentTableDisposable = vscode.commands.registerCommand(
+    "markdown-comment.showCommentTable",
+    async () => {
+      await vscode.commands.executeCommand("markdown-comment.comments.focus");
     },
   );
 
@@ -254,6 +271,21 @@ export function activate(context: vscode.ExtensionContext) {
     },
   );
 
+  let configChangeDisposable = vscode.workspace.onDidChangeConfiguration(
+    async (e) => {
+      if (e.affectsConfiguration("markdownComment.commentsTable")) {
+        // Refresh table if columns or widths changed
+        const editor = vscode.window.activeTextEditor;
+        if (editor && editor.document.languageId === "markdown") {
+          await commentsWebviewProvider.refresh(
+            editor.document.uri.fsPath,
+            editor.document.getText(),
+          );
+        }
+      }
+    },
+  );
+
   // Initial refresh
   if (vscode.window.activeTextEditor) {
     const editor = vscode.window.activeTextEditor;
@@ -274,7 +306,10 @@ export function activate(context: vscode.ExtensionContext) {
     changeDisposable,
     editorChangeDisposable,
     selectionChangeDisposable,
+    configChangeDisposable,
     revealCommentFromTreeDisposable,
+    showCommentTableDisposable,
+
     vscode.commands.registerCommand(
       "markdown-comment.generateAIPrompt",
       async () => {
@@ -318,9 +353,6 @@ export function activate(context: vscode.ExtensionContext) {
         await vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside);
       },
     ),
-    vscode.commands.registerCommand("markdown-comment.showCommentTable", () => {
-      vscode.commands.executeCommand(`${COMMENTS_VIEW_ID}.focus`);
-    }),
   );
 }
 

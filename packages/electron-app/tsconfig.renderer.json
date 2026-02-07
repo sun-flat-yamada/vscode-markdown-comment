@@ -4,12 +4,12 @@
     "module": "esnext",
     "moduleResolution": "node",
     "target": "es2020",
-    "outDir": "dist/renderer",
-    "rootDir": "src/renderer",
+    "outDir": "dist/esm",
+    "rootDir": "src",
     "lib": ["es2020", "dom"],
     "strict": true,
     "esModuleInterop": true
   },
-  "include": ["src/renderer/**/*"],
+  "include": ["src/renderer/**/*", "src/infrastructure/**/*"],
   "exclude": ["node_modules", "dist", "dist-app", "tests"]
 }

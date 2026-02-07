@@ -58,7 +58,8 @@ While Markdown files are increasingly used for documentation and AI interactions
 ## 💡 Commenting Highlights
 
 - **Tagging**: Categorize comments with custom tags (manage via QuickPick).
-- **Column Reordering**: Organize your view by dragging and dropping table headers.
+- **Table Enhancements**: Resize columns, drag-and-drop to reorder, and click headers to sort comments.
+
 - **Threading**: Post unlimited replies to create focused discussion threads.
 - **Status Tracking**: Mark comments as Open, Resolved, etc., to track progress.
 - **Rich Tooltips**: Hover over any highlighted text in the preview to see the original comment and its author instantly.
@@ -121,3 +122,10 @@ Contributions are welcome! If you find this extension useful, please consider su
 2. `npm run compile`
 3. `npm run test:e2e -w packages/electron-app` (to run Electron E2E tests)
 4. `F5` to debug
+
+### Development with DevContainer
+This repository supports DevContainers for a consistent development environment.
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and [VS Code Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
+2. Open the project in VS Code.
+3. Run `Dev Containers: Reopen in Container`.
+4. The environment includes Node.js and all dependencies for Electron/Playwright.
