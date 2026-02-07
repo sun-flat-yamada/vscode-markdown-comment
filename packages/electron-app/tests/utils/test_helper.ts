@@ -136,14 +136,23 @@ export async function closeApp(app: ElectronApplication) {
 
   if (pid) {
     await new Promise<void>((resolve) => {
-      if (typeof treeKill === "function") {
-        treeKill(pid, "SIGKILL", (err) => {
+      // Handle CommonJS/ESM interop for tree-kill
+      let killFunc = treeKill;
+      if (typeof killFunc !== "function" && (killFunc as any).default) {
+        killFunc = (killFunc as any).default;
+      }
+
+      if (typeof killFunc === "function") {
+        killFunc(pid, "SIGKILL", (err) => {
           if (err) console.error(`[closeApp] tree-kill error:`, err);
           else console.log(`[closeApp] tree-kill success`);
           resolve();
         });
       } else {
-        console.warn("[closeApp] treeKill not function, using process.kill");
+        console.warn(
+          `[closeApp] treeKill is not a function (type: ${typeof treeKill}), using process.kill fallback.`,
+        );
+        console.log(`[closeApp] treeKill value:`, treeKill);
         try {
           process.kill(pid, "SIGKILL");
         } catch (e) {
