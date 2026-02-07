@@ -156,6 +156,7 @@ export class VSCodeCommentController {
   public async revealThread(
     threadId: string,
     filePathHint?: string,
+    focusNativePanel: boolean = false,
   ): Promise<void> {
     let vscodeThread = this.threads.get(threadId);
 
@@ -172,27 +173,31 @@ export class VSCodeCommentController {
       const editor = await this.showDocumentSafely(vscodeThread.uri);
 
       if (editor && vscodeThread.range) {
-        // Step 2: Manually manage collapsible state for all threads in this URI
-        for (const t of this.threads.values()) {
-          if (t.uri.toString() === vscodeThread.uri.toString()) {
-            t.collapsibleState =
-              t === vscodeThread
-                ? vscode.CommentThreadCollapsibleState.Expanded
-                : vscode.CommentThreadCollapsibleState.Collapsed;
-          }
-        }
+        // Step 2: Ensure target thread is expanded
+        vscodeThread.collapsibleState =
+          vscode.CommentThreadCollapsibleState.Expanded;
 
         // Step 3: Reveal the range (scroll into view) and move cursor
         // We use a longer delay (200ms) to ensure layout settling after multiple expand/collapse events.
         // Also explicitly move the selection (cursor) to prevent VSCode from auto-scrolling back to the old cursor.
         const revealRange = vscodeThread.range;
         setTimeout(() => {
-          if (editor.document.isClosed) return;
+          if (editor.document.isClosed) {
+            return;
+          }
           editor.revealRange(revealRange, vscode.TextEditorRevealType.InCenter);
           editor.selection = new vscode.Selection(
             revealRange.start,
             revealRange.start,
           );
+          if (focusNativePanel) {
+            // Wait for the Comments Panel to sync with the new cursor position
+            setTimeout(() => {
+              vscode.commands.executeCommand(
+                "workbench.action.focusCommentsPanel",
+              );
+            }, 100);
+          }
         }, 200);
       }
     }

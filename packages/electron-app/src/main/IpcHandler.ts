@@ -1,14 +1,9 @@
-import {
-  ipcMain,
-  dialog,
-  BrowserWindow,
-  app,
-  Menu,
-  MenuItem,
-  shell,
-} from "electron";
-import * as path from "path";
-import * as fs from "fs/promises";
+/**
+ * @file IpcHandler.ts
+ * @description メインプロセスのIPC通信ハンドラー。
+ * レンダラープロセスからの要求を受け取り、ドメインロジック（UseCase/Service）を実行して結果を返す。
+ */
+import { ipcMain, dialog, BrowserWindow, app, Menu, shell } from "electron";
 import {
   ShowPreviewUseCase,
   GenerateAIPromptUseCase,
@@ -16,11 +11,24 @@ import {
 } from "@markdown-comment/core";
 import { ElectronDocumentRepository } from "../infrastructure/ElectronDocumentRepository";
 import { WindowManager } from "./WindowManager";
+import { ElectronRecentFilesRepository } from "../infrastructure/repositories/ElectronRecentFilesRepository";
+import { TextSearchService } from "../domain/services/TextSearchService";
 
+/**
+ * @class IpcHandler
+ * @description IPC通信処理を一元管理するクラス。
+ *
+ * 【責務】
+ * - `ipcMain` イベントリスナーの登録。
+ * - レンダラーからの呼び出しを適切なサービス/ユースケースに委譲。
+ * - 実行結果またはエラーの返却。
+ *
+ * 【実装メカニズム】
+ * - コンストラクタで必要なユースケース・サービスを受け取る（依存性注入）。
+ * - `setup()` メソッドで `ipcMain.handle` および `ipcMain.on` を定義する。
+ * - `open-file`, `add-comment` などのアクションに対応する処理を実装。
+ */
 export class IpcHandler {
-  private recentFilesPath: string;
-  private recentFilesCallback?: (files: string[]) => void;
-
   constructor(
     private window: BrowserWindow,
     private docRepo: ElectronDocumentRepository,
@@ -28,12 +36,9 @@ export class IpcHandler {
     private generateAIPromptUseCase: GenerateAIPromptUseCase,
     private commentService: CommentService,
     private windowManager: WindowManager,
-  ) {
-    this.recentFilesPath = path.join(
-      app.getPath("userData"),
-      "recent-files.json",
-    );
-  }
+    private recentFilesRepo: ElectronRecentFilesRepository,
+    private textSearchService: TextSearchService,
+  ) {}
 
   setup(): void {
     console.log("IpcHandler: Registering handlers...");
@@ -55,7 +60,7 @@ export class IpcHandler {
     });
 
     ipcMain.handle("get-recent-files", async () => {
-      return await this.loadRecentFiles();
+      return await this.recentFilesRepo.load();
     });
 
     ipcMain.handle("generate-ai-prompt", async () => {
@@ -88,96 +93,17 @@ export class IpcHandler {
           return { error: "Document not found", filePath };
         }
 
-        // If selectedText is provided, try to find it in the document with context
+        // Delegate text search complexity to Domain Service
         if (selectedText && offset === 0 && length === 0) {
-          let bestIndex = -1;
-          let bestScore = -1;
-          let bestLength = 0;
-
-          // Normalize whitespace for matching: treat any sequence of whitespace as [\s\r\n]+
-          const escapedText = selectedText.replace(
-            /[.*+?^${}()|[\]\\]/g,
-            "\\$&",
+          const match = this.textSearchService.findBestMatch(
+            doc.content,
+            selectedText,
+            contextBefore,
+            contextAfter,
           );
-          const pattern = escapedText.replace(/\s+/g, "[\\s\\r\\n]+");
-          const regex = new RegExp(pattern, "g");
-
-          let match;
-          while ((match = regex.exec(doc.content)) !== null) {
-            const searchIdx = match.index;
-            const matchLength = match[0].length;
-            let score = 0;
-
-            const normalize = (s: string) => s.replace(/\s+/g, " ").trim();
-            // Strip Markdown syntax to allow matching DOM text against raw Markdown
-            const stripMarkdown = (s: string) =>
-              s
-                .replace(/^#{1,6}\s+/gm, "") // Headers
-                .replace(/\*\*|__/g, "") // Bold
-                .replace(/\*|_/g, "") // Italic
-                .replace(/~~([^~]+)~~/g, "$1") // Strikethrough
-                .replace(/`([^`]+)`/g, "$1") // Inline code
-                .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // Links
-                .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1"); // Images
-
-            const normBefore = contextBefore ? normalize(contextBefore) : "";
-            const normAfter = contextAfter ? normalize(contextAfter) : "";
-
-            // Check Context Before
-            if (contextBefore) {
-              // Get strictly preceding text
-              const preText = doc.content.substring(
-                Math.max(0, searchIdx - contextBefore.length - 30),
-                searchIdx,
-              );
-              // Strip Markdown from document content, then normalize
-              const normPre = normalize(stripMarkdown(preText));
-              if (normPre.endsWith(normBefore)) {
-                score += 2;
-              } else if (
-                normPre.includes(normBefore) ||
-                normBefore.includes(normPre.slice(-normBefore.length))
-              ) {
-                // Partial match fallback
-                score += 1;
-              }
-            }
-
-            // Check Context After
-            if (contextAfter) {
-              const postText = doc.content.substring(
-                searchIdx + matchLength,
-                searchIdx + matchLength + contextAfter.length + 30,
-              );
-              // Strip Markdown from document content, then normalize
-              const normPost = normalize(stripMarkdown(postText));
-              if (normPost.startsWith(normAfter)) {
-                score += 2;
-              } else if (
-                normPost.includes(normAfter) ||
-                normAfter.includes(normPost.slice(0, normAfter.length))
-              ) {
-                score += 1;
-              }
-            }
-
-            if (score > bestScore) {
-              bestScore = score;
-              bestIndex = searchIdx;
-              bestLength = matchLength;
-            }
-          }
-
-          if (bestIndex !== -1) {
-            offset = bestIndex;
-            length = bestLength;
-          } else {
-            // Fallback to simple indexOf if regex fails (unlikely but safe)
-            const index = doc.content.indexOf(selectedText);
-            if (index !== -1) {
-              offset = index;
-              length = selectedText.length;
-            }
+          if (match) {
+            offset = match.offset;
+            length = match.length;
           }
         }
 
@@ -309,37 +235,9 @@ export class IpcHandler {
     if (doc) {
       this.docRepo.setDocument(filePath, doc.content);
       await this.showPreviewUseCase.execute("active", filePath);
-      await this.saveRecentFile(filePath);
+      await this.recentFilesRepo.add(filePath);
       return { filePath, content: doc.content };
     }
     return null;
-  }
-
-  onRecentFilesUpdated(callback: (files: string[]) => void): void {
-    this.recentFilesCallback = callback;
-    // Trigger initial load
-    this.loadRecentFiles().then((files) => callback(files));
-  }
-
-  private async loadRecentFiles(): Promise<string[]> {
-    try {
-      const data = await fs.readFile(this.recentFilesPath, "utf-8");
-      return JSON.parse(data);
-    } catch {
-      return [];
-    }
-  }
-
-  private async saveRecentFile(filePath: string): Promise<void> {
-    const files = await this.loadRecentFiles();
-    const filtered = [filePath, ...files.filter((f) => f !== filePath)].slice(
-      0,
-      10,
-    );
-    await fs.writeFile(this.recentFilesPath, JSON.stringify(filtered));
-    this.window.webContents.send("update-recent-files", filtered);
-    if (this.recentFilesCallback) {
-      this.recentFilesCallback(filtered);
-    }
   }
 }

@@ -1,5 +1,17 @@
+/**
+ * @file MenuManager.ts
+ * @description アプリケーションのネイティブメニューバーを構築・管理する。
+ */
 import { Menu, MenuItemConstructorOptions, app, shell } from "electron";
 
+/**
+ * @class MenuManager
+ * @description アプリケーションメニューの定義と動的更新を行う。
+ *
+ * 【責務】
+ * - メニューテンプレートの定義（File, Edit, View, Helpなど）。
+ * - 「最近開いたファイル」リストの更新とメニューへの反映。
+ */
 export class MenuManager {
   private recentFiles: string[] = [];
 

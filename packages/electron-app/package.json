@@ -6,7 +6,7 @@
     "start": "electron .",
     "build-main": "tsc",
     "build-renderer": "tsc -p tsconfig.renderer.json",
-    "build-sass": "sass src/renderer/app.scss dist/renderer/app.css",
+    "build-sass": "sass src/renderer/app.scss dist/esm/renderer/app.css",
     "build": "npm run build-main && npm run build-renderer && npm run build-sass",
     "watch-main": "tsc -w",
     "watch-renderer": "tsc -p tsconfig.renderer.json -w",

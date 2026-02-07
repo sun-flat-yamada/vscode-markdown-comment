@@ -93,6 +93,10 @@ graph TD
 6. **アンカー設定と選択**:
     - **コンテキストマッチング**: プレビューの選択データに周辺テキスト (contextBefore/After) を含めることで、重複するテキストが存在する場合でも Markdown ソース内の正確なアンカー位置を特定できます。
 7. **.cursorrules の確認**: このリポジトリの特定のコーディング標準が含まれています。
+8. **E2E テスト戦略**:
+    - `packages/electron-app/tests/utils/test_helper.ts` を使用して、Electron アプリの起動とコンソールキャプチャを一貫させます。
+    - テストは Windows (ローカル) と Linux (DevContainer/CI) の両方の環境で合格する必要があります。
+    - 失敗時のスクリーンショットは、サニタイズされたファイル名で `packages/electron-app/tests/` に保存されます。
 
 ## エージェント設定 (`.agent/`)
 

@@ -1,3 +1,7 @@
+/**
+ * @file WindowManager.ts
+ * @description ElectronのBrowserWindowのライフサイクルと状態（サイズ・位置）を管理する。
+ */
 import { BrowserWindow, app, shell } from "electron";
 import * as path from "path";
 import * as fs from "fs/promises";
@@ -11,6 +15,19 @@ export interface WindowState {
   panelHeight?: number;
 }
 
+/**
+ * @class WindowManager
+ * @description アプリケーションウィンドウの生成、管理、および状態永続化を担当。
+ *
+ * 【責務】
+ * - メインウィンドウの作成 (`createWindow`) と設定（プリロードスクリプト、セキュリティオプション）。
+ * - ウィンドウサイズ・位置、サイドバー幅などの状態 (`WindowState`) の保存と復元。
+ * - 外部リンクのハンドリング。
+ *
+ * 【実現メカニズム】
+ * - `userData` ディレクトリ内の `window-state.json` に状態を保存。
+ * - ウィンドウ閉鎖時 (`close` イベント) に状態をファイルに書き出す。
+ */
 export class WindowManager {
   private window: BrowserWindow | null = null;
   private statePath: string;

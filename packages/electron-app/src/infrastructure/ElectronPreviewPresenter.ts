@@ -49,6 +49,7 @@ export class ElectronPreviewPresenter implements IPreviewPresenter {
   onDidClickComment(
     callback: (threadId: string, commentId?: string) => void,
   ): void {
+    ipcMain.removeAllListeners("comment-clicked");
     ipcMain.on("comment-clicked", (_, { threadId, commentId }) =>
       callback(threadId, commentId),
     );
@@ -57,6 +58,7 @@ export class ElectronPreviewPresenter implements IPreviewPresenter {
   onUpdateStatus(
     callback: (threadId: string, commentId: string, status: string) => void,
   ): void {
+    ipcMain.removeAllListeners("update-status");
     ipcMain.on("update-status", (_, { threadId, commentId, status }) =>
       callback(threadId, commentId, status),
     );
