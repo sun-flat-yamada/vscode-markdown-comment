@@ -117,10 +117,12 @@ export function resetConsoleErrors(window: Page) {
   anyWindow._criticalErrors = [];
 }
 
+import * as treeKill from "tree-kill";
+
 /**
  * Robustly closes the Electron app.
  * In CI environments, electronApp.close() can hang.
- * This helper races the close promise against a timeout and force-kills the process if necessary.
+ * This helper races the close promise against a timeout and force-kills the process tree if necessary.
  */
 export async function closeApp(app: ElectronApplication) {
   if (!app) return;
@@ -131,8 +133,8 @@ export async function closeApp(app: ElectronApplication) {
   const closePromise = app.close().catch((e: any) => {
     console.log("Error closing app:", e);
   });
-  const timeoutPromise = new Promise((resolve) =>
-    setTimeout(() => resolve("timeout"), 5000),
+  const timeoutPromise = new Promise(
+    (resolve) => setTimeout(() => resolve("timeout"), 2000), // Shorten timeout to fail fast
   );
 
   const result = await Promise.race([closePromise, timeoutPromise]);
@@ -141,22 +143,21 @@ export async function closeApp(app: ElectronApplication) {
     console.warn(`Force closing electron app (PID: ${pid}) due to timeout`);
     if (pid) {
       try {
-        process.kill(pid, "SIGKILL");
+        treeKill(pid, "SIGKILL");
       } catch (e) {
         /* ignore if already dead */
       }
     }
   } else {
-    // Even if close resolved, ensure the process is actually gone (zombie check)
-    // process.kill(pid, 0) checks for existence without killing
+    // Zombie check: Ensure process is actually gone
     if (pid) {
       try {
         process.kill(pid, 0);
         // If we are here, process still exists
         console.warn(
-          `App closed but process (PID: ${pid}) still exists. Force killing...`,
+          `App closed but process (PID: ${pid}) still exists. Force killing tree...`,
         );
-        process.kill(pid, "SIGKILL");
+        treeKill(pid, "SIGKILL");
       } catch (e) {
         // Error means process doesn't exist, which is good
       }
