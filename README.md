@@ -22,7 +22,7 @@ While Markdown files are increasingly used for documentation and AI interactions
 > [!NOTE]
 > Comment data is persisted in a separate metadata file (your-md-file.meta.jsonl).
 > For detailed file specifications, please refer to the following:
-> [File Specification](./docs/meta-schema/README.md)
+> [File Specification](./packages/vscode-extension/docs/meta-schema/README.md)
 
 > [!NOTE]
 > Future plans include browser extensions for viewers and editors to further expand accessibility.

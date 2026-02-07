@@ -4,6 +4,13 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry Run (Build & Package only, skip Publish)"
+        required: true
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -13,26 +20,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-      - run: npm ci
-      - run: npm run compile
-      - run: npm run lint
-      - run: npm test
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Compile (Monorepo)
+        run: npm run compile
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
         if: runner.os != 'Linux' # Optional: skip tests on Linux if UI dependent
 
-      - name: Publish to VS Code Marketplace
-        run: npx vsce publish -p ${{ secrets.VSCE_PAT }}
-        continue-on-error: true # Continue to release creation even if publish fails (e.g., version conflict)
-
       - name: Create VSIX Package
-        run: npx vsce package
+        run: npm run package -w packages/vscode-extension
+
+      - name: Upload VSIX Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsix-package
+          path: packages/vscode-extension/*.vsix
+
+      - name: Publish to VS Code Marketplace
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false)
+        run: npx vsce publish -p ${{ secrets.VSCE_PAT }} --packagePath packages/vscode-extension/*.vsix
+        continue-on-error: true
 
       - name: Create GitHub Release
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false)
         uses: softprops/action-gh-release@v1
         with:
-          files: "*.vsix"
+          files: packages/vscode-extension/*.vsix
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

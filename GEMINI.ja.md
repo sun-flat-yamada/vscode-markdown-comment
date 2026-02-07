@@ -65,11 +65,16 @@ graph TD
 
 ## 主要ディレクトリ
 
-- `src/domain`: 純粋なビジネスロジックとエンティティ。
-- `src/application`: ユースケースとインターフェース定義。
-- `src/views`: Webview 用の HTML テンプレートとスタイル。
-- `src/interface`: 外部世界とアプリケーションロジック間のアダプター。
-- `src/infrastructure`: インターフェースの具体的な実装 (VS Code API, ファイルシステム, キャッシュ)。
+- `packages/core`: コアドメインロジックとアプリケーションユースケース。
+    - `src/domain`: 純粋なビジネスロジックとエンティティ。
+    - `src/application`: ユースケースとインターフェース定義。
+    - `src/views`: ビュー用の HTML テンプレートとロジック。
+- `packages/vscode-extension`: VS Code 拡張機能の実装。
+    - `src/interface`: VS Code API とアプリケーションロジック間のアダプター。
+    - `src/infrastructure`: インターフェースの具体的な実装 (VS Code API, ファイルシステム)。
+- `packages/electron-app`: Electron ベースのプレビューアプリケーション。
+    - `src/renderer`: プレビュー用の React/フロントエンドコード。
+    - `src/main`: Electron メインプロセスコード。
 
 ## AI 向けオンボーディング
 
