@@ -142,7 +142,7 @@ export class ShowPreviewUseCase {
 
     const cspSource = this.previewPresenter.getCspSource();
     const nonce = this.getNonce();
-    const csp = `default-src 'none'; img-src ${cspSource} https: data:; script-src '${cspSource}' 'nonce-${nonce}' 'unsafe-eval'; style-src ${cspSource} 'unsafe-inline'; font-src ${cspSource};`;
+    const csp = `default-src 'none'; img-src ${cspSource} https: data:; script-src ${cspSource} 'nonce-${nonce}'; style-src ${cspSource} 'unsafe-inline'; font-src ${cspSource};`;
 
     const variables = {
       TITLE: title,

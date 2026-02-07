@@ -1,3 +1,17 @@
+/**
+ * @file main.ts
+ * @description Electron Mainプロセスのエントリーポイント。
+ * アプリケーションのライフサイクル管理、サービスの初期化、ウィンドウ生成を行う。
+ *
+ * 【責務】
+ * - アプリケーションの起動と終了の制御。
+ * - 各種サービス（ドキュメントリポジトリ、コメントサービスなど）の依存性注入と初期化。
+ * - IPCハンドラーとメニューマネージャーのセットアップ。
+ *
+ * 【実現メカニズム】
+ * - `app.whenReady()` を待機してから初期化フローを開始。
+ * - Clean Architectureに基づき、ドメイン層のユースケースにインフラ層の実装をDIする。
+ */
 import { app } from "electron";
 import * as path from "path";
 import {
@@ -8,13 +22,20 @@ import {
   FileSystemViewResourceProvider,
   ViewBuilder,
   GenerateAIPromptUseCase,
+  AnnotationService,
 } from "@markdown-comment/core";
 import { WindowManager } from "./main/WindowManager";
 import { MenuManager } from "./main/MenuManager";
 import { IpcHandler } from "./main/IpcHandler";
 import { ElectronDocumentRepository } from "./infrastructure/ElectronDocumentRepository";
 import { ElectronPreviewPresenter } from "./infrastructure/ElectronPreviewPresenter";
+import { ElectronRecentFilesRepository } from "./infrastructure/repositories/ElectronRecentFilesRepository";
+import { TextSearchService } from "./domain/services/TextSearchService";
 
+/**
+ * メインプロセスの初期化エントリーポイント。
+ * 必要なサービスとコンポーネントを順序立てて初期化・接続する。
+ */
 async function main() {
   console.log("Main process: Starting...");
   const docRepo = new ElectronDocumentRepository();
@@ -38,16 +59,22 @@ async function main() {
   const viewResourceProvider = new FileSystemViewResourceProvider(viewsPath);
   const viewBuilder = new ViewBuilder(viewResourceProvider);
 
+  // Refactoring: New Services
+  const recentFilesRepo = new ElectronRecentFilesRepository();
+  const textSearchService = new TextSearchService();
+  const annotationService = new AnnotationService();
+
+  // 3. Setup IPC (Before loading file)
   const showPreviewUseCase = new ShowPreviewUseCase(
     docRepo,
     previewPresenter,
     commentService,
     viewBuilder,
+    annotationService,
   );
 
   const generateAIPromptUseCase = new GenerateAIPromptUseCase();
 
-  // 3. Setup IPC (Before loading file)
   const ipcHandler = new IpcHandler(
     mainWindow,
     docRepo,
@@ -55,6 +82,8 @@ async function main() {
     generateAIPromptUseCase,
     commentService,
     windowManager,
+    recentFilesRepo,
+    textSearchService,
   );
   ipcHandler.setup();
 
@@ -66,7 +95,7 @@ async function main() {
   });
   menuManager.setup();
 
-  ipcHandler.onRecentFilesUpdated((files) => {
+  recentFilesRepo.onRecentFilesUpdated((files) => {
     menuManager.refreshRecentFiles(files, (file) => {
       ipcHandler.openFile(file);
     });

@@ -4,15 +4,15 @@
     <meta charset="UTF-8" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: file: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' data: file: https:; style-src 'self' 'unsafe-inline' data: file: https:; img-src 'self' data: file: https:;"
+      content="default-src 'self' 'unsafe-inline' data: file: https:; script-src 'self' 'unsafe-inline' data: file: https:; style-src 'self' 'unsafe-inline' data: file: https:; img-src 'self' data: file: https:;"
     />
     <title>Markdown Comment Desktop</title>
-    <link rel="stylesheet" href="dist/renderer/app.css" />
+    <link rel="stylesheet" href="dist/esm/renderer/app.css" />
   </head>
   <body>
     <header>
       <div class="title" id="file-name">Markdown Comment</div>
-      <div class="actions">
+      <div class="actions" id="toolbar">
         <select
           id="theme-select"
           class="status-select"
@@ -49,6 +49,7 @@
           </div>
         </div>
       </div>
+      <div id="resizer-v" class="resizer-handle resizer-v"></div>
       <div id="content">
         <div id="preview-container">
           <div id="preview-toolbar" class="toolbar" style="display: none">
@@ -134,8 +135,30 @@
         </div>
       </div>
     </div>
-
-    <div id="resizer-v" class="resizer-handle resizer-v"></div>
-    <script type="module" src="dist/renderer/renderer.js"></script>
+    <script>
+      window.addEventListener("error", (e) => {
+        console.error(
+          "Renderer Global Error:",
+          e.message,
+          e.filename,
+          e.lineno,
+          e.colno,
+          e.error,
+        );
+      });
+      window.addEventListener("unhandledrejection", (e) => {
+        console.error("Renderer Unhandled Rejection:", e.reason);
+      });
+      console.log("Renderer: Index HTML loaded, starting module load...");
+    </script>
+    <script
+      type="module"
+      src="dist/esm/renderer/renderer.js"
+      onerror="
+        console.error(
+          'Renderer: Failed to load module script dist/esm/renderer/renderer.js',
+        )
+      "
+    ></script>
   </body>
 </html>

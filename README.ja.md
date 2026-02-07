@@ -62,7 +62,8 @@ Markdown ファイルはドキュメントや AI とのやり取りにますま�
 ## 💡 コメント機能のハイライト
 
 - **タグ付け**: カスタムタグでコメントを分類できます (QuickPick で管理)。
-- **列の並べ替え**: テーブルヘッダーをドラッグ＆ドロップしてビューを整理できます。
+- **テーブル機能の強化**: 列のサイズ変更、ドラッグ＆ドロップによる並べ替え、ヘッダーのクリックによるソート。
+
 - **スレッド化**: 無制限に返信を投稿して、焦点を絞った議論スレッドを作成できます。
 - **ステータス追跡**: コメントを Open、Resolved などとしてマークし、進捗を追跡できます。
 - **リッチツールヒント**: プレビュー内のハイライトされたテキストにカーソルを合わせると、元のコメントと作成者が即座に表示されます。
@@ -129,3 +130,10 @@ VS Code 設定から拡張機能をカスタマイズできます：
 2. `npm run compile`
 3. `npm run test:e2e -w packages/electron-app` (Electron E2E テストを実行する場合)
 4. `F5` でデバッグ
+
+### DevContainer を使用した開発
+このリポジトリは、一貫した開発環境のために DevContainer をサポートしています。
+1. [Docker Desktop](https://www.docker.com/products/docker-desktop/) と [VS Code Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) をインストールします。
+2. VS Code でプロジェクトを開きます。
+3. `Dev Containers: Reopen in Container` を実行します。
+4. 環境には Node.js と Electron/Playwright の依存関係がすべて含まれています。

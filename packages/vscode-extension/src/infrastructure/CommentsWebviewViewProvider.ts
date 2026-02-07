@@ -34,6 +34,12 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
   private _view?: vscode.WebviewView;
   private comments: CommentRow[] = [];
   private currentFilePath: string | undefined;
+  private sortState: { column: string; direction: "asc" | "desc" } = {
+    column: "",
+    direction: "asc",
+  };
+  private selectedThreadId: string | undefined;
+  private selectedCommentId: string | undefined;
 
   constructor(
     private readonly context: vscode.ExtensionContext,
@@ -41,6 +47,10 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
     private readonly onDidUpdate: (filePath?: string) => Promise<void>,
     private readonly viewBuilder: ViewBuilder, // Injected
   ) {}
+
+  public get isVisible(): boolean {
+    return this._view ? this._view.visible : false;
+  }
 
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -113,6 +123,9 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
           break;
         case "reorderColumns":
           await this.handleReorderColumns(data.from, data.to);
+          break;
+        case "sort":
+          await this.handleSort(data.column);
           break;
       }
     });
@@ -342,12 +355,17 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
       content,
     );
 
-    // Sort threads by offset and ID for stable display
-    threads.sort(
-      (a, b) =>
-        (a.anchor?.offset || 0) - (b.anchor?.offset || 0) ||
-        a.id.localeCompare(b.id),
-    );
+    // Sort threads
+    if (this.sortState.column) {
+      this.sortThreads(threads, content);
+    } else {
+      // Default: sort by offset
+      threads.sort(
+        (a, b) =>
+          (a.anchor?.offset || 0) - (b.anchor?.offset || 0) ||
+          a.id.localeCompare(b.id),
+      );
+    }
 
     this.comments = [];
     for (const thread of threads) {
@@ -380,18 +398,48 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
         fileName,
         fullPath: filePath,
       });
+
+      // Re-apply selection if it matches current file content
+      if (this.selectedThreadId && this.selectedCommentId) {
+        // Only select if the thread still exists in the filtered/sorted results
+        const exists = this.comments.some(
+          (c) =>
+            c.thread.id === this.selectedThreadId &&
+            c.comment.id === this.selectedCommentId,
+        );
+        if (exists) {
+          this._view.webview.postMessage({
+            type: "selectComment",
+            threadId: this.selectedThreadId,
+            commentId: this.selectedCommentId,
+          });
+        } else {
+          // Reset if no longer exists
+          this.selectedThreadId = undefined;
+          this.selectedCommentId = undefined;
+        }
+      }
     } else {
       await this.updateHtml();
     }
   }
 
   public selectComment(threadId: string, commentId: string): void {
+    this.selectedThreadId = threadId;
+    this.selectedCommentId = commentId;
     if (this._view) {
       this._view.webview.postMessage({
         type: "selectComment",
         threadId,
         commentId,
       });
+    }
+  }
+
+  public reveal(focus: boolean = false): void {
+    if (this._view) {
+      // show(preserveFocus): if focus is true, we want preserveFocus to be false
+      this._view.show(!focus);
     }
   }
 
@@ -489,6 +537,7 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
           WIDTH: width.toString(),
           COL: col,
           LABEL: this.getColumnLabel(col),
+          SORT_INDICATOR: this.getSortIndicator(col),
         }),
       );
     }
@@ -568,6 +617,7 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
     switch (col) {
       case "lineNo":
         return row.lineNo.toString();
+      case "content":
         const indentStr =
           row.depth > 0
             ? await this.viewBuilder.buildFragment(
@@ -586,6 +636,7 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
             CONTENT: c.content.replace(/[\r\n]+/g, " "),
           },
         );
+
       case "status":
         if (c.status) {
           // Status Dropdown
@@ -702,5 +753,84 @@ export class CommentsWebviewViewProvider implements vscode.WebviewViewProvider {
     const m = String(date.getMonth() + 1).padStart(2, "0");
     const d = String(date.getDate()).padStart(2, "0");
     return `${y}/${m}/${d}`;
+  }
+
+  private async handleSort(column: string) {
+    if (this.sortState.column === column) {
+      this.sortState.direction =
+        this.sortState.direction === "asc" ? "desc" : "asc";
+    } else {
+      this.sortState.column = column;
+      this.sortState.direction = "asc";
+    }
+    // Refresh with current state
+    if (this.currentFilePath) {
+      const content = await this.getCurrentFileContent();
+      if (content) {
+        await this.refresh(this.currentFilePath, content);
+      }
+    }
+  }
+
+  private sortThreads(threads: DomainThread[], content: string) {
+    const col = this.sortState.column;
+    const dir = this.sortState.direction === "asc" ? 1 : -1;
+
+    threads.sort((a, b) => {
+      // Extract values for the first comment in thread for sorting
+      const comA = a.comments[0];
+      const comB = b.comments[0];
+      if (!comA || !comB) {
+        return 0;
+      }
+
+      let valA: any = "";
+      let valB: any = "";
+
+      switch (col) {
+        case "status":
+          valA = comA.status || "";
+          valB = comB.status || "";
+          break;
+        case "author":
+          valA = comA.author || "";
+          valB = comB.author || "";
+          break;
+        case "content":
+          valA = comA.content || "";
+          valB = comB.content || "";
+          break;
+        case "createdAt":
+          valA = comA.createdAt.getTime();
+          valB = comB.createdAt.getTime();
+          break;
+        case "updatedAt":
+          valA = comA.updatedAt.getTime();
+          valB = comB.updatedAt.getTime();
+          break;
+        case "lineNo":
+          // Rough line number calc
+          valA = content.substring(0, a.anchor?.offset || 0).split("\n").length;
+          valB = content.substring(0, b.anchor?.offset || 0).split("\n").length;
+          break;
+        default:
+          return 0;
+      }
+
+      if (valA < valB) {
+        return -1 * dir;
+      }
+      if (valA > valB) {
+        return 1 * dir;
+      }
+      return 0;
+    });
+  }
+
+  private getSortIndicator(col: string): string {
+    if (this.sortState.column !== col) {
+      return "";
+    }
+    return this.sortState.direction === "asc" ? "▲" : "▼";
   }
 }

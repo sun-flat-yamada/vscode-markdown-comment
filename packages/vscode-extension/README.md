@@ -56,7 +56,8 @@ While Markdown files are increasingly used for documentation and AI interactions
 ## 💡 Commenting Highlights
 
 - **Tagging**: Categorize comments with custom tags (manage via QuickPick).
-- **Column Reordering**: Organize your view by dragging and dropping table headers.
+- **Table Enhancements**: Resize columns, drag-and-drop to reorder, and click headers to sort comments.
+
 - **Threading**: Post unlimited replies to create focused discussion threads.
 - **Status Tracking**: Mark comments as Open, Resolved, etc., to track progress.
 - **Rich Tooltips**: Hover over any highlighted text in the preview to see the original comment and its author instantly.
