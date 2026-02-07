@@ -125,41 +125,67 @@ import * as treeKill from "tree-kill";
  * This helper races the close promise against a timeout and force-kills the process tree if necessary.
  */
 export async function closeApp(app: ElectronApplication) {
-  if (!app) return;
+  if (!app) {
+    console.log("[closeApp] App is null, skipping.");
+    return;
+  }
 
-  const pid = app.process()?.pid;
+  const proc = app.process();
+  const pid = proc ? proc.pid : undefined;
+  console.log(`[closeApp] Attempting to close app. PID: ${pid}`);
 
   // Attempt to close gracefully with a timeout
-  const closePromise = app.close().catch((e: any) => {
-    console.log("Error closing app:", e);
-  });
+  const closePromise = app
+    .close()
+    .then(() => "closed")
+    .catch((e: any) => {
+      console.log("Error closing app:", e);
+      return "error";
+    });
+
   const timeoutPromise = new Promise(
     (resolve) => setTimeout(() => resolve("timeout"), 2000), // Shorten timeout to fail fast
   );
 
   const result = await Promise.race([closePromise, timeoutPromise]);
+  console.log(`[closeApp] Race result: ${result}`);
 
   if (result === "timeout") {
-    console.warn(`Force closing electron app (PID: ${pid}) due to timeout`);
+    console.warn(
+      `[closeApp] Force closing electron app (PID: ${pid}) due to timeout`,
+    );
     if (pid) {
-      try {
-        treeKill(pid, "SIGKILL");
-      } catch (e) {
-        /* ignore if already dead */
+      if (typeof treeKill === "function") {
+        treeKill(pid, "SIGKILL", (err) => {
+          if (err) console.error(`[closeApp] tree-kill failed:`, err);
+          else console.log(`[closeApp] tree-kill success for PID: ${pid}`);
+        });
+      } else {
+        // Fallback if treeKill isn't a function (e.g. import issue)
+        console.warn(
+          "[closeApp] treeKill is not a function, falling back to process.kill",
+        );
+        try {
+          process.kill(pid, "SIGKILL");
+        } catch (e) {
+          console.error("[closeApp] process.kill failed", e);
+        }
       }
     }
   } else {
     // Zombie check: Ensure process is actually gone
     if (pid) {
       try {
-        process.kill(pid, 0);
-        // If we are here, process still exists
+        process.kill(pid, 0); // Check if exists
         console.warn(
-          `App closed but process (PID: ${pid}) still exists. Force killing tree...`,
+          `[closeApp] App closed but process (PID: ${pid}) still exists. Force killing tree...`,
         );
-        treeKill(pid, "SIGKILL");
+        treeKill(pid, "SIGKILL", (err) => {
+          if (err) console.error(`[closeApp] zombie tree-kill failed:`, err);
+          else console.log(`[closeApp] zombie tree-kill success`);
+        });
       } catch (e) {
-        // Error means process doesn't exist, which is good
+        console.log(`[closeApp] Process (PID: ${pid}) confirmed gone.`);
       }
     }
   }
