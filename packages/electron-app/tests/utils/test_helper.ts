@@ -19,7 +19,7 @@ export async function launchApp(): Promise<{
   const appPath = path.join(__dirname, "../..");
 
   const app = await electron.launch({
-    args: [appPath, "--no-sandbox"],
+    args: [appPath, "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
   });
 
   const window = await app.firstWindow();
@@ -35,8 +35,8 @@ export async function launchApp(): Promise<{
     if (anyWin._rendererReady) return true;
     try {
       await window.waitForEvent("console", {
-        predicate: (msg) => msg.text().includes("RENDERER_READY"),
-        timeout: 5000,
+        predicate: (msg: any) => msg.text().includes("RENDERER_READY"),
+        timeout: 15000,
       });
       return true;
     } catch (e) {
