@@ -26,7 +26,7 @@ Markdown ファイルはドキュメントや AI とのやり取りにますま�
 > [!NOTE]
 > コメントデータは別のメタデータファイル (your-md-file.meta.jsonl) に永続化されます。
 > ファイル仕様の詳細については、以下を参照してください：
-> [ファイル仕様](./docs/meta-schema/README.md)
+> [ファイル仕様](./packages/vscode-extension/docs/meta-schema/README.md)
 
 > [!NOTE]
 > 将来的には、アクセシビリティをさらに拡大するために、ビューアやエディタ用のブラウザ拡張機能も計画されています。
