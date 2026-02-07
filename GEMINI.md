@@ -61,11 +61,16 @@ graph TD
 
 ## Key Directories
 
-- `src/domain`: Pure business logic and entities.
-- `src/application`: Use cases and interface definitions.
-- `src/views`: HTML templates and styles for webviews.
-- `src/interface`: Adapters between the outside world and application logic.
-- `src/infrastructure`: Concrete implementations of interfaces (VS Code API, File System, Caching).
+- `packages/core`: Core domain logic and application use cases.
+    - `src/domain`: Pure business logic and entities.
+    - `src/application`: Use cases and interface definitions.
+    - `src/views`: HTML templates and logic for views.
+- `packages/vscode-extension`: VS Code extension implementation.
+    - `src/interface`: Adapters between Code API and application logic.
+    - `src/infrastructure`: Concrete implementations (VS Code API, File System).
+- `packages/electron-app`: Electron-based preview application.
+    - `src/renderer`: React/Frontend code for the preview.
+    - `src/main`: Electron main process code.
 
 ## Onboarding for AI
 
