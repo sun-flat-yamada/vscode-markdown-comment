@@ -249,6 +249,7 @@
     "watch": "webpack --mode development --watch",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src tests",
+    "type-check": "tsc --noEmit",
     "test": "npm run test:unit && npm run test:integration",
     "test-compile": "tsc -p ./",
     "test:unit": "mocha -r ts-node/register -r tsconfig-paths/register --project tsconfig.test.json --ui tdd tests/**/*.test.ts --exclude \"tests/suite/**\"",
