@@ -21,6 +21,7 @@ failure-*
 *failure*.txt
 
 # Temporary output
+.dev_output/
 
 # Playwright
 **/test-results/
@@ -47,6 +48,7 @@ logs/
 
 # VSCode Test
 .vscode-test
+# (Now moved to .dev_output/vscode-extension/.vscode-test)
 
 # Build Errors
 build_errors.txt

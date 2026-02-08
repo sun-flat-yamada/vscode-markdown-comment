@@ -10,14 +10,16 @@ import {
   checkCriticalErrors,
   closeApp,
   resetConsoleErrors,
+  TEST_OUTPUT_DIR,
+  getPackageOutputDir,
 } from "./utils/test_helper";
 
 test.describe("Regression Suite", () => {
   let electronApp: any;
   let window: any;
 
-  // Use _temp directory for test artifacts
-  const tempDir = path.join(__dirname, "_temp");
+  // Use standardized package-specific output directory
+  const tempDir = getPackageOutputDir("electron-app");
   const testFileName = `regression-test-${Date.now()}.md`;
   const testFilePath = path.join(tempDir, testFileName);
 

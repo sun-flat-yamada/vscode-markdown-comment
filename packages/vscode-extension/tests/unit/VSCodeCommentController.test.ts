@@ -1,8 +1,8 @@
 import * as assert from "assert";
-import { VSCodeCommentController } from "../../infrastructure/VSCodeCommentController";
+import { VSCodeCommentController } from "../../src/infrastructure/VSCodeCommentController";
 import { Comment, CommentThread, CommentStatus } from "@markdown-comment/core";
 
-// Mocks are handled by tsconfig paths to src/test/mocks/vscode.ts
+// Mocks are handled by tsconfig paths to tests/mocks/vscode.ts
 
 suite("VSCodeCommentController", () => {
   let controller: VSCodeCommentController;
