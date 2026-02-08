@@ -6,12 +6,14 @@
   },
   "search.exclude": {
     "**/node_modules": true,
-    "**/out": true
+    "**/out": true,
+    ".worktrees": true
   },
   "files.exclude": {
     "**/.git": true,
     "**/.DS_Store": true,
     "**/node_modules": true,
-    "**/out": true
+    "**/out": true,
+    ".worktrees": true
   }
 }
