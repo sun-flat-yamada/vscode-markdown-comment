@@ -1,0 +1,2484 @@
+{
+  "version": "2.0",
+  "tags": [],
+  "threads": [
+    {
+      "id": "1770432430231",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432430231.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:47:10.231Z",
+          "updatedAt": "2026-02-07T02:47:10.231Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432448492",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432448492.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:47:28.492Z",
+          "updatedAt": "2026-02-07T02:47:28.492Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432591715",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432591715.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:49:51.715Z",
+          "updatedAt": "2026-02-07T02:49:51.715Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432624868",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432624868.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:50:24.868Z",
+          "updatedAt": "2026-02-07T02:50:24.868Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432668986",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770432668986.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T02:51:08.986Z",
+          "updatedAt": "2026-02-07T02:51:08.986Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432698386",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432698386.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:51:38.387Z",
+          "updatedAt": "2026-02-07T02:51:38.387Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432716872",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432716872.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:51:56.872Z",
+          "updatedAt": "2026-02-07T02:51:56.872Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432824053",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432824053.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:53:44.053Z",
+          "updatedAt": "2026-02-07T02:53:44.053Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432848220",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432848220.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:54:08.220Z",
+          "updatedAt": "2026-02-07T02:54:08.220Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432914259",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432914259.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:55:14.259Z",
+          "updatedAt": "2026-02-07T02:55:14.259Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432932118",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432932118.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:55:32.118Z",
+          "updatedAt": "2026-02-07T02:55:32.118Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432935893",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432935893.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:55:35.893Z",
+          "updatedAt": "2026-02-07T02:55:35.893Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432946125",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432946125.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:55:46.125Z",
+          "updatedAt": "2026-02-07T02:55:46.125Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432951146",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770432951146.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T02:55:51.146Z",
+          "updatedAt": "2026-02-07T02:55:51.146Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432988295",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432988295.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:56:28.295Z",
+          "updatedAt": "2026-02-07T02:56:28.295Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433001573",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433001573.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:56:41.573Z",
+          "updatedAt": "2026-02-07T02:56:41.573Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433016764",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770433016764.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T02:56:56.764Z",
+          "updatedAt": "2026-02-07T02:56:56.764Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433096164",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433096164.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:58:16.164Z",
+          "updatedAt": "2026-02-07T02:58:16.164Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433104311",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433104311.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:58:24.312Z",
+          "updatedAt": "2026-02-07T02:58:24.312Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433148054",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433148054.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:59:08.054Z",
+          "updatedAt": "2026-02-07T02:59:08.054Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433161523",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433161523.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:59:21.523Z",
+          "updatedAt": "2026-02-07T02:59:21.523Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433177328",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770433177328.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T02:59:37.328Z",
+          "updatedAt": "2026-02-07T02:59:37.328Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433247985",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433247985.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:00:47.985Z",
+          "updatedAt": "2026-02-07T03:00:47.985Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433256053",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433256053.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:00:56.053Z",
+          "updatedAt": "2026-02-07T03:00:56.053Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433296674",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433296674.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:01:36.674Z",
+          "updatedAt": "2026-02-07T03:01:36.674Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433309822",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433309822.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:01:49.823Z",
+          "updatedAt": "2026-02-07T03:01:49.823Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433324779",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770433324779.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T03:02:04.779Z",
+          "updatedAt": "2026-02-07T03:02:04.779Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434181618",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434181618.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:16:21.618Z",
+          "updatedAt": "2026-02-07T03:16:21.618Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434190436",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434190436.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:16:30.437Z",
+          "updatedAt": "2026-02-07T03:16:30.437Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434252842",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434252842.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:17:32.842Z",
+          "updatedAt": "2026-02-07T03:17:32.842Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434272004",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434272004.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:17:52.004Z",
+          "updatedAt": "2026-02-07T03:17:52.004Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434292321",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770434292321.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T03:18:12.321Z",
+          "updatedAt": "2026-02-07T03:18:12.321Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434371287",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434371287.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:19:31.287Z",
+          "updatedAt": "2026-02-07T03:19:31.287Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434379461",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434379461.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:19:39.461Z",
+          "updatedAt": "2026-02-07T03:19:39.461Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434440559",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434440559.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:20:40.559Z",
+          "updatedAt": "2026-02-07T03:20:40.559Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434458666",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434458666.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:20:58.666Z",
+          "updatedAt": "2026-02-07T03:20:58.666Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434478605",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770434478605.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T03:21:18.605Z",
+          "updatedAt": "2026-02-07T03:21:18.605Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434906254",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434906254.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:28:26.254Z",
+          "updatedAt": "2026-02-07T03:28:26.254Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434914753",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434914753.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:28:34.753Z",
+          "updatedAt": "2026-02-07T03:28:34.753Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434977373",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434977373.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:29:37.373Z",
+          "updatedAt": "2026-02-07T03:29:37.373Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434995925",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434995925.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:29:55.925Z",
+          "updatedAt": "2026-02-07T03:29:55.925Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435016448",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770435016448.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T03:30:16.448Z",
+          "updatedAt": "2026-02-07T03:30:16.448Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435093863",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770435093863.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:31:33.863Z",
+          "updatedAt": "2026-02-07T03:31:33.863Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435102030",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770435102030.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:31:42.030Z",
+          "updatedAt": "2026-02-07T03:31:42.030Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435165637",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770435165637.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:32:45.637Z",
+          "updatedAt": "2026-02-07T03:32:45.637Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435184245",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770435184245.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:33:04.245Z",
+          "updatedAt": "2026-02-07T03:33:04.245Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435204604",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770435204604.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T03:33:24.604Z",
+          "updatedAt": "2026-02-07T03:33:24.604Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435400849",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770435400849.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:36:40.849Z",
+          "updatedAt": "2026-02-07T03:36:40.849Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435409357",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770435409357.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:36:49.357Z",
+          "updatedAt": "2026-02-07T03:36:49.357Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435476019",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770435476019.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:37:56.020Z",
+          "updatedAt": "2026-02-07T03:37:56.020Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435495766",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770435495766.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:38:15.766Z",
+          "updatedAt": "2026-02-07T03:38:15.766Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435516679",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770435516679.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T03:38:36.679Z",
+          "updatedAt": "2026-02-07T03:38:36.679Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770439516435",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770439516435.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T04:45:16.435Z",
+          "updatedAt": "2026-02-07T04:45:16.435Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770439525595",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770439525595.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T04:45:25.595Z",
+          "updatedAt": "2026-02-07T04:45:25.595Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770439592907",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770439592907.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T04:46:32.907Z",
+          "updatedAt": "2026-02-07T04:46:32.907Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770439611454",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770439611454.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T04:46:51.454Z",
+          "updatedAt": "2026-02-07T04:46:51.454Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770439631963",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770439631963.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T04:47:11.963Z",
+          "updatedAt": "2026-02-07T04:47:11.963Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770441214752",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770441214752.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T05:13:34.752Z",
+          "updatedAt": "2026-02-07T05:13:34.752Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770441260368",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770441260368.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T05:14:20.368Z",
+          "updatedAt": "2026-02-07T05:14:20.368Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770441279070",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770441279070.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T05:14:39.070Z",
+          "updatedAt": "2026-02-07T05:14:39.070Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770441300173",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770441300173.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T05:15:00.173Z",
+          "updatedAt": "2026-02-07T05:15:00.173Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770442783866",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770442783866.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T05:39:43.866Z",
+          "updatedAt": "2026-02-07T05:39:43.866Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770442828766",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770442828766.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T05:40:28.766Z",
+          "updatedAt": "2026-02-07T05:40:28.766Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770442847556",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770442847556.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T05:40:47.556Z",
+          "updatedAt": "2026-02-07T05:40:47.556Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770442868390",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770442868390.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T05:41:08.390Z",
+          "updatedAt": "2026-02-07T05:41:08.390Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770446714122",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770446714122.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T06:45:14.122Z",
+          "updatedAt": "2026-02-07T06:45:14.122Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770446735080",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770446735080.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T06:45:35.080Z",
+          "updatedAt": "2026-02-07T06:45:35.080Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770446756631",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770446756631.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T06:45:56.631Z",
+          "updatedAt": "2026-02-07T06:45:56.631Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770446785626",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770446785626.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T06:46:25.626Z",
+          "updatedAt": "2026-02-07T06:46:25.626Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770446929931",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770446929931.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T06:48:49.932Z",
+          "updatedAt": "2026-02-07T06:48:49.932Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770446947330",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770446947330.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T06:49:07.331Z",
+          "updatedAt": "2026-02-07T06:49:07.331Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770446968480",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770446968480.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T06:49:28.480Z",
+          "updatedAt": "2026-02-07T06:49:28.480Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770446993665",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770446993665.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T06:49:53.665Z",
+          "updatedAt": "2026-02-07T06:49:53.665Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770447010876",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770447010876.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T06:50:10.876Z",
+          "updatedAt": "2026-02-07T06:50:10.876Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770447031945",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770447031945.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T06:50:31.945Z",
+          "updatedAt": "2026-02-07T06:50:31.945Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770447051484",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770447051484.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T06:50:51.484Z",
+          "updatedAt": "2026-02-07T06:50:51.484Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770447069840",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770447069840.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T06:51:09.840Z",
+          "updatedAt": "2026-02-07T06:51:09.840Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770447091060",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770447091060.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T06:51:31.060Z",
+          "updatedAt": "2026-02-07T06:51:31.060Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770447098031",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770447098031.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T06:51:38.031Z",
+          "updatedAt": "2026-02-07T06:51:38.031Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770447118329",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770447118329.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T06:51:58.329Z",
+          "updatedAt": "2026-02-07T06:51:58.329Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770447139152",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770447139152.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T06:52:19.152Z",
+          "updatedAt": "2026-02-07T06:52:19.152Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770449876110",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770449876110.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T07:37:56.110Z",
+          "updatedAt": "2026-02-07T07:37:56.110Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770449934673",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770449934673.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T07:38:54.673Z",
+          "updatedAt": "2026-02-07T07:38:54.673Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770449991572",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770449991572.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T07:39:51.572Z",
+          "updatedAt": "2026-02-07T07:39:51.572Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770450008830",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770450008830.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T07:40:08.830Z",
+          "updatedAt": "2026-02-07T07:40:08.830Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770450018221",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770450018221.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T07:40:18.221Z",
+          "updatedAt": "2026-02-07T07:40:18.221Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770450030894",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770450030894.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T07:40:30.894Z",
+          "updatedAt": "2026-02-07T07:40:30.894Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770450141956",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770450141956.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T07:42:21.956Z",
+          "updatedAt": "2026-02-07T07:42:21.956Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770450158195",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770450158195.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T07:42:38.195Z",
+          "updatedAt": "2026-02-07T07:42:38.195Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770450179926",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770450179926.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T07:42:59.926Z",
+          "updatedAt": "2026-02-07T07:42:59.926Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770450679416",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770450679416.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T07:51:19.416Z",
+          "updatedAt": "2026-02-07T07:51:19.416Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770450725660",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770450725660.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T07:52:05.660Z",
+          "updatedAt": "2026-02-07T07:52:05.660Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770452159330",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770452159330.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T08:15:59.330Z",
+          "updatedAt": "2026-02-07T08:15:59.330Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770452359835",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770452359835.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T08:19:19.835Z",
+          "updatedAt": "2026-02-07T08:19:19.835Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770452406308",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770452406308.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T08:20:06.308Z",
+          "updatedAt": "2026-02-07T08:20:06.308Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770452421566",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770452421566.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T08:20:21.566Z",
+          "updatedAt": "2026-02-07T08:20:21.566Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770452425965",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770452425965.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T08:20:25.965Z",
+          "updatedAt": "2026-02-07T08:20:25.965Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770452446405",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770452446405.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T08:20:46.405Z",
+          "updatedAt": "2026-02-07T08:20:46.405Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770452458715",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770452458715.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T08:20:58.715Z",
+          "updatedAt": "2026-02-07T08:20:58.715Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770452462809",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770452462809.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T08:21:02.809Z",
+          "updatedAt": "2026-02-07T08:21:02.809Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770452620042",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770452620042.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T08:23:40.042Z",
+          "updatedAt": "2026-02-07T08:23:40.042Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770452632699",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770452632699.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T08:23:52.699Z",
+          "updatedAt": "2026-02-07T08:23:52.699Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770452637189",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770452637189.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T08:23:57.189Z",
+          "updatedAt": "2026-02-07T08:23:57.189Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770454741968",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770454741968.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T08:59:01.969Z",
+          "updatedAt": "2026-02-07T08:59:01.969Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770454794288",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770454794288.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T08:59:54.288Z",
+          "updatedAt": "2026-02-07T08:59:54.288Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770454809742",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770454809742.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T09:00:09.742Z",
+          "updatedAt": "2026-02-07T09:00:09.742Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770460123547",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770460123547.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T10:28:43.547Z",
+          "updatedAt": "2026-02-07T10:28:43.547Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770460165430",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770460165430.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T10:29:25.430Z",
+          "updatedAt": "2026-02-07T10:29:25.430Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770460178541",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770460178541.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T10:29:38.541Z",
+          "updatedAt": "2026-02-07T10:29:38.541Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770465762609",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770465762609.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T12:02:42.609Z",
+          "updatedAt": "2026-02-07T12:02:42.609Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770465804232",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770465804232.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T12:03:24.232Z",
+          "updatedAt": "2026-02-07T12:03:24.232Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770465816815",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770465816815.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T12:03:36.815Z",
+          "updatedAt": "2026-02-07T12:03:36.815Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770466544446",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770466544446.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T12:15:44.447Z",
+          "updatedAt": "2026-02-07T12:15:44.447Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770466585935",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770466585935.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T12:16:25.935Z",
+          "updatedAt": "2026-02-07T12:16:25.935Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770466598789",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770466598789.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T12:16:38.789Z",
+          "updatedAt": "2026-02-07T12:16:38.789Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770467320634",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770467320634.1",
+          "content": "Bug report comment",
+          "author": "User",
+          "createdAt": "2026-02-07T12:28:40.634Z",
+          "updatedAt": "2026-02-07T12:28:40.634Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770467362162",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Bug Test Doc\n\nThis",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770467362162.1",
+          "content": "Tag test comment",
+          "author": "User",
+          "createdAt": "2026-02-07T12:29:22.162Z",
+          "updatedAt": "2026-02-07T12:29:22.162Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770467374974",
+      "anchor": {
+        "text": "UniqueAnchorText for testing.",
+        "contextBefore": " bug reproduction.\n\n",
+        "contextAfter": "",
+        "offset": 51,
+        "length": 29
+      },
+      "comments": [
+        {
+          "id": "1770467374974.1",
+          "content": "Anchor test",
+          "author": "User",
+          "createdAt": "2026-02-07T12:29:34.974Z",
+          "updatedAt": "2026-02-07T12:29:34.974Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    }
+  ]
+}

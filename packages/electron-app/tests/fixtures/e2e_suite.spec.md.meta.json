@@ -1,0 +1,1077 @@
+{
+  "version": "2.0",
+  "tags": [],
+  "threads": [
+    {
+      "id": "1770432391089",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432391089.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:46:31.089Z",
+          "updatedAt": "2026-02-07T02:46:31.089Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432404870",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432404870.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:46:44.870Z",
+          "updatedAt": "2026-02-07T02:46:44.870Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432418865",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ting Test\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770432418865.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:46:58.865Z",
+          "updatedAt": "2026-02-07T02:46:58.865Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432772916",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432772916.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:52:52.916Z",
+          "updatedAt": "2026-02-07T02:52:52.916Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432786837",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432786837.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:53:06.837Z",
+          "updatedAt": "2026-02-07T02:53:06.837Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432806737",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ting Test\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770432806737.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:53:26.738Z",
+          "updatedAt": "2026-02-07T02:53:26.738Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432905681",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432905681.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:55:05.681Z",
+          "updatedAt": "2026-02-07T02:55:05.681Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432915318",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770432915318.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:55:15.318Z",
+          "updatedAt": "2026-02-07T02:55:15.318Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770432924904",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ting Test\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770432924904.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:55:24.904Z",
+          "updatedAt": "2026-02-07T02:55:24.904Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433086549",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433086549.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:58:06.549Z",
+          "updatedAt": "2026-02-07T02:58:06.549Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433090519",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433090519.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:58:10.520Z",
+          "updatedAt": "2026-02-07T02:58:10.520Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433094653",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ting Test\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770433094653.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T02:58:14.654Z",
+          "updatedAt": "2026-02-07T02:58:14.654Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433239146",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433239146.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:00:39.146Z",
+          "updatedAt": "2026-02-07T03:00:39.146Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433242828",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770433242828.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:00:42.828Z",
+          "updatedAt": "2026-02-07T03:00:42.828Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770433246567",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ting Test\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770433246567.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:00:46.567Z",
+          "updatedAt": "2026-02-07T03:00:46.567Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434171388",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434171388.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:16:11.388Z",
+          "updatedAt": "2026-02-07T03:16:11.388Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434175879",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434175879.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:16:15.879Z",
+          "updatedAt": "2026-02-07T03:16:15.879Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434180116",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ting Test\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770434180116.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:16:20.116Z",
+          "updatedAt": "2026-02-07T03:16:20.116Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434362569",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434362569.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:19:22.569Z",
+          "updatedAt": "2026-02-07T03:19:22.569Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434366097",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434366097.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:19:26.097Z",
+          "updatedAt": "2026-02-07T03:19:26.097Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434369901",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ting Test\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770434369901.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:19:29.901Z",
+          "updatedAt": "2026-02-07T03:19:29.901Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434897041",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434897041.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:28:17.041Z",
+          "updatedAt": "2026-02-07T03:28:17.041Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434900757",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770434900757.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:28:20.757Z",
+          "updatedAt": "2026-02-07T03:28:20.757Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770434904717",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ting Test\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770434904717.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:28:24.717Z",
+          "updatedAt": "2026-02-07T03:28:24.717Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435085157",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770435085157.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:31:25.157Z",
+          "updatedAt": "2026-02-07T03:31:25.157Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435088845",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770435088845.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:31:28.845Z",
+          "updatedAt": "2026-02-07T03:31:28.845Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435092434",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ting Test\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770435092434.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:31:32.434Z",
+          "updatedAt": "2026-02-07T03:31:32.434Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435390762",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770435390762.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:36:30.762Z",
+          "updatedAt": "2026-02-07T03:36:30.762Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435394653",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770435394653.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:36:34.653Z",
+          "updatedAt": "2026-02-07T03:36:34.653Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770435399222",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ting Test\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770435399222.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T03:36:39.222Z",
+          "updatedAt": "2026-02-07T03:36:39.222Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770439505145",
+      "anchor": {
+        "text": "Paragraph One world.\nSection Two\nParagraph Two world.\nFormatting Test\nThis is",
+        "contextBefore": "r Reproduction Test\n",
+        "contextAfter": " **important text** ",
+        "offset": 27,
+        "length": 77
+      },
+      "comments": [
+        {
+          "id": "1770439505145.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T04:45:05.145Z",
+          "updatedAt": "2026-02-07T04:45:05.145Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770439510891",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770439510891.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T04:45:10.891Z",
+          "updatedAt": "2026-02-07T04:45:10.891Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770439514844",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ting Test\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770439514844.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T04:45:14.844Z",
+          "updatedAt": "2026-02-07T04:45:14.844Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770441204147",
+      "anchor": {
+        "text": "Paragraph Two world.",
+        "contextBefore": "orld.\n\nSection Two\n\n",
+        "contextAfter": "\n\nFormatting Test\n\nT",
+        "offset": 63,
+        "length": 20
+      },
+      "comments": [
+        {
+          "id": "1770441204147.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T05:13:24.147Z",
+          "updatedAt": "2026-02-07T05:13:24.147Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770441208954",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770441208954.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T05:13:28.954Z",
+          "updatedAt": "2026-02-07T05:13:28.954Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770441212837",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ing Test\n\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770441212837.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T05:13:32.837Z",
+          "updatedAt": "2026-02-07T05:13:32.837Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770442777154",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770442777154.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T05:39:37.154Z",
+          "updatedAt": "2026-02-07T05:39:37.154Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770442782039",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ing Test\n\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770442782039.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T05:39:42.039Z",
+          "updatedAt": "2026-02-07T05:39:42.039Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770454826135",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770454826135.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T09:00:26.135Z",
+          "updatedAt": "2026-02-07T09:00:26.135Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770454830487",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ing Test\n\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770454830487.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T09:00:30.487Z",
+          "updatedAt": "2026-02-07T09:00:30.487Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770460215417",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770460215417.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T10:30:15.417Z",
+          "updatedAt": "2026-02-07T10:30:15.417Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770460226517",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ing Test\n\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770460226517.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T10:30:26.517Z",
+          "updatedAt": "2026-02-07T10:30:26.517Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770460327041",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770460327041.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T10:32:07.041Z",
+          "updatedAt": "2026-02-07T10:32:07.041Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770460337170",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ing Test\n\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770460337170.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T10:32:17.170Z",
+          "updatedAt": "2026-02-07T10:32:17.170Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770460374324",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770460374324.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T10:32:54.324Z",
+          "updatedAt": "2026-02-07T10:32:54.324Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770460383855",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ing Test\n\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770460383855.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T10:33:03.855Z",
+          "updatedAt": "2026-02-07T10:33:03.855Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770462084688",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770462084688.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T11:01:24.688Z",
+          "updatedAt": "2026-02-07T11:01:24.688Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770462094524",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ing Test\n\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770462094524.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T11:01:34.524Z",
+          "updatedAt": "2026-02-07T11:01:34.524Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770465509726",
+      "anchor": {
+        "text": "",
+        "contextBefore": "",
+        "contextAfter": "# Anchor Reproductio",
+        "offset": 0,
+        "length": 0
+      },
+      "comments": [
+        {
+          "id": "1770465509726.1",
+          "content": "Second occurrence comment",
+          "author": "User",
+          "createdAt": "2026-02-07T11:58:29.726Z",
+          "updatedAt": "2026-02-07T11:58:29.726Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770465520829",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ing Test\n\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770465520829.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T11:58:40.829Z",
+          "updatedAt": "2026-02-07T11:58:40.829Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": "1770465758187",
+      "anchor": {
+        "text": "important text",
+        "contextBefore": "ing Test\n\nThis is **",
+        "contextAfter": "** to test.",
+        "offset": 112,
+        "length": 14
+      },
+      "comments": [
+        {
+          "id": "1770465758187.1",
+          "content": "Bold text comment",
+          "author": "User",
+          "createdAt": "2026-02-07T12:02:38.187Z",
+          "updatedAt": "2026-02-07T12:02:38.187Z",
+          "status": "open",
+          "tags": []
+        }
+      ]
+    }
+  ]
+}
