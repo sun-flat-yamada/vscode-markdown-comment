@@ -39,11 +39,16 @@ export class WindowManager {
   async createWindow(): Promise<BrowserWindow> {
     const state = await this.loadState();
 
+    const isTestMode = process.argv.includes("--test-mode");
+
     this.window = new BrowserWindow({
       width: state.width,
       height: state.height,
       x: state.x,
       y: state.y,
+      show: !isTestMode, // Hide window in test mode
+      focusable: !isTestMode, // Don't steal focus
+      skipTaskbar: isTestMode, // Don't show in taskbar
       webPreferences: {
         preload: path.join(__dirname, "../preload.js"),
         contextIsolation: true,

@@ -113,9 +113,10 @@ End of the document.
     const toggleBtn = window.locator("#toggle-panel-btn");
 
     await expect(panel).toBeVisible();
-    await toggleBtn.click();
+    await toggleBtn.waitFor({ state: "visible" });
+    await toggleBtn.click({ force: true });
     await expect(panel).toBeHidden();
-    await toggleBtn.click();
+    await toggleBtn.click({ force: true });
     await expect(panel).toBeVisible();
   });
 

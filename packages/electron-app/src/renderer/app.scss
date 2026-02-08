@@ -305,13 +305,10 @@ main {
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 
   &.collapsed {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    min-height: 0 !important;
-    border: none !important;
-    padding: 0 !important;
+    height: 32px !important; // Only show panel-header
+    overflow: hidden !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
   }
 }
 

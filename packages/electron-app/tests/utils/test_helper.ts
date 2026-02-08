@@ -55,7 +55,13 @@ export async function launchApp(): Promise<{
   const headless = process.env.HEADLESS !== "false";
 
   const app = await electron.launch({
-    args: [appPath, "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
+    args: [
+      appPath,
+      "--no-sandbox",
+      "--disable-gpu",
+      "--disable-dev-shm-usage",
+      "--test-mode",
+    ],
   });
 
   const window = await app.firstWindow();
