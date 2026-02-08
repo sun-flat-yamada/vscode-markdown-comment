@@ -167,7 +167,10 @@ main {
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  flex-shrink: 0; /* Important for resizing */
+  flex-shrink: 0;
+  z-index: 10;
+  position: relative;
+  pointer-events: auto;
 }
 
 .sidebar-title {
@@ -201,6 +204,10 @@ main {
     background-color: var(--hover-bg);
     color: var(--accent-color);
   }
+
+  /* Ensure items are clickable by sitting above resizer borders if they overlap */
+  position: relative;
+  z-index: 20;
 }
 
 #content {
@@ -643,10 +650,12 @@ table {
 .resizer-v {
   width: 4px;
   cursor: ew-resize;
-  margin-left: -2px; /* Center over border? Or just take space? */
-  background-color: var(--border-color); /* Temporary visual aid */
+  margin-left: -2px; /* Center over border */
+  background-color: var(--border-color);
   opacity: 0.5;
-  height: 100%; /* Force height */
+  z-index: 15; /* Higher than sidebar base (10) but lower than items (20) */
+  pointer-events: auto;
+  height: 100%;
   display: block;
 }
 

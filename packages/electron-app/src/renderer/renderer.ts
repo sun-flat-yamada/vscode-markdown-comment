@@ -174,8 +174,9 @@ class AppController {
     this.threadList.onCommentClick = (tid, cid) => this.syncSelection(tid, cid);
 
     // Recent Files Events
-    this.recentFilesView.onFileClick = (path) =>
+    this.recentFilesView.onFileClick = (path) => {
       this.ipc.openFileSpecific(path);
+    };
 
     // Dialog Events
     this.addCommentDialog.onSave = async (content) =>
@@ -340,6 +341,7 @@ class AppController {
   }
 
   private setCurrentFile(path: string) {
+    console.log("AppController: setCurrentFile", path);
     this.currentFilePath = path;
     this.toolbar.updateFileName(path);
   }
