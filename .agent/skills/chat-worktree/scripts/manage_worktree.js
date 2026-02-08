@@ -5,17 +5,20 @@ const fs = require("fs");
 /**
  * ワークツリーを管理するスクリプト
  * Usage:
- *   Create:  node manage_worktree.js <conversation-id>
- *   Cleanup: node manage_worktree.js cleanup <conversation-id>
+ *   Create:  node manage_worktree.js <conversation-id> [issue-summary]
+ *   Cleanup: node manage_worktree.js cleanup <conversation-id> [issue-summary]
  */
 
 const mode = process.argv[2] === "cleanup" ? "cleanup" : "create";
 const convId = mode === "cleanup" ? process.argv[3] : process.argv[2];
+const summary = mode === "cleanup" ? process.argv[4] : process.argv[3];
 
 if (!convId) {
   console.error("Error: Conversation ID is required.");
   process.exit(1);
 }
+
+const worktreeName = summary ? `${convId}_${summary}` : convId;
 
 try {
   // 1. ベースリポジトリのルートを取得
@@ -24,11 +27,10 @@ try {
   }).trim();
   const repoName = path.basename(baseRepo);
 
-  // 2. ワークツリーの親ディレクトリを決定（ベースの隣）
-  const parentDir = path.dirname(baseRepo);
-  const worktreesDir = path.join(parentDir, `${repoName}-worktrees`);
-  const targetPath = path.join(worktreesDir, convId);
-  const branchName = `chat-${convId}`;
+  // 2. ワークツリーのディレクトリを決定（リポジトリルート内の .worktrees）
+  const worktreesDir = path.join(baseRepo, ".worktrees");
+  const targetPath = path.join(worktreesDir, worktreeName);
+  const branchName = `chat-${worktreeName}`;
 
   // 3. 親ディレクトリの作成
   if (mode === "create") {
