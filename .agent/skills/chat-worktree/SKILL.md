@@ -17,3 +17,10 @@ description: チャットセッションごとの独立したGit Worktree管理�
 - ベースリポジトリ（メインのリポジトリ）で直接 `git checkout` や `git commit` を実行しないでください。
 - ブランチ名は必ず `chat-` プレフィックスに続けて会話IDを使用してください。
 - ワークツリー作成後は、ベースリポジトリに戻らずそのディレクトリ内で完結させてください。
+
+## クリーンアップ（削除方法）
+不要になったワークツリーは、ベースリポジトリで以下のコマンドを実行して削除できます：
+1. `git worktree remove <パス>` または `git worktree remove <ブランチ名>`
+2. (オプション) 対応するブランチも削除する場合： `git branch -D <ブランチ名>`
+
+自動クリーンアップが必要な場合は、`scripts/manage_worktree.js cleanup <conversation-id>` を実行してください。
