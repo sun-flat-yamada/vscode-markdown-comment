@@ -4,6 +4,7 @@
 !CHANGELOG.md
 
 !dist/**
+*.vsix
 
 !images/vscode-mdc-icon.png
 !images/docs/**

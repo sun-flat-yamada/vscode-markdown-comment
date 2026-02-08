@@ -251,9 +251,9 @@
     "lint": "eslint src --ext ts",
     "test": "npm run test:unit && npm run test:integration",
     "test-compile": "tsc -p ./",
-    "test:unit": "mocha -r ts-node/register -r tsconfig-paths/register --project tsconfig.test.json --ui tdd src/**/*.test.ts --exclude \"src/test/suite/**\"",
-    "test:integration": "npm run test-compile && npm run compile && node ./out/test/runTest.js",
-    "package": "vsce package",
+    "test:unit": "mocha -r ts-node/register -r tsconfig-paths/register --project tsconfig.test.json --ui tdd tests/**/*.test.ts --exclude \"tests/suite/**\"",
+    "test:integration": "npm run test-compile && npm run compile && node ./out/tests/runTest.js",
+    "package": "vsce package -o ./dist/",
     "deploy": "npx vsce publish",
     "release:prepare": "./scripts/prepare_release.sh"
   },

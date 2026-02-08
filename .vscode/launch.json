@@ -25,10 +25,11 @@
       "request": "launch",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-extension",
-        "--extensionTestsPath=${workspaceFolder}/packages/vscode-extension/out/test/suite/index"
+        "--extensionTestsPath=${workspaceFolder}/packages/vscode-extension/out/tests/suite/index"
       ],
       "outFiles": [
-        "${workspaceFolder}/packages/vscode-extension/out/test/**/*.js"
+        "${workspaceFolder}/packages/vscode-extension/out/tests/**/*.js",
+        "${workspaceFolder}/packages/vscode-extension/out/src/**/*.js"
       ],
       "preLaunchTask": "npm: compile"
     },
@@ -55,6 +56,10 @@
       "args": ["."],
       "protocol": "inspector",
       "outFiles": ["${workspaceFolder}/packages/electron-app/dist/**/*.js"],
+      "env": {
+        "ELECTRON_ENABLE_LOGGING": "true",
+        "TEST_OUTPUT_DIR": "${workspaceFolder}/.dev_output"
+      },
       "preLaunchTask": "npm: build (electron)"
     }
   ]

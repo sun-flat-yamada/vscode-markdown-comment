@@ -1,5 +1,27 @@
 import { _electron as electron, ElectronApplication, Page } from "playwright";
 import * as path from "path";
+import * as fs from "fs";
+
+// Centralized output directory for all tests
+export const TEST_OUTPUT_DIR =
+  process.env.TEST_OUTPUT_DIR ||
+  path.resolve(__dirname, "../../../../.dev_output");
+
+// Ensure directory exists
+if (!fs.existsSync(TEST_OUTPUT_DIR)) {
+  fs.mkdirSync(TEST_OUTPUT_DIR, { recursive: true });
+}
+
+/**
+ * Gets a package-specific output directory within .dev_output.
+ */
+export function getPackageOutputDir(packageName: string): string {
+  const dir = path.join(TEST_OUTPUT_DIR, packageName);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  return dir;
+}
 
 /**
  * Standard launch options for Electron app testing.

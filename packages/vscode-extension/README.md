@@ -20,7 +20,7 @@
 While Markdown files are increasingly used for documentation and AI interactions, this extension smartly manages reviews and comments, bridging the gap between developers and non-technical stakeholders.
 
 > [!NOTE]
-> Comment data is persisted in a separate metadata file (your-md-file.meta.jsonl).
+> Comment data is persisted in a separate metadata file (your-md-file.meta.json).
 > For detailed file specifications, please refer to the following:
 > [File Specification](https://github.com/sun-flat-yamada/vscode-markdown-comment/blob/main/packages/vscode-extension/docs/meta-schema/README.md)
 
@@ -74,7 +74,7 @@ While Markdown files are increasingly used for documentation and AI interactions
 
 ## 🔧 Technical Details
 
-- **Non-Invasive**: Comments are stored in a sidecar file (`filename.meta.jsonl`).
+- **Non-Invasive**: Comments are stored in a sidecar file (`filename.meta.json`).
 - **Clean Data**: Your original Markdown files remain untouched.
 
 ## ⚙️ Configuration
