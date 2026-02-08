@@ -113,7 +113,7 @@ The `.agent` directory contains AI assistant configurations:
 | `plugins/` | Plugin metadata |
 | `rules/` | Always-follow guidelines |
 | `scripts/` | Helper scripts |
-| `skills/` | Domain expertise definitions (`github_ops`, `issue_driven_development`, `markdown_expert`, `test_runner`) |
+| `skills/` | Domain expertise definitions (`chat-worktree`, `github_ops`, `issue_driven_development`, `markdown_expert`, `test_runner`) |
 | `workflows/` | Development workflows |
 
 > [!IMPORTANT]
