@@ -146,7 +146,7 @@ test.describe("Electron-app Bug Detection", () => {
     expect(initialBox!.height).toBeGreaterThan(0);
 
     await window.click("#toggle-panel-btn");
-    await expect(panel).toBeHidden();
+    await expect(panel).toHaveClass(/collapsed/);
   });
 
   test("4. Open files history should exist", async () => {

@@ -115,7 +115,7 @@ End of the document.
     await expect(panel).toBeVisible();
     await toggleBtn.waitFor({ state: "visible" });
     await toggleBtn.click({ force: true });
-    await expect(panel).toBeHidden();
+    await expect(panel).toHaveClass(/collapsed/);
     await toggleBtn.click({ force: true });
     await expect(panel).toBeVisible();
   });
