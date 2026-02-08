@@ -117,7 +117,7 @@ graph TD
 | `plugins/` | プラグインメタデータ |
 | `rules/` | 常に従うべきガイドライン |
 | `scripts/` | ヘルパースクリプト |
-| `skills/` | ドメイン専門知識の定義 (`github_ops`, `issue_driven_development`, `markdown_expert`, `test_runner`) |
+| `skills/` | ドメイン専門知識の定義 (`chat-worktree`, `github_ops`, `issue_driven_development`, `markdown_expert`, `test_runner`) |
 | `workflows/` | 開発ワークフロー |
 
 > [!IMPORTANT]
