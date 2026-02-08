@@ -8,6 +8,9 @@ Thumbs.db
 # Node.js
 node_modules
 
+# Worktrees
+.worktrees/
+
 # Output
 _out/
 out
