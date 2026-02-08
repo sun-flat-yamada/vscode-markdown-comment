@@ -13,7 +13,10 @@
     "compile:extension": "npm run compile -w packages/vscode-extension"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "concurrently": "^9.2.1",
+    "globals": "^17.3.0",
+    "typescript-eslint": "^8.54.0",
     "wait-on": "^9.0.3"
   }
 }

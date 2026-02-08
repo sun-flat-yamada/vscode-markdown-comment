@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const bundlePath = path.join(__dirname, "../dist/extension.js");
+const bundlePath = path.resolve(__dirname, "../dist/extension.js");
 const allowedExternals = [
   "vscode",
   "path",
@@ -37,10 +37,12 @@ const allowedExternals = [
   "v8",
   "vm",
   "worker_threads",
+  "@markdown-comment/core",
 ];
 
 // Read bundle content
 try {
+  console.log(`Checking bundle at: ${bundlePath}`);
   const content = fs.readFileSync(bundlePath, "utf8");
 
   // Simple regex to find CommonJS requires
@@ -69,9 +71,11 @@ try {
     const pureModule = reqModule.replace(/^node:/, "");
 
     if (!allowedExternals.includes(pureModule)) {
-      // Check if it's a allowed built-in match (sometimes webpack uses "external '...'" comments but we are scanning code)
+      // Check if it's a allowed built-in match
       errors.push(reqModule);
+      console.log(`❌ Unauthorized: ${reqModule}`);
     } else {
+      console.log(`✅ Allowed: ${reqModule}`);
       foundExternals.add(pureModule);
     }
   }
@@ -80,7 +84,9 @@ try {
     console.error(
       "❌ Bundle verification failed! Found unauthorized external dependencies:",
     );
-    errors.forEach((e) => console.error(`   - ${e}`));
+    errors.forEach((e) =>
+      console.error(`   - "${e}" (normalized: "${e.replace(/^node:/, "")}")`),
+    );
     console.error(
       "\nDependencies must be bundled or added to the allowedExternals list in scripts/verify-bundle.js",
     );
