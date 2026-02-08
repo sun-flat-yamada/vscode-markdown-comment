@@ -17,7 +17,10 @@ jobs:
           node-version: 20
           cache: "npm"
       - run: npm ci
+      - run: npm run build -w packages/core
       - run: npm run lint -w packages/vscode-extension
+      - name: Type Check
+        run: npm run type-check -w packages/vscode-extension
 
   test-core:
     name: Test Core
