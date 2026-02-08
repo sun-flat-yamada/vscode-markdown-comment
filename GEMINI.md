@@ -80,7 +80,10 @@ graph TD
     - **English is Master**: Refer only to English `.md` files.
     - **Update Documentation (MANDATORY)**: Always review and update corresponding documentation when making code changes. Ensure `README.md` and `GEMINI.md` are up to date. This is a strict requirement for every code change.
     - **Ignore Japanese Reference**: Do NOT read `.ja.md` files; they are for human reference only.
-4. **Markdown Rendering Engine**:
+4. **Worktree Management (MANDATORY)**:
+    - **Worktree First**: AI agents MUST create a task-specific Git worktree inside the `.worktrees/` directory before starting any implementation.
+    - **Absolute Paths**: All tool calls must use absolute paths targeting the worktree directory to ensure isolation and bypass workspace constraints.
+5. **Markdown Rendering Engine**:
     - Encapsulated in `MarkdownEngine` class to separate rendering logic from use cases.
     - Uses a two-pass system: (1) Insert placeholders MCSTART/END into Markdown, (2) Render with `markdown-it`, (3) Post-process HTML to replace placeholders with `<mark>` tags.
     - Custom `image` rule in `markdown-it` strips accidental placeholders from attributes to prevent broken tags.
