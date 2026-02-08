@@ -2,6 +2,11 @@ import * as path from "path";
 
 import { runTests } from "@vscode/test-electron";
 
+// Centralized output directory for all tests
+const TEST_OUTPUT_DIR =
+  process.env.TEST_OUTPUT_DIR ||
+  path.resolve(__dirname, "../../../../.dev_output");
+
 async function main() {
   try {
     // The folder containing the Extension Manifest package.json
@@ -12,10 +17,11 @@ async function main() {
     // Passed to --extensionTestsPath
     const extensionTestsPath = path.resolve(__dirname, "./suite/index");
 
-    // Move .vscode-test to out directory
-    process.env.VSCODE_TEST_BASE_DIR = path.resolve(
-      __dirname,
-      "../../.vscode-test",
+    // Standardize .vscode-test to .dev_output directory
+    process.env.VSCODE_TEST_BASE_DIR = path.join(
+      TEST_OUTPUT_DIR,
+      "vscode-extension",
+      ".vscode-test",
     );
 
     // Download VS Code, unzip it and run the integration test

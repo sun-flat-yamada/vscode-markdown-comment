@@ -20,9 +20,9 @@
 While Markdown files are increasingly used for documentation and AI interactions, this extension smartly manages reviews and comments, bridging the gap between developers and non-technical stakeholders.
 
 > [!NOTE]
-> Comment data is persisted in a separate metadata file (your-md-file.meta.jsonl).
+> Comment data is persisted in a separate metadata file (your-md-file.meta.json).
 > For detailed file specifications, please refer to the following:
-> [File Specification](./packages/vscode-extension/docs/meta-schema/README.md)
+> [File Specification](docs/meta-schema/README.md)
 
 > [!NOTE]
 > Future plans include browser extensions for viewers and editors to further expand accessibility.

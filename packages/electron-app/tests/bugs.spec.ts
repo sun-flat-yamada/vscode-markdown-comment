@@ -6,12 +6,18 @@ import {
   checkCriticalErrors,
   closeApp,
   resetConsoleErrors,
+  TEST_OUTPUT_DIR,
+  getPackageOutputDir,
 } from "./utils/test_helper";
 
 test.describe("Electron-app Bug Detection", () => {
   let electronApp: any;
   let window: any;
-  const testFilePath = path.join(__dirname, "test_bugs.md");
+  const outputDir = getPackageOutputDir("electron-app");
+  const testFilePath = path.join(
+    outputDir,
+    `${new Date().toISOString().split("T")[0].replace(/-/g, "")}_test_bugs.md`,
+  );
 
   test.beforeAll(async () => {
     await fs.writeFile(
