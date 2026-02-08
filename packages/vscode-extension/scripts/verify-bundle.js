@@ -45,7 +45,10 @@ try {
   console.log(`Checking bundle at: ${bundlePath}`);
   const content = fs.readFileSync(bundlePath, "utf8");
 
-  // Simple regex to find CommonJS requires
+  // Split content into lines for better context detection
+  const lines = content.split("\n");
+
+  // Regex to find CommonJS requires
   // Matches: require("...") or require('...')
   // Note: Webpack bundle usually has external "vscode" as: module.exports = require("vscode");
   const requireRegex = /require\(['"]([^'"]+)['"]\)/g;
@@ -56,6 +59,17 @@ try {
 
   while ((match = requireRegex.exec(content)) !== null) {
     const reqModule = match[1];
+
+    // Skip if this require is inside a comment (JSDoc example or documentation)
+    // Check preceding characters to detect if we're in a comment context
+    const matchStart = match.index;
+    const lineStart = content.lastIndexOf("\n", matchStart) + 1;
+    const lineContent = content.substring(lineStart, matchStart);
+
+    // Skip if line starts with * or // (comment indicators)
+    if (/^\s*\*/.test(lineContent) || /^\s*\/\//.test(lineContent)) {
+      continue;
+    }
 
     // Skip relative paths (internal bundle modules require each other via ID or relative path in some modes, but usually webpack bundles everything in one file or uses webpack-specific require)
     // However, standard node require for packages never starts with . or /
