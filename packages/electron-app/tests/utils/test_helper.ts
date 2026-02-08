@@ -1,3 +1,16 @@
+/**
+ * @file Test Helper Utilities
+ * @description Centralized utilities for Electron E2E testing using Playwright.
+ * It handles application lifecycle, console capture for error detection,
+ * and robust process termination.
+ *
+ * Mechanism:
+ * - Uses Playwright's _electron to launch the app with specific CLI arguments.
+ * - Establishes a communication channel via console logs (RENDERER_READY signal).
+ * - Implements a "nuclear" cleanup strategy using tree-kill to ensure no orphaned processes.
+ * - Manages package-specific output directories within a global .dev_output.
+ */
+
 import { _electron as electron, ElectronApplication, Page } from "playwright";
 import * as path from "path";
 import * as fs from "fs";
@@ -39,6 +52,7 @@ export async function launchApp(): Promise<{
    * We will standardize on ".." (package root) to let electron find package.json main.
    */
   const appPath = path.join(__dirname, "../..");
+  const headless = process.env.HEADLESS !== "false";
 
   const app = await electron.launch({
     args: [appPath, "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],

@@ -52,8 +52,8 @@ graph TD
 | Build (Dev) | `npm run compile-dev` (Webpack Development) |
 | Watch | `npm run watch` (Webpack Development) |
 | Lint | `npm run lint` |
-| Unit Tests | `npm run test:unit` |
-| Integration Tests | `npm run test:integration` |
+| Unit Tests | `npm test` (Runs all workspaces) |
+| Integration Tests | `npm test` (Runs all workspaces) |
 | All Tests | `npm test` |
 | Electron E2E Tests | `npm run test:e2e -w packages/electron-app` |
 | Package Extension | `npm run package` (VSCE) |
@@ -113,7 +113,7 @@ The `.agent` directory contains AI assistant configurations:
 | `plugins/` | Plugin metadata |
 | `rules/` | Always-follow guidelines |
 | `scripts/` | Helper scripts |
-| `skills/` | Domain expertise definitions |
+| `skills/` | Domain expertise definitions (`github_ops`, `issue_driven_development`, `markdown_expert`, `test_runner`) |
 | `workflows/` | Development workflows |
 
 > [!IMPORTANT]

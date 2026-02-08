@@ -1,3 +1,14 @@
+/**
+ * @file Markdown Operations Suite
+ * @description These tests verify the basic end-to-end flow of rendering a Markdown file,
+ * adding a comment, and interacting with core features like AI Prompt generation.
+ *
+ * Mechanism:
+ * - Writes a temporary Markdown file for each test suite run.
+ * - Verifies the content of the preview iframe using Playwright's frameLocator.
+ * - Validates sidebar and bottom panel updates after comment creation.
+ */
+
 import { test, expect } from "@playwright/test";
 import * as path from "path";
 import * as fs from "fs/promises";

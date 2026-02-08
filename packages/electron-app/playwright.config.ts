@@ -13,5 +13,6 @@ export default defineConfig({
   reporter: "list",
   use: {
     trace: "on-first-retry",
+    headless: process.env.HEADLESS !== "false",
   },
 });

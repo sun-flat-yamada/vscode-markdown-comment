@@ -1,3 +1,14 @@
+/**
+ * @file Bug Detection Suite
+ * @description This suite is dedicated to reproducing and verifying fixes for specific UI and logic bugs.
+ * It covers a wide range of features from sidebar toggles and resizers to context menus and native IPC calls.
+ *
+ * Mechanism:
+ * - Simulates complex UI interactions (dragging, right-clicking, etc.) that have historically been problematic.
+ * - Uses window reloads and console event listeners to synchronize with the renderer process.
+ * - Bypasses some native Electron limitations by dispatching events directly via window.evaluate.
+ */
+
 import { test, expect } from "@playwright/test";
 import * as path from "path";
 import * as fs from "fs/promises";
