@@ -1,10 +1,7 @@
-/**
- * @file WindowManager.ts
- * @description ElectronのBrowserWindowのライフサイクルと状態（サイズ・位置）を管理する。
- */
 import { BrowserWindow, app, shell } from "electron";
 import * as path from "path";
 import * as fs from "fs/promises";
+import { spawn } from "child_process";
 
 export interface WindowState {
   width: number;
@@ -59,7 +56,21 @@ export class WindowManager {
     // Handle external links
     this.window.webContents.setWindowOpenHandler(({ url }) => {
       if (url.startsWith("http:") || url.startsWith("https:")) {
-        shell.openExternal(url);
+        if (process.platform === "win32") {
+          // On Windows, use PowerShell to force a new window.
+          // Start-Process <url> -WindowStyle Maximized (or just Start-Process)
+          // often opens a new window if current one is busy or depending on browser,
+          // but there's no 100% universal way without naming the browser.
+          // However, using child_process for 'start' or 'powershell' is more likely
+          // to trigger a new session/window than Electron's internal shell.openExternal.
+          spawn("powershell", [
+            "-NoProfile",
+            "-Command",
+            `Start-Process "${url.replace(/"/g, '`"')}"`,
+          ]);
+        } else {
+          shell.openExternal(url);
+        }
         return { action: "deny" };
       }
       return { action: "allow" };
