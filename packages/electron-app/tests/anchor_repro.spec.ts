@@ -1,3 +1,15 @@
+/**
+ * @file Anchor Reproduction Tests
+ * @description These tests focus on reproducing and preventing regressions in comment anchoring.
+ * It specifically targets cases with duplicate text and formatted Markdown to ensure
+ * that the "context-matching" mechanism correctly identifies the intended range.
+ *
+ * Mechanism:
+ * - Creates a Markdown document with intentional duplicate text and formatting.
+ * - Simulates user selection and comment addition.
+ * - Verifies that the resulting anchor offset matches the expected position in the source.
+ */
+
 import { test, expect } from "@playwright/test";
 import * as path from "path";
 import * as fs from "fs/promises";
