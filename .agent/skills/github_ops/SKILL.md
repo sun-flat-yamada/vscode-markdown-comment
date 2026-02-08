@@ -53,3 +53,27 @@ Use descriptive names with the following prefixes:
 - `chore/`: Maintenance tasks
 
 Example: `feature/docs-workflow-improvement`
+## 4. Pull Request Creation via GitHub CLI (`gh`)
+
+**RULE**: AI agents SHOULD use the GitHub CLI (`gh`) for Pull Request operations to ensure reliable automation when identity-based tools fail.
+
+### Create Pull Request
+Use a markdown file for the body to ensure complex formatting is preserved.
+
+```powershell
+# 1. Create a temporary body file
+$body = @"
+## Overview
+... description ...
+"@
+$body | Out-File -FilePath ".dev_output/YYYYMMDD_pr_body.md" -Encoding utf8
+
+# 2. Create the PR
+gh pr create --title "type: description" --body-file .dev_output/YYYYMMDD_pr_body.md --base main --head feature/branch-name
+```
+
+### Check PR Status
+```bash
+gh pr status
+gh pr view --web
+```
