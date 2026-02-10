@@ -5,7 +5,11 @@ export class AnnotationService {
    */
   public injectPlaceholders(
     content: string,
-    threads: { id: string; anchor: { offset: number; length: number } }[],
+    threads: {
+      id: string;
+      anchor: { offset: number; length: number };
+      createdAt?: Date;
+    }[],
   ): {
     htmlContent: string;
     points: { offset: number; type: "start" | "end"; threadId: string }[];
@@ -96,9 +100,31 @@ export class AnnotationService {
       if (point.offset > lastOffset) {
         let segment = content.substring(lastOffset, point.offset);
 
-        const sortedActive = Array.from(activeThreadIndices).sort(
-          (a, b) => a - b,
-        );
+        // Sort active threads to determine nesting order (Inner -> Outer)
+        // The loop applies wrappers sequentially: segment = <Wrapper>segment</Wrapper>
+        // So the First item in the list becomes the Innermost tag.
+        // The Last item in the list becomes the Outermost tag.
+        // We want:
+        // - Higher Start Offset (More specific) -> Inner -> First
+        // - Newer CreatedAt -> Inner -> First
+        const sortedActive = Array.from(activeThreadIndices).sort((a, b) => {
+          const threadA = threads[a];
+          const threadB = threads[b];
+
+          // Primary: Start offset (DESCENDING)
+          if (threadA.anchor.offset !== threadB.anchor.offset) {
+            return threadB.anchor.offset - threadA.anchor.offset;
+          }
+
+          // Secondary: CreatedAt (DESCENDING - Newer is Inner)
+          if (threadA.createdAt && threadB.createdAt) {
+            return threadB.createdAt.getTime() - threadA.createdAt.getTime();
+          }
+
+          // Fallback: Index (Stability - Higher index first to keep consistency with "Newer" heuristic if dates missing)
+          return b - a;
+        });
+
         for (const idx of sortedActive) {
           const isFirst = !iconDisplayed.has(idx);
           if (isFirst) {
