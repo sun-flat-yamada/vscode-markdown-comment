@@ -55,7 +55,11 @@ export class ShowPreviewUseCase {
     const { htmlContent: htmlContentWithPlaceholders } =
       this.annotationService.injectPlaceholders(
         document.content,
-        threads as any[],
+        threads.map((t) => ({
+          id: t.id,
+          anchor: t.anchor,
+          createdAt: t.comments[0]?.createdAt,
+        })),
       );
 
     const title = `Preview ${document.filePath.split(/[\\/]/).pop()}`;

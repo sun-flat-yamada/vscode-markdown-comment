@@ -118,4 +118,53 @@ suite("AnnotationService", () => {
     assert.strictEqual(result.htmlContent.startsWith("# "), true);
     assert.ok(result.htmlContent.includes("MCFIRST0MC"));
   });
+
+  test("injectPlaceholders handles overlapping comments (nested)", () => {
+    const content = "Hello world";
+    // t1: Hello (0-5)
+    // t2: el (1-3) -> Nested in t1
+    // Expected: t2 should be "on top" / "inner".
+    // Structure: MCFIRST0MC H MCFIRST1MC el MCEND1MC lo MCEND0MC
+    const threads = [
+      { id: "t1", anchor: { offset: 0, length: 5 }, createdAt: new Date(1000) },
+      { id: "t2", anchor: { offset: 1, length: 2 }, createdAt: new Date(2000) },
+    ];
+
+    const result = service.injectPlaceholders(content, threads as any);
+    // We expect index 1 (t2) to be opened AFTER index 0 (t1) when they overlap.
+    // Index 0 starts at 0. Index 1 starts at 1.
+    // 0: "H" -> Active=[t1]. MCFIRST0MC H MCEND0MC
+    // 1-3: "el" -> Active=[t1, t2]. Sort=[t2, t1] (t2 is inner).
+    //      Segment: MCFIRST1MC el MCEND1MC
+    //      Wrapped by t1: MCSTART0MC MCFIRST1MC el MCEND1MC MCEND0MC
+    // 3-5: "lo" -> Active=[t1]. MCSTART0MC lo MCEND0MC
+    const expected =
+      "MCFIRST0MCHMCEND0MC" +
+      "MCSTART0MCMCFIRST1MCelMCEND1MCMCEND0MC" +
+      "MCSTART0MCloMCEND0MC" +
+      " world";
+
+    assert.strictEqual(result.htmlContent, expected);
+  });
+
+  test("injectPlaceholders handles identical ranges (newer is inner)", () => {
+    const content = "Hello";
+    // t1: Hello (0-5), Old
+    // t2: Hello (0-5), New
+    // Expected: t2 is inner (opened last).
+    // MCFIRST0MC MCFIRST1MC Hello MCEND1MC MCEND0MC
+    const threads = [
+      { id: "t1", anchor: { offset: 0, length: 5 }, createdAt: new Date(1000) },
+      { id: "t2", anchor: { offset: 0, length: 5 }, createdAt: new Date(2000) },
+    ];
+
+    const result = service.injectPlaceholders(content, threads as any);
+    // Since both start at 0, the sorting order of "active" determines who comes first.
+    // Currently, typical set iteration might be insertion order.
+    // We WANT t1 (older) to be outer (first in string), t2 (newer) to be inner (second in string).
+    // So: ...t1... ...t2... content ...
+    assert.ok(
+      result.htmlContent.includes("MCFIRST0MCMCFIRST1MCHelloMCEND1MCMCEND0MC"),
+    );
+  });
 });
