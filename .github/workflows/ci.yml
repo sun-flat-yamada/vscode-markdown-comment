@@ -39,7 +39,7 @@ jobs:
     name: Test Extension (${{ matrix.os }})
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest, macos-13]
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
