@@ -282,6 +282,6 @@
   },
   "dependencies": {
     "@markdown-comment/core": "*",
-    "markdown-it": "^15.0.2"
+    "markdown-it": "^15.0.3"
   }
 }
