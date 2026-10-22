@@ -10,7 +10,8 @@
     "skipLibCheck": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "types": ["node", "mocha"]
   },
   "exclude": ["node_modules"]
 }

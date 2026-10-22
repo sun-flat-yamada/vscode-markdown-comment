@@ -16,7 +16,7 @@ suite("Extension Test Suite", () => {
     );
     assert.ok(extension, "Extension should be found");
 
-    await extension.activate();
+    await extension!.activate();
 
     // This is a basic check to see if the command appears in the list
     const commands = await vscode.commands.getCommands(true);

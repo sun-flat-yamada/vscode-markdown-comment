@@ -50,6 +50,8 @@ module.exports = {
           globOptions: {
             ignore: ["**/*.ts", "**/*.scss"], // Don't copy source files (processed or bundled)
           },
+          // Templates hold {{PLACEHOLDERS}} filled at runtime; keep them as written
+          info: { minimized: true },
         },
       ],
     }),
