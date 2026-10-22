@@ -1,4 +1,4 @@
-import * as MarkdownIt from "markdown-it";
+import MarkdownIt from "markdown-it";
 import * as path from "path";
 
 export interface IResourceProvider {
@@ -6,7 +6,7 @@ export interface IResourceProvider {
 }
 
 export class MarkdownEngine {
-  private md: MarkdownIt;
+  private md: MarkdownIt.MarkdownIt;
 
   constructor(private readonly resourceProvider: IResourceProvider) {
     this.md = new MarkdownIt({
@@ -38,7 +38,7 @@ export class MarkdownEngine {
       const token = tokens[idx];
       const srcIndex = token.attrIndex("src");
       if (srcIndex >= 0 && token.attrs) {
-        const src = token.attrs[srcIndex][1];
+        const src = String(token.attrs[srcIndex][1]);
         if (
           !src.startsWith("http") &&
           !src.startsWith("https") &&
@@ -46,10 +46,11 @@ export class MarkdownEngine {
         ) {
           // Resolve path relative to the document
           // env.filePath MUST be provided in .render()
-          if (env && env.filePath) {
+          const filePath = (env as { filePath?: string } | undefined)?.filePath;
+          if (filePath) {
             const absolutePath = path.isAbsolute(src)
               ? src
-              : path.resolve(path.dirname(env.filePath), src);
+              : path.resolve(path.dirname(filePath), src);
             token.attrs[srcIndex][1] =
               this.resourceProvider.asWebviewUri(absolutePath);
             // Debug: append absolute path info
@@ -61,7 +62,7 @@ export class MarkdownEngine {
       // Clean up placeholders in attributes
       if (token.attrs) {
         token.attrs.forEach((attr) => {
-          attr[1] = this.stripPlaceholders(attr[1]);
+          attr[1] = this.stripPlaceholders(String(attr[1]));
         });
       }
 
@@ -82,13 +83,13 @@ export class MarkdownEngine {
       // Clean up placeholders in attributes
       if (token.attrs) {
         token.attrs.forEach((attr) => {
-          attr[1] = this.stripPlaceholders(attr[1]);
+          attr[1] = this.stripPlaceholders(String(attr[1]));
         });
       }
 
       const hrefIndex = token.attrIndex("href");
       if (hrefIndex >= 0 && token.attrs) {
-        const href = token.attrs[hrefIndex][1];
+        const href = String(token.attrs[hrefIndex][1]);
         if (href.startsWith("http") || href.startsWith("https")) {
           token.attrSet("target", "_blank");
           token.attrSet("rel", "noopener noreferrer");
@@ -163,7 +164,9 @@ export class MarkdownEngine {
               !cleanSrc.startsWith("https") &&
               !cleanSrc.startsWith("data:")
             ) {
-              if (env && env.filePath) {
+              const filePath = (env as { filePath?: string } | undefined)
+                ?.filePath;
+              if (filePath) {
                 const absolutePath = path.isAbsolute(cleanSrc)
                   ? cleanSrc
                   : path.resolve(path.dirname(env.filePath), cleanSrc);
