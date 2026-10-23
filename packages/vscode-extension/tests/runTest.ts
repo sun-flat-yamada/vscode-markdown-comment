@@ -1,3 +1,4 @@
+import * as os from "os";
 import * as path from "path";
 
 import { runTests } from "@vscode/test-electron";
@@ -25,7 +26,14 @@ async function main() {
     );
 
     // Download VS Code, unzip it and run the integration test
-    await runTests({ extensionDevelopmentPath, extensionTestsPath });
+    // Keep the user data dir short: macOS rejects IPC socket paths over 103 chars
+    const userDataDir = path.join(os.tmpdir(), "mc-vscode-test");
+
+    await runTests({
+      extensionDevelopmentPath,
+      extensionTestsPath,
+      launchArgs: ["--user-data-dir", userDataDir],
+    });
   } catch (err) {
     console.error("Failed to run tests", err);
     process.exit(1);
